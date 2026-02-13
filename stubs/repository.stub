@@ -1,0 +1,25 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Repositories\Contracts\{{ interface }};
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }} implements {{ interface }}
+{
+    /**
+     * Store model instance
+     * @var Model
+     */
+    protected Model $model;
+
+    /**
+     * Base respository constructor
+     *
+     * @param  Model  $model
+     */
+    public function __construct()
+    {
+        // $this->model = null;
+    }
+}
