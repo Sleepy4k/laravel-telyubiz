@@ -4,17 +4,29 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response as FacadesResponse;
+use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api.php',
+        using: function () {
+            $domain = parse_url(config('app.url'), PHP_URL_HOST);
+
+            Route::middleware('web')
+                ->domain($domain)
+                ->group(base_path('routes/web.php'));
+
+            Route::middleware('api')
+                ->domain("api.{$domain}")
+                ->group(base_path('routes/api.php'));
+        }
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->throttleApi();
         $middleware->web(
             prepend: [
-                \Illuminate\Routing\Middleware\ThrottleRequests::class.':web',
+                \Illuminate\Routing\Middleware\ThrottleRequests::class . ':web',
             ],
             append: [
                 \App\Http\Middleware\ImplementPageSpeed::class,
@@ -30,6 +42,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'verified.email' => \App\Http\Middleware\VerificationEmailAccess::class,
         ]);
 
         // $middleware->redirectUsersTo(fn () => route('home'));
@@ -37,54 +50,38 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
-            if (!$request->is('api/*')) {
+            $currentDomain = $request->getHost();
+            if (
+                str_starts_with($currentDomain, 'www.') ||
+                $currentDomain === parse_url(config('app.url'), PHP_URL_HOST)
+            ) {
                 return (new \App\Http\Middleware\ImplementPageSpeed())
-                    ->handle($request, fn ($req) => $response);
+                    ->handle($request, fn($req) => $response);
             }
 
             return match (true) {
-            $exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException,
-            $exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException =>
-                response()->json([
-                    'status' => 'error',
-                    'message' => 'Resource not found',
-                    'data' => null,
-                ], 404),
+                $exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException,
+                $exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException =>
+                    FacadesResponse::error('Resource not found', null, 404),
 
-            $exception instanceof \Illuminate\Auth\Access\AuthorizationException =>
-                response()->json([
-                    'status' => 'error',
-                    'message' => 'Unauthorized',
-                    'data' => null,
-                ], 403),
+                $exception instanceof \Illuminate\Validation\ValidationException =>
+                    FacadesResponse::error('The given data was invalid.', $exception->errors(), 422),
 
-            $exception instanceof \Illuminate\Validation\ValidationException =>
-                response()->json([
-                    'status' => 'error',
-                    'message' => 'Validation failed',
-                    'data' => $exception->errors(),
-                ], 422),
+                $exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException =>
+                    FacadesResponse::error('Method Not Allowed', null, 405),
 
-            $exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException =>
-                response()->json([
-                    'status' => 'error',
-                    'message' => 'Method Not Allowed',
-                    'data' => null,
-                ], 405),
+                $exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException =>
+                    FacadesResponse::error($exception->getMessage(), null, $exception->getStatusCode()),
 
-            $exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException =>
-                response()->json([
-                    'status' => 'error',
-                    'message' => $exception->getMessage(),
-                    'data' => null,
-                ], $exception->getStatusCode()),
+                $exception instanceof \Illuminate\Auth\Access\AuthorizationException ||
+                $exception instanceof \Laravel\Sanctum\Exceptions\MissingAbilityException =>
+                    FacadesResponse::error('You do not have the required permissions to access this resource.', null, 403),
 
-            default =>
-                response()->json([
-                    'status' => 'error',
-                    'message' => 'An error occurred',
-                    'data' => null,
-                ], 500),
+                $exception instanceof \Illuminate\Auth\AuthenticationException =>
+                    FacadesResponse::error('You are not authenticated to access this resource.', null, 401),
+
+                default =>
+                    FacadesResponse::error('An unexpected error occurred. Please try again later.', null, 500),
             };
         });
     })->create();
