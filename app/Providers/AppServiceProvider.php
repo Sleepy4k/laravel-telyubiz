@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\PersonalAccessToken;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,5 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::useBuildDirectory('build');
         Vite::useManifestFilename('build-manifest.json');
+
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 }

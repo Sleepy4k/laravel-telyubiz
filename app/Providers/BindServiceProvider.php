@@ -18,19 +18,18 @@ class BindServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $contractsPath = app_path('Contracts/Models');
+        $repositoryPath = app_path('Repositories/Contracts');
+        $implementationPath = app_path('Repositories/Eloquent');
 
-        if (!is_dir($contractsPath)) {
-            return;
-        }
+        foreach (glob("{$repositoryPath}/*.php") as $interfaceFile) {
+            $interfaceName = pathinfo($interfaceFile, PATHINFO_FILENAME);
+            $implementationFile = "{$implementationPath}/" . str_replace('I', '', $interfaceName) . ".php";
 
-        foreach (glob("$contractsPath/*Interface.php") as $interfaceFile) {
-            $baseName = basename($interfaceFile, 'Interface.php');
-            $interface = "App\Contracts\Models\\{$baseName}Interface";
-            $repository = "App\Repositories\Models\\{$baseName}Repository";
+            if (file_exists($implementationFile)) {
+                $interfaceClass = "App\Repositories\Contracts\\{$interfaceName}";
+                $implementationClass = "App\Repositories\Eloquent\\" . str_replace('I', '', $interfaceName);
 
-            if (class_exists($repository)) {
-                $this->app->bind($interface, $repository);
+                $this->app->bind($interfaceClass, $implementationClass);
             }
         }
     }
