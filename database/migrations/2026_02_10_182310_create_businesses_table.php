@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('businesses', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class, 'owner_id')->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('name', 100);
+            $table->string('slug', 100)->unique();
             $table->text('address')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('phone', 20)->nullable();
             $table->text('description')->nullable();
             $table->text('logo_url')->nullable();
             $table->text('banner_url')->nullable();

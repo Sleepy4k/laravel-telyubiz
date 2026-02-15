@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Event;
+use App\Models\EventCategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,9 +13,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_categories', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name', 50)->unique();
+        Schema::create('event_has_categories', function (Blueprint $table) {
+            $table->foreignIdFor(Event::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(EventCategory::class, 'category_id')->constrained('event_categories', 'id')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_categories');
+        Schema::dropIfExists('event_has_categories');
     }
 };

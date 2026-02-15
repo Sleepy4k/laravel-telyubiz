@@ -15,9 +15,9 @@ return new class extends Migration
         Schema::create('bank_accounts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
-            $table->string('bank_name');
-            $table->string('account_number')->unique();
-            $table->string('account_holder_name');
+            $table->string('bank_name', 100);
+            $table->string('account_number', 50)->unique();
+            $table->string('account_holder_name', 150);
             $table->timestamps();
         });
     }
