@@ -16,6 +16,10 @@ class UserObserver
         if ($user instanceof MustVerifyEmail && !$user->hasVerifiedEmail()) {
             $user->sendEmailVerificationNotification();
         }
+
+        if ($user->roles()->count() === 0) {
+            $user->assignRole(config('rbac.role.default'));
+        }
     }
 
     /**

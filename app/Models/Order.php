@@ -5,11 +5,14 @@ namespace App\Models;
 use App\Concerns\Cacheable;
 use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-    use HasUuid, Loggable, Cacheable;
+    use HasFactory, HasUuid, Loggable, Cacheable;
 
     /**
      * The attributes that are mass assignable.
@@ -52,5 +55,37 @@ class Order extends Model
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+    * Get the buyer that owns the order.
+    */
+    public function buyer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'buyer_id');
+    }
+
+    /**
+     * Get the business that owns the order.
+     */
+    public function business(): BelongsTo
+    {
+        return $this->belongsTo(Business::class);
+    }
+
+    /**
+     * Get the event that the order is associated with.
+     */
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+    /**
+      * Get the order items for the order.
+      */
+    public function items(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

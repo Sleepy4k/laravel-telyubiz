@@ -23,4 +23,12 @@ interface IUserRepository
     * @return Model|null
     */
     public function registerUser(array $data): ?Model;
+
+    /**
+     * Get total number of users
+     *
+     * @param  array|null  $roles
+     * @return int
+     */
+    public function getTotalUsers(?array $roles = null): int;
 }

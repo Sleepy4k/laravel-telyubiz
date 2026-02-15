@@ -66,4 +66,20 @@ class UserRepository implements IUserRepository
             return null;
         }
     }
+
+    /**
+     * Get total number of users
+     *
+     * @param  array|null  $roles
+     * @return int
+     */
+    public function getTotalUsers(?array $roles = null): int
+    {
+        return $this->model
+            ->query()
+            ->when(!is_null($roles) && is_array($roles) && !empty($roles), function ($q) use ($roles) {
+                return $q->role($roles);
+            })
+            ->count();
+    }
 }

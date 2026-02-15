@@ -6,8 +6,9 @@ use App\Concerns\Cacheable;
 use App\Concerns\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Event extends Model
+class EventHasCategory extends Model
 {
     use HasFactory, Loggable, Cacheable;
 
@@ -17,16 +18,8 @@ class Event extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'created_by',
-        'title',
-        'slug',
-        'description',
-        'location',
-        'start_time',
-        'end_time',
-        'is_open_for_registration',
-        'logo_url',
-        'banner_url',
+        'event_id',
+        'category_id',
     ];
 
     /**
@@ -45,18 +38,26 @@ class Event extends Model
     {
         return [
             'id' => 'string',
-            'created_by' => 'string',
-            'title' => 'string',
-            'slug' => 'string',
-            'description' => 'string',
-            'location' => 'string',
-            'start_time' => 'datetime',
-            'end_time' => 'datetime',
-            'is_open_for_registration' => 'boolean',
-            'logo_url' => 'string',
-            'banner_url' => 'string',
+            'event_id' => 'string',
+            'category_id' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the event that belongs to the category.
+     */
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class, 'event_id');
+    }
+
+    /**
+     * Get the category that belongs to the event.
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(EventCategory::class, 'category_id');
     }
 }

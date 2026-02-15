@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\OAuth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -14,7 +15,7 @@ class MicrosoftController extends Controller
     /**
      * Redirect the user to the Microsoft authentication page.
      */
-    public function redirect()
+    public function redirect(): JsonResponse
     {
         $url = Socialite::driver('microsoft')
             ->stateless()
@@ -29,7 +30,7 @@ class MicrosoftController extends Controller
     /**
      * Handle the callback from Microsoft.
      */
-    public function callback()
+    public function callback(): JsonResponse
     {
         try {
             $socialUser = Socialite::driver('microsoft')->stateless()->user();

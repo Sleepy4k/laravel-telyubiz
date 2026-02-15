@@ -6,8 +6,9 @@ use App\Concerns\Cacheable;
 use App\Concerns\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Event extends Model
+class EventCategory extends Model
 {
     use HasFactory, Loggable, Cacheable;
 
@@ -17,16 +18,7 @@ class Event extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'created_by',
-        'title',
-        'slug',
-        'description',
-        'location',
-        'start_time',
-        'end_time',
-        'is_open_for_registration',
-        'logo_url',
-        'banner_url',
+        'name',
     ];
 
     /**
@@ -45,18 +37,17 @@ class Event extends Model
     {
         return [
             'id' => 'string',
-            'created_by' => 'string',
-            'title' => 'string',
-            'slug' => 'string',
-            'description' => 'string',
-            'location' => 'string',
-            'start_time' => 'datetime',
-            'end_time' => 'datetime',
-            'is_open_for_registration' => 'boolean',
-            'logo_url' => 'string',
-            'banner_url' => 'string',
+            'name' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the events that belong to the category.
+     */
+    public function events(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class, 'event_has_categories', 'category_id', 'event_id');
     }
 }

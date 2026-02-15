@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
 class VerificationController extends Controller
 {
-    public function verify(Request $request, $id, $hash)
+    /**
+     * Handle the incoming request.
+     */
+    public function verify(Request $request, $id, $hash): JsonResponse
     {
         $user = auth('api')->user();
 
@@ -29,7 +33,10 @@ class VerificationController extends Controller
         return Response::success('Email verified successfully.', [], 200);
     }
 
-    public function resend(Request $request)
+    /**
+     * Handle the incoming request.
+     */
+    public function resend(Request $request): JsonResponse
     {
         $user = auth('api')->user();
 

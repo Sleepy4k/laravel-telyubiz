@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Concerns\Cacheable;
+use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Event extends Model
+class ProductOption extends Model
 {
-    use HasFactory, Loggable, Cacheable;
+    use HasFactory, HasUuid, Loggable, Cacheable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,16 +19,9 @@ class Event extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'created_by',
+        'product_id',
         'title',
-        'slug',
-        'description',
-        'location',
-        'start_time',
-        'end_time',
-        'is_open_for_registration',
-        'logo_url',
-        'banner_url',
+        'values',
     ];
 
     /**
@@ -45,18 +40,19 @@ class Event extends Model
     {
         return [
             'id' => 'string',
-            'created_by' => 'string',
+            'product_id' => 'string',
             'title' => 'string',
-            'slug' => 'string',
-            'description' => 'string',
-            'location' => 'string',
-            'start_time' => 'datetime',
-            'end_time' => 'datetime',
-            'is_open_for_registration' => 'boolean',
-            'logo_url' => 'string',
-            'banner_url' => 'string',
+            'values' => 'array',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the product that owns the option.
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 }

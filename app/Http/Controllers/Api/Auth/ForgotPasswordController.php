@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\ResetPasswordRequest;
 use App\Http\Requests\Api\Auth\SendResetRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Response;
 
@@ -13,7 +14,7 @@ class ForgotPasswordController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function sendResetLink(SendResetRequest $request)
+    public function sendResetLink(SendResetRequest $request): JsonResponse
     {
         $data = $request->validated();
 
@@ -27,7 +28,7 @@ class ForgotPasswordController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function resetPassword(ResetPasswordRequest $request)
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
         $data = $request->validated();
 

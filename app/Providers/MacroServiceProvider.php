@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
 
@@ -36,6 +37,10 @@ class MacroServiceProvider extends ServiceProvider
                 'message' => $message,
                 'data' => $data,
             ], $status);
+        });
+
+        Collection::macro('onlyIntegerKeys', function () {
+            return $this->filter(fn($value, $key) => is_int($key));
         });
     }
 }

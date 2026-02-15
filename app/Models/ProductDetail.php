@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Concerns\Cacheable;
 use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Review extends Model
+class ProductDetail extends Model
 {
-    use HasUuid, Loggable, Cacheable;
+    use HasFactory, HasUuid, Loggable, Cacheable;
 
     /**
      * The attributes that are mass assignable.
@@ -18,13 +19,13 @@ class Review extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'user_id',
         'product_id',
-        'order_id',
-        'rating',
-        'comment',
         'images',
-        'is_visible',
+        'discount_active',
+        'discount_amount',
+        'discount_type',
+        'discount_start_date',
+        'discount_end_date',
     ];
 
     /**
@@ -43,39 +44,24 @@ class Review extends Model
     {
         return [
             'id' => 'string',
-            'user_id' => 'string',
             'product_id' => 'string',
-            'order_id' => 'string',
-            'rating' => 'integer',
-            'comment' => 'string',
             'images' => 'array',
-            'is_visible' => 'boolean',
+            'discount_active' => 'boolean',
+            'discount_amount' => 'decimal:2',
+            'discount_type' => 'string',
+            'discount_start_date' => 'datetime',
+            'discount_end_date' => 'datetime',
+            'category_id' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
     }
 
     /**
-     * Get the product that the review belongs to.
+     * Get the product that owns the details.
      */
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
-    }
-
-    /**
-     * Get the user that wrote the review.
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Get the order that the review is associated with.
-     */
-    public function order(): BelongsTo
-    {
-        return $this->belongsTo(Order::class);
     }
 }

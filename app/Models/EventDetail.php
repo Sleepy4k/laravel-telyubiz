@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use App\Concerns\Cacheable;
+use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Business extends Model
+class EventDetail extends Model
 {
-    use HasFactory, Loggable, Cacheable;
+    use HasFactory, HasUuid, Loggable, Cacheable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,16 +19,16 @@ class Business extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'owner_id',
-        'name',
+        'created_by',
+        'title',
         'slug',
-        'address',
-        'phone',
         'description',
+        'location',
+        'start_time',
+        'end_time',
+        'is_open_for_registration',
         'logo_url',
         'banner_url',
-        'status',
-        'balance',
     ];
 
     /**
@@ -47,42 +47,26 @@ class Business extends Model
     {
         return [
             'id' => 'string',
-            'owner_id' => 'string',
-            'name' => 'string',
+            'created_by' => 'string',
+            'title' => 'string',
             'slug' => 'string',
-            'address' => 'string',
-            'phone' => 'string',
             'description' => 'string',
+            'location' => 'string',
+            'start_time' => 'datetime',
+            'end_time' => 'datetime',
+            'is_open_for_registration' => 'boolean',
             'logo_url' => 'string',
             'banner_url' => 'string',
-            'status' => 'string',
-            'balance' => 'decimal:2',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
     }
 
     /**
-     * Get the owner of the business.
+     * Get the categories that belong to the event.
      */
-    public function owner(): BelongsTo
+    public function categories(): BelongsToMany
     {
-        return $this->belongsTo(User::class, 'owner_id');
-    }
-
-    /**
-     * Get the orders for the business.
-     */
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
-
-    /**
-     * Get the products for the business.
-     */
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(EventCategory::class, 'event_has_categories', 'event_id', 'category_id');
     }
 }

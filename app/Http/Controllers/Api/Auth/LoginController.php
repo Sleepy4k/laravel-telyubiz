@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use App\Repositories\Eloquent\UserRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 
 class LoginController extends Controller
@@ -12,7 +13,7 @@ class LoginController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(LoginRequest $request, UserRepository $userRepository)
+    public function __invoke(LoginRequest $request, UserRepository $userRepository): JsonResponse
     {
         $data = $request->validated();
 
