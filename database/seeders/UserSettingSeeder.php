@@ -23,7 +23,7 @@ class UserSettingSeeder extends Seeder
         $users = User::query()->withoutCache()->select('id')->get();
         $settings = UserSetting::factory()->count($users->count())->make();
 
-        $settingsWithUserId = $settings->map(function (UserSetting $setting, int $index) use ($users) {
+        $settingsWithUserId = $settings->map(static function(UserSetting $setting, int $index) use ($users) {
             $setting->user_id = $users->get($index % $users->count())->id;
 
             return $setting;

@@ -24,17 +24,17 @@ class BusinessFactory extends Factory
         $name = fake()->company();
 
         return [
-            'owner_id' => fake()->randomElement($users),
+            'owner_id'    => fake()->randomElement($users),
             'category_id' => fake()->randomElement($categories),
-            'name' => $name,
-            'slug' => Str::slug($name),
-            'address' => fake()->address(),
-            'phone' => '628'.fake()->unique()->numerify('##########'),
+            'name'        => $name,
+            'slug'        => Str::slug($name),
+            'address'     => fake()->address(),
+            'phone'       => '628' . fake()->unique()->numerify('##########'),
             'description' => fake()->paragraph(),
-            'status' => fake()->randomElement(['active', 'suspended']),
-            'balance' => fake()->randomFloat(2, 0, 10000),
-            'logo_url' => fake()->imageUrl(400, 400, 'business', true),
-            'banner_url' => fake()->imageUrl(1200, 400, 'business', true),
+            'status'      => fake()->randomElement(['active', 'suspended']),
+            'balance'     => fake()->randomFloat(2, 0, 10000),
+            'logo_url'    => fake()->imageUrl(400, 400, 'business', true),
+            'banner_url'  => fake()->imageUrl(1200, 400, 'business', true),
         ];
     }
 }

@@ -22,16 +22,16 @@ class EventFactory extends Factory
         $title = fake()->sentence();
 
         return [
-            'created_by' => fake()->randomElement($users),
-            'title' => $title,
-            'slug' => Str::slug($title),
-            'description' => fake()->paragraph(),
-            'location' => fake()->address(),
-            'start_time' => fake()->dateTimeBetween('+1 week', '+1 month'),
-            'end_time' => fake()->dateTimeBetween('+1 month', '+2 months'),
+            'created_by'               => fake()->randomElement($users),
+            'title'                    => $title,
+            'slug'                     => Str::slug($title),
+            'description'              => fake()->paragraph(),
+            'location'                 => fake()->address(),
+            'start_time'               => fake()->dateTimeBetween('+1 week', '+1 month'),
+            'end_time'                 => fake()->dateTimeBetween('+1 month', '+2 months'),
             'is_open_for_registration' => fake()->boolean(),
-            'logo_url' => fake()->imageUrl(400, 400, 'events', true),
-            'banner_url' => fake()->imageUrl(1200, 400, 'events', true),
+            'logo_url'                 => fake()->imageUrl(400, 400, 'events', true),
+            'banner_url'               => fake()->imageUrl(1200, 400, 'events', true),
         ];
     }
 }

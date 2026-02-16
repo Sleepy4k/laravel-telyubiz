@@ -21,9 +21,9 @@ class OrderItemFactory extends Factory
         $products = Product::query()->pluck('id')->toArray();
 
         return [
-            'id' => Str::uuid(),
+            'id'         => Str::uuid(),
             'product_id' => fake()->randomElement($products),
-            'quantity' => fake()->numberBetween(1, 5),
+            'quantity'   => fake()->numberBetween(1, 5),
             'unit_price' => fake()->randomFloat(2, 10000, 100000),
         ];
     }

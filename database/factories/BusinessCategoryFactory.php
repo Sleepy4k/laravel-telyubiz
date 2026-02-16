@@ -18,7 +18,7 @@ class BusinessCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => Str::uuid(),
+            'id'   => Str::uuid(),
             'name' => fake()->unique()->word(),
         ];
     }

@@ -18,9 +18,9 @@ class BankAccountFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => Str::uuid(),
-            'bank_name' => fake()->company(),
-            'account_number' => fake()->bankAccountNumber(),
+            'id'                  => Str::uuid(),
+            'bank_name'           => fake()->company(),
+            'account_number'      => fake()->bankAccountNumber(),
             'account_holder_name' => fake()->name(),
         ];
     }

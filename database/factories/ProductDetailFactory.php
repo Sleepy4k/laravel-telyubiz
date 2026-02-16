@@ -23,17 +23,17 @@ class ProductDetailFactory extends Factory
             : fake()->randomFloat(2, 5000, 50000);
 
         return [
-            'id' => fake()->unique()->uuid(),
+            'id'     => fake()->unique()->uuid(),
             'images' => [
                 fake()->imageUrl(400, 400, 'products', true),
                 fake()->imageUrl(400, 400, 'products', true),
                 fake()->imageUrl(400, 400, 'products', true),
             ],
-            'discount_active' => $isProductDiscounted,
-            'discount_amount' => $isProductDiscounted ? $discountValue : 0.0,
-            'discount_type' => $isProductDiscounted ? $discountTypes : null,
+            'discount_active'     => $isProductDiscounted,
+            'discount_amount'     => $isProductDiscounted ? $discountValue : 0.0,
+            'discount_type'       => $isProductDiscounted ? $discountTypes : null,
             'discount_start_date' => fake()->dateTimeBetween('-1 month', 'now'),
-            'discount_end_date' => fake()->dateTimeBetween('now', '+1 month'),
+            'discount_end_date'   => fake()->dateTimeBetween('now', '+1 month'),
         ];
     }
 }

@@ -18,7 +18,7 @@ class EventFacilityFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => Str::uuid(),
+            'id'       => Str::uuid(),
             'facility' => fake()->word(),
         ];
     }

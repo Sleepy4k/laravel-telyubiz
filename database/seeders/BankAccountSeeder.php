@@ -23,7 +23,7 @@ class BankAccountSeeder extends Seeder
         $users = User::query()->withoutCache()->select('id')->get();
         $accounts = BankAccount::factory()->count($users->count())->make();
 
-        $accountsWithUserId = $accounts->map(function (BankAccount $account, int $index) use ($users) {
+        $accountsWithUserId = $accounts->map(static function(BankAccount $account, int $index) use ($users) {
             $account->user_id = $users->get($index % $users->count())->id;
 
             return $account;

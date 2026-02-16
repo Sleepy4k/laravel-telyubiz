@@ -24,7 +24,7 @@ class RoleSeeder extends Seeder
 
         Collection::make($roles->toArray())
             ->onlyIntegerKeys()
-            ->each(function (array $role) {
+            ->each(static function(array $role): void {
                 $permissions = $role['permissions'] ?? [];
                 unset($role['permissions']);
 

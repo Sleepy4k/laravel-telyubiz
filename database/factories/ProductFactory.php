@@ -26,11 +26,11 @@ class ProductFactory extends Factory
         return [
             'business_id' => fake()->randomElement($businesses),
             'category_id' => fake()->randomElement($categories),
-            'name' => $name,
-            'slug' => Str::slug($name),
+            'name'        => $name,
+            'slug'        => Str::slug($name),
             'description' => fake()->paragraph(),
-            'price' => fake()->randomFloat(2, 10000, 1000000),
-            'stock' => fake()->numberBetween(0, 100),
+            'price'       => fake()->randomFloat(2, 10000, 1000000),
+            'stock'       => fake()->numberBetween(0, 100),
         ];
     }
 }

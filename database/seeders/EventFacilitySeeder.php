@@ -23,7 +23,7 @@ class EventFacilitySeeder extends Seeder
         $events = Event::query()->withoutCache()->select('id')->get();
         $facilities = EventFacility::factory()->count($events->count() * 5)->make();
 
-        $facilitiesWithEventId = $facilities->map(function (EventFacility $facility, int $index) use ($events) {
+        $facilitiesWithEventId = $facilities->map(static function(EventFacility $facility, int $index) use ($events) {
             $facility->event_id = $events->get(intdiv($index, 5) % $events->count())->id;
 
             return $facility;

@@ -20,10 +20,10 @@ class EventDetailFactory extends Factory
         $isFreeEntry = fake()->boolean();
 
         return [
-            'id' => Str::uuid(),
-            'capacity' => fake()->numberBetween(50, 500),
-            'free_entry' => $isFreeEntry,
-            'ticket_price' => $isFreeEntry ? 0 : fake()->randomFloat(2, 10, 100),
+            'id'              => Str::uuid(),
+            'capacity'        => fake()->numberBetween(50, 500),
+            'free_entry'      => $isFreeEntry,
+            'ticket_price'    => $isFreeEntry ? 0 : fake()->randomFloat(2, 25000, 100000),
             'additional_info' => fake()->paragraph(),
         ];
     }

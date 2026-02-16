@@ -18,11 +18,11 @@ class EventTimelineFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => Str::uuid(),
-            'title' => fake()->sentence(),
+            'id'          => Str::uuid(),
+            'title'       => fake()->sentence(),
             'description' => fake()->paragraph(),
-            'start_time' => fake()->dateTimeBetween('-1 month', '+1 month'),
-            'end_time' => fake()->dateTimeBetween('+1 month', '+2 months'),
+            'start_time'  => fake()->dateTimeBetween('-1 month', '+1 month'),
+            'end_time'    => fake()->dateTimeBetween('+1 month', '+2 months'),
         ];
     }
 }

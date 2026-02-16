@@ -27,13 +27,13 @@ class OrderFactory extends Factory
         $orderStatus = fake()->randomElement(['pending', 'processing', 'completed', 'cancelled']);
 
         return [
-            'id' => Str::uuid(),
-            'buyer_id' => fake()->randomElement($users),
-            'business_id' => fake()->randomElement($businesses),
-            'event_id' => fake()->boolean(30) ? fake()->randomElement($events) : null,
+            'id'           => Str::uuid(),
+            'buyer_id'     => fake()->randomElement($users),
+            'business_id'  => fake()->randomElement($businesses),
+            'event_id'     => fake()->boolean(30) ? fake()->randomElement($events) : null,
             'total_amount' => fake()->randomFloat(2, 10, 500),
-            'is_paid' => $orderStatus !== 'pending',
-            'status' => $orderStatus,
+            'is_paid'      => $orderStatus !== 'pending',
+            'status'       => $orderStatus,
         ];
     }
 }

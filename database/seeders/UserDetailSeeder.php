@@ -23,7 +23,7 @@ class UserDetailSeeder extends Seeder
         $users = User::query()->withoutCache()->select('id')->get();
         $details = UserDetail::factory()->count($users->count())->make();
 
-        $detailsWithUserId = $details->map(function (UserDetail $detail, int $index) use ($users) {
+        $detailsWithUserId = $details->map(static function(UserDetail $detail, int $index) use ($users) {
             $detail->user_id = $users->get($index % $users->count())->id;
 
             return $detail;

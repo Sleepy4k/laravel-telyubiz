@@ -23,7 +23,7 @@ class EventDetailSeeder extends Seeder
         $events = Event::query()->withoutCache()->select('id')->get();
         $details = EventDetail::factory()->count($events->count())->make();
 
-        $detailsWithEventId = $details->map(function (EventDetail $detail, int $index) use ($events) {
+        $detailsWithEventId = $details->map(static function(EventDetail $detail, int $index) use ($events) {
             $detail->event_id = $events->get($index % $events->count())->id;
 
             return $detail;

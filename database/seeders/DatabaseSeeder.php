@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         Artisan::call('cache:clear', [
             '--no-interaction' => true,
-            '--quiet' => app()->isProduction(),
+            '--quiet'          => app()->isProduction(),
         ]);
 
         $this->call([

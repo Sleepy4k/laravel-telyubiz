@@ -18,7 +18,7 @@ class EventTermFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => Str::uuid(),
+            'id'   => Str::uuid(),
             'term' => fake()->word(),
         ];
     }

@@ -22,7 +22,7 @@ class PermissionSeeder extends Seeder
         $permissions = Permission::factory()->make();
 
         Permission::query()->insert(
-            array_filter($permissions->toArray(), 'is_int', ARRAY_FILTER_USE_KEY)
+            array_filter($permissions->toArray(), 'is_int', ARRAY_FILTER_USE_KEY),
         );
     }
 }

@@ -17,7 +17,7 @@ class ProductCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->uuid(),
+            'id'   => fake()->unique()->uuid(),
             'name' => fake()->unique()->word(),
         ];
     }

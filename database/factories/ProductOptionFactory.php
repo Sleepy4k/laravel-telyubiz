@@ -20,11 +20,11 @@ class ProductOptionFactory extends Factory
         $products = Product::pluck('id')->toArray();
 
         return [
-            'id' => fake()->unique()->uuid(),
+            'id'         => fake()->unique()->uuid(),
             'product_id' => fake()->randomElement($products),
-            'title' => fake()->word(),
-            'values' => json_encode([
-                'name' => fake()->word(),
+            'title'      => fake()->word(),
+            'values'     => json_encode([
+                'name'   => fake()->word(),
                 'values' => [
                     fake()->word(),
                     fake()->word(),

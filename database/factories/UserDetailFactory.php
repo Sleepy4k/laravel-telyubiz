@@ -18,13 +18,13 @@ class UserDetailFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => Str::uuid(),
-            'bio' => fake()->paragraph(),
-            'address' => fake()->address(),
-            'city' => fake()->city(),
-            'state' => fake()->state(),
-            'country' => fake()->country(),
-            'postal_code' => fake()->postcode(),
+            'id'                  => Str::uuid(),
+            'bio'                 => fake()->paragraph(),
+            'address'             => fake()->address(),
+            'city'                => fake()->city(),
+            'state'               => fake()->state(),
+            'country'             => fake()->country(),
+            'postal_code'         => fake()->postcode(),
             'profile_picture_url' => fake()->imageUrl(200, 200, 'people', true),
         ];
     }

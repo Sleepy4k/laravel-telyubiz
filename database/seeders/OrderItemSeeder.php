@@ -23,7 +23,7 @@ class OrderItemSeeder extends Seeder
         $orders = Order::query()->withoutCache()->select('id')->get();
         $items = OrderItem::factory()->count($orders->count())->make();
 
-        $itemsWithOrderId = $items->map(function (OrderItem $item, int $index) use ($orders) {
+        $itemsWithOrderId = $items->map(static function(OrderItem $item, int $index) use ($orders) {
             $item->order_id = $orders->get($index % $orders->count())->id;
 
             return $item;

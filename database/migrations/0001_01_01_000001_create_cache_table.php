@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class() extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,13 +14,13 @@ return new class extends Migration
             return;
         }
 
-        Schema::create('cache', function (Blueprint $table) {
+        Schema::create('cache', static function(Blueprint $table): void {
             $table->string('key')->primary();
             $table->mediumText('value');
             $table->integer('expiration')->index();
         });
 
-        Schema::create('cache_locks', function (Blueprint $table) {
+        Schema::create('cache_locks', static function(Blueprint $table): void {
             $table->string('key')->primary();
             $table->string('owner');
             $table->integer('expiration')->index();

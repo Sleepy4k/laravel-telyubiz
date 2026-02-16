@@ -23,7 +23,7 @@ class EventTermSeeder extends Seeder
         $events = Event::query()->withoutCache()->select('id')->get();
         $terms = EventTerm::factory()->count($events->count() * 5)->make();
 
-        $termsWithEventId = $terms->map(function (EventTerm $term, int $index) use ($events) {
+        $termsWithEventId = $terms->map(static function(EventTerm $term, int $index) use ($events) {
             $term->event_id = $events->get(intdiv($index, 5) % $events->count())->id;
 
             return $term;

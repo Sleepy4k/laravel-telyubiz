@@ -24,7 +24,7 @@ class PermissionFactory extends Factory
 
         $currentTime = now();
         foreach ($data as $index => &$entry) {
-            $tmp = ! is_string($entry) ? $entry : ['name' => $entry];
+            $tmp = !is_string($entry) ? $entry : ['name' => $entry];
             $tmp['guard_name'] = 'web';
             $tmp['created_at'] = $currentTime;
             $tmp['updated_at'] = $currentTime;

@@ -22,7 +22,7 @@ class EventHasCategoryFactory extends Factory
         $categories = EventCategory::pluck('id')->toArray();
 
         return [
-            'event_id' => fake()->randomElement($events),
+            'event_id'    => fake()->randomElement($events),
             'category_id' => fake()->randomElement($categories),
         ];
     }

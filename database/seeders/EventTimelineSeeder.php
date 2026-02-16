@@ -23,7 +23,7 @@ class EventTimelineSeeder extends Seeder
         $events = Event::query()->withoutCache()->select('id')->get();
         $timelines = EventTimeline::factory()->count($events->count() * 5)->make();
 
-        $timelines->map(function (EventTimeline $timeline, int $index) use ($events) {
+        $timelines->map(static function(EventTimeline $timeline, int $index) use ($events): void {
             $timeline->event_id = $events->get(intdiv($index, 5) % $events->count())->id;
             $timeline->save();
         });

@@ -25,7 +25,7 @@ class RoleFactory extends Factory
         $currentTime = now();
 
         foreach ($data as $index => &$entry) {
-            $entry = ! is_string($entry) ? $entry : ['name' => $entry];
+            $entry = !is_string($entry) ? $entry : ['name' => $entry];
             $entry['guard_name'] = 'web';
             $entry['created_at'] = $currentTime;
             $entry['updated_at'] = $currentTime;

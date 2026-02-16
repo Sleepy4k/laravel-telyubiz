@@ -18,11 +18,11 @@ class UserSettingFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => Str::uuid(),
-            'theme' => fake()->randomElement(['light', 'dark']),
+            'id'                       => Str::uuid(),
+            'theme'                    => fake()->randomElement(['light', 'dark']),
             'notification_preferences' => json_encode([
                 'email' => fake()->boolean(80),
-                'push' => fake()->boolean(70),
+                'push'  => fake()->boolean(70),
             ]),
         ];
     }

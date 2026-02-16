@@ -23,7 +23,7 @@ class ProductDetailSeeder extends Seeder
         $products = Product::query()->withoutCache()->select('id')->get();
         $details = ProductDetail::factory()->count($products->count())->make();
 
-        $details->map(function (ProductDetail $detail, int $index) use ($products) {
+        $details->map(static function(ProductDetail $detail, int $index) use ($products): void {
             $detail->product_id = $products[$index]->id;
             $detail->save();
         });

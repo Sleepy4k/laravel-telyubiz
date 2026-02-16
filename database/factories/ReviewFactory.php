@@ -25,13 +25,13 @@ class ReviewFactory extends Factory
         $orders = Order::query()->pluck('id')->toArray();
 
         return [
-            'id' => Str::uuid(),
-            'user_id' => fake()->randomElement($users),
+            'id'         => Str::uuid(),
+            'user_id'    => fake()->randomElement($users),
             'product_id' => fake()->randomElement($products),
-            'order_id' => fake()->randomElement($orders),
-            'rating' => fake()->numberBetween(1, 5),
-            'comment' => fake()->text(200),
-            'images' => [
+            'order_id'   => fake()->randomElement($orders),
+            'rating'     => fake()->numberBetween(1, 5),
+            'comment'    => fake()->text(200),
+            'images'     => [
                 fake()->imageUrl(400, 400, 'reviews', true),
                 fake()->imageUrl(400, 400, 'reviews', true),
                 fake()->imageUrl(400, 400, 'reviews', true),
