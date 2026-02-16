@@ -35,10 +35,10 @@ class UserFactory extends Factory
      */
     public function active(): static
     {
-        return $this->state(static fn(array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => now(),
         ])
-            ->afterCreating(static function(User $user): void {
+            ->afterCreating(function(User $user): void {
                 $user->assignRole(config('rbac.role.default'));
             });
     }
@@ -48,7 +48,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(static fn(array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

@@ -52,7 +52,7 @@ class BusinessOperationalFactory extends Factory
         $times = fake()->randomElement($operationProfiles);
         $isClosed = fake()->boolean(5);
 
-        return $this->state(static fn(array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'day_of_week' => $dayRange,
             'open_time'   => $isClosed ? null : $times[0],
             'close_time'  => $isClosed ? null : $times[1],
@@ -64,7 +64,7 @@ class BusinessOperationalFactory extends Factory
      */
     public function weekday(string $openTime = '09:00', string $closeTime = '17:00'): static
     {
-        return $this->state(static fn(array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'day_of_week' => 'Senin - Jumat',
             'open_time'   => $openTime,
             'close_time'  => $closeTime,
@@ -76,7 +76,7 @@ class BusinessOperationalFactory extends Factory
      */
     public function weekend(string $openTime = '10:00', string $closeTime = '15:00'): static
     {
-        return $this->state(static fn(array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'day_of_week' => 'Sabtu - Minggu',
             'open_time'   => $openTime,
             'close_time'  => $closeTime,
@@ -88,7 +88,7 @@ class BusinessOperationalFactory extends Factory
      */
     public function everyday(string $openTime = '00:00', string $closeTime = '23:59'): static
     {
-        return $this->state(static fn(array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'day_of_week' => 'Setiap Hari',
             'open_time'   => $openTime,
             'close_time'  => $closeTime,
@@ -100,7 +100,7 @@ class BusinessOperationalFactory extends Factory
      */
     public function closed(): static
     {
-        return $this->state(static fn(array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'open_time'  => null,
             'close_time' => null,
         ]);

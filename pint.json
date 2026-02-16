@@ -505,7 +505,11 @@
         }
     },
     "exclude": ["storage", "vendor"],
-    "notPath": ["app/Providers/MacroServiceProvider.php"],
+    "notPath": [
+        "app/Providers/MacroServiceProvider.php",
+        "database/factories/BusinessOperationalFactory.php",
+        "database/factories/UserFactory.php"
+    ],
     "include": [
         "app",
         "bootstrap",
