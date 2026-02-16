@@ -1,10 +1,17 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\BindServiceProvider;
+use App\Providers\EventServiceProvider;
+use App\Providers\GateServiceProvider;
+use App\Providers\MacroServiceProvider;
+use App\Providers\RouteServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\BindServiceProvider::class,
-    App\Providers\EventServiceProvider::class,
-    App\Providers\GateServiceProvider::class,
-    App\Providers\MacroServiceProvider::class,
-    App\Providers\RouteServiceProvider::class,
+    AppServiceProvider::class,
+    BindServiceProvider::class,
+    EventServiceProvider::class,
+    GateServiceProvider::class,
+    MacroServiceProvider::class,
+    RouteServiceProvider::class,
 ];
