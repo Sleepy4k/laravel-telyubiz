@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\Auth;
-use App\Http\Controllers\Api\OAuth;
 use App\Http\Controllers\Api\Landing;
+use App\Http\Controllers\Api\OAuth;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/auth/login', Auth\LoginController::class)->name('api.login');
@@ -29,6 +29,12 @@ Route::prefix('/landing')->name('api.landing.')->group(function () {
         Route::get('/incoming-events', 'incomingEvents')->name('incoming-events');
         Route::get('/recommended-shops', 'recommendedShops')->name('recommended-shops');
         Route::get('/popular-products', 'popularProducts')->name('popular-products');
+    });
+
+    Route::prefix('/businesses')->controller(Landing\BusinessController::class)->group(function () {
+        Route::get('/', 'index')->name('list-business');
+        Route::get('/{slug}', 'show')->name('detail-business');
+        Route::get('/{slug}/products', 'products')->name('business-products');
     });
 });
 
