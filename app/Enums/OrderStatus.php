@@ -12,10 +12,10 @@ enum OrderStatus: string
     public function label(): string
     {
         return match ($this) {
-            OrderStatus::PENDING => 'Pending',
+            OrderStatus::PENDING    => 'Pending',
             OrderStatus::PROCESSING => 'Processing',
-            OrderStatus::COMPLETED => 'Completed',
-            OrderStatus::CANCELLED => 'Cancelled',
+            OrderStatus::COMPLETED  => 'Completed',
+            OrderStatus::CANCELLED  => 'Cancelled',
         };
     }
 }

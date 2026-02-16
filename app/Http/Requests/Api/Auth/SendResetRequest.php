@@ -13,13 +13,13 @@ class SendResetRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return ! auth('api')->check();
+        return !auth('api')->check();
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, array<mixed>|string|ValidationRule>
      */
     public function rules(): array
     {

@@ -10,7 +10,7 @@ enum BusinessStatus: string
     public function label(): string
     {
         return match ($this) {
-            BusinessStatus::ACTIVE => 'Active',
+            BusinessStatus::ACTIVE    => 'Active',
             BusinessStatus::SUSPENDED => 'Suspended',
         };
     }

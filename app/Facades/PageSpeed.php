@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Facade;
 use Modules\Parse\PageSpeedManager;
 
 /**
- * @method static bool shouldProcessPageSpeed(\Illuminate\Http\Request $request, \Illuminate\Http\Response $response)
  * @method static mixed parseContent(mixed $content)
+ * @method static bool  shouldProcessPageSpeed(\Illuminate\Http\Request $request, \Illuminate\Http\Response $response)
  *
- * @see \Modules\Parse\PageSpeedManager
+ * @see PageSpeedManager
  *
  * @mixins \Modules\Parse\PageSpeedManager
  */

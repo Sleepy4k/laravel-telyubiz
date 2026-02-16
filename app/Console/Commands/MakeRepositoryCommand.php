@@ -35,13 +35,11 @@ class MakeRepositoryCommand extends Command
      * @var array<string, string>
      */
     protected $path = [
-        'interface' => 'Contracts',
+        'interface'  => 'Contracts',
         'repository' => 'Eloquent',
     ];
 
-    /**
-     * The filesystem instance.
-     */
+    /** The filesystem instance. */
     protected Filesystem $files;
 
     /**
@@ -72,8 +70,8 @@ class MakeRepositoryCommand extends Command
             namespace: $interfaceNamespace,
             replacements: [
                 '{{ namespace }}' => $interfaceNamespace,
-                '{{ class }}' => $interfaceName,
-            ]
+                '{{ class }}'     => $interfaceName,
+            ],
         );
 
         $this->processFile(
@@ -81,11 +79,11 @@ class MakeRepositoryCommand extends Command
             className: $repositoryName,
             namespace: $repositoryNamespace,
             replacements: [
-                '{{ namespace }}' => $repositoryNamespace,
-                '{{ class }}' => $repositoryName,
-                '{{ interfaceNamespace }}' => $interfaceNamespace.'\\'.$interfaceName,
-                '{{ interface }}' => $interfaceName,
-            ]
+                '{{ namespace }}'          => $repositoryNamespace,
+                '{{ class }}'              => $repositoryName,
+                '{{ interfaceNamespace }}' => $interfaceNamespace . '\\' . $interfaceName,
+                '{{ interface }}'          => $interfaceName,
+            ],
         );
 
         return Command::SUCCESS;
@@ -105,7 +103,7 @@ class MakeRepositoryCommand extends Command
             return;
         }
 
-        if (! $this->files->exists($stubPath)) {
+        if (!$this->files->exists($stubPath)) {
             $this->components->error("Stub not found: {$stubPath}");
 
             return;
@@ -127,7 +125,7 @@ class MakeRepositoryCommand extends Command
     {
         $name = Str::replaceFirst($this->laravel->getNamespace(), '', $namespace);
 
-        return $this->laravel['path'].'/'.str_replace('\\', '/', $name).'/'.$className.'.php';
+        return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '/' . $className . '.php';
     }
 
     /**
@@ -135,8 +133,8 @@ class MakeRepositoryCommand extends Command
      */
     protected function makeDirectory(string $path): void
     {
-        if (! $this->files->isDirectory(dirname($path))) {
-            $this->files->makeDirectory(dirname($path), 0755, true);
+        if (!$this->files->isDirectory(dirname($path))) {
+            $this->files->makeDirectory(dirname($path), 0o755, true);
         }
     }
 
@@ -150,7 +148,7 @@ class MakeRepositoryCommand extends Command
         return str_replace(
             array_keys($replacements),
             array_values($replacements),
-            $stub
+            $stub,
         );
     }
 }

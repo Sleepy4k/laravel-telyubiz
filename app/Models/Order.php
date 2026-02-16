@@ -37,27 +37,6 @@ class Order extends Model
     protected $hidden = [];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'id' => 'string',
-            'buyer_id' => 'string',
-            'business_id' => 'string',
-            'event_id' => 'string',
-            'total_amount' => 'decimal:2',
-            'is_paid' => 'boolean',
-            'status' => 'string',
-            'payment_gateway_reference' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
-
-    /**
      * Get the buyer that owns the order.
      */
     public function buyer(): BelongsTo
@@ -87,5 +66,26 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'                        => 'string',
+            'buyer_id'                  => 'string',
+            'business_id'               => 'string',
+            'event_id'                  => 'string',
+            'total_amount'              => 'decimal:2',
+            'is_paid'                   => 'boolean',
+            'status'                    => 'string',
+            'payment_gateway_reference' => 'string',
+            'created_at'                => 'datetime',
+            'updated_at'                => 'datetime',
+        ];
     }
 }

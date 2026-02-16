@@ -46,20 +46,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'id' => 'string',
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
-
-    /**
      * Set the cache prefix.
      */
     public function setCachePrefix(): string
@@ -74,19 +60,17 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function setLoggableField(): array
     {
-        return array_filter($this->fillable, function ($field) {
-            return ! in_array($field, $this->hidden);
-        });
+        return array_filter($this->fillable, fn($field) => !in_array($field, $this->hidden));
     }
 
     /**
      * Send a password reset notification to the user.
      *
-     * @param  string  $token
+     * @param string $token
      */
     public function sendPasswordResetNotification($token): void
     {
-        $url = url(route('password.reset', ['token' => $token, 'phone' => $this->phone], false));
+        $url = url(route('api.reset-password', ['token' => $token, 'phone' => $this->phone], false));
         $this->notify(new RequestResetPassword($this->name, $url));
     }
 
@@ -136,5 +120,19 @@ class User extends Authenticatable implements MustVerifyEmail
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'user_id');
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'                => 'string',
+            'email_verified_at' => 'datetime',
+            'password'          => 'hashed',
+        ];
     }
 }

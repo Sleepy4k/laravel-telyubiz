@@ -47,7 +47,7 @@ class BusinessController extends Controller
             'created_at',
         ]);
 
-        if (! $business) {
+        if (!$business) {
             return Response::error('Business not found', 404);
         }
 

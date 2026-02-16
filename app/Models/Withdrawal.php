@@ -38,13 +38,13 @@ class Withdrawal extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
+            'id'          => 'string',
             'business_id' => 'string',
-            'bank_id' => 'string',
-            'amount' => 'decimal:2',
-            'status' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'bank_id'     => 'string',
+            'amount'      => 'decimal:2',
+            'status'      => 'string',
+            'created_at'  => 'datetime',
+            'updated_at'  => 'datetime',
         ];
     }
 }

@@ -15,7 +15,7 @@ class PasswordChanged extends Notification
      */
     public function __construct(
         protected string $name,
-        protected string $email
+        protected string $email,
     ) {}
 
     /**
@@ -33,7 +33,7 @@ class PasswordChanged extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Your Account password has been changed')
             ->greeting("Hello {$this->name},")
             ->line("The password for your account ({$this->email}) has been changed successfully.")
@@ -49,7 +49,6 @@ class PasswordChanged extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
         ];
     }
 }

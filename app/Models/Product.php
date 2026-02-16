@@ -38,27 +38,6 @@ class Product extends Model
     protected $hidden = [];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'id' => 'string',
-            'business_id' => 'string',
-            'name' => 'string',
-            'slug' => 'string',
-            'description' => 'string',
-            'price' => 'decimal:2',
-            'stock' => 'integer',
-            'category_id' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
-
-    /**
      * Get the business that owns the product.
      */
     public function business(): BelongsTo
@@ -104,5 +83,26 @@ class Product extends Model
     public function orders(): HasManyThrough
     {
         return $this->hasManyThrough(Order::class, OrderItem::class, 'product_id', 'id', 'id', 'order_id');
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'          => 'string',
+            'business_id' => 'string',
+            'name'        => 'string',
+            'slug'        => 'string',
+            'description' => 'string',
+            'price'       => 'decimal:2',
+            'stock'       => 'integer',
+            'category_id' => 'string',
+            'created_at'  => 'datetime',
+            'updated_at'  => 'datetime',
+        ];
     }
 }

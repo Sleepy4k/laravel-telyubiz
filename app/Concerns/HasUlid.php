@@ -7,6 +7,20 @@ use Illuminate\Support\Str;
 trait HasUlid
 {
     /**
+     * Generate a new ULID for the model.
+     */
+    public static function generateUlid(?string $keyname): string
+    {
+        $ulid = null;
+
+        do {
+            $ulid = Str::ulid();
+        } while (static::where($keyname ?? 'id', $ulid)->exists());
+
+        return $ulid;
+    }
+
+    /**
      * Get the primary key for the model.
      */
     public function getKeyName(): string
@@ -33,28 +47,12 @@ trait HasUlid
     }
 
     /**
-     * Generate a new ULID for the model.
-     */
-    public static function generateUlid(?string $keyname): string
-    {
-        $ulid = null;
-
-        do {
-            $ulid = Str::ulid();
-        } while (static::where($keyname ?? 'id', $ulid)->exists());
-
-        return $ulid;
-    }
-
-    /**
      * Boot the ULID trait for the model.
-     *
-     * @return void
      */
-    protected static function bootHasUlid()
+    protected static function bootHasUlid(): void
     {
-        static::creating(function ($model) {
-            if (! $model->{$model->getKeyName()}) {
+        static::creating(static function($model): void {
+            if (!$model->{$model->getKeyName()}) {
                 $model->{$model->getKeyName()} = static::generateUlid($model->getKeyName());
             }
         });

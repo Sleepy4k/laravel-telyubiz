@@ -12,6 +12,7 @@ use App\Repositories\Eloquent\EventRepository;
 use App\Repositories\Eloquent\OrderRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use App\Repositories\Eloquent\UserRepository;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 
@@ -24,14 +25,14 @@ class HomeController extends Controller
         BusinessRepository $businessRepository,
         ProductRepository $productRepository,
         OrderRepository $orderRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
     ): JsonResponse {
         $roles = config('rbac.list.roles');
         $statistics = [
-            'total_shops' => $businessRepository->getTotalShops(true),
-            'total_products' => $productRepository->getTotalProducts(),
+            'total_shops'        => $businessRepository->getTotalShops(true),
+            'total_products'     => $productRepository->getTotalProducts(),
             'total_transactions' => $orderRepository->getTotalOrders(true),
-            'total_users' => $userRepository->getTotalUsers(array_diff($roles, [config('rbac.role.highest')])),
+            'total_users'        => $userRepository->getTotalUsers(array_diff($roles, [config('rbac.role.highest')])),
         ];
 
         return Response::success('Statistics retrieved successfully', $statistics);
@@ -50,7 +51,7 @@ class HomeController extends Controller
                 'slug',
                 'description',
                 'location',
-                'capacity',
+                'is_open_for_registration',
                 'start_time',
                 'end_time',
                 'logo_url',
@@ -58,7 +59,7 @@ class HomeController extends Controller
             ]);
 
             return Response::success('Incoming events retrieved successfully', IncomingEventResource::collection($events));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             System::error('Failed to retrieve incoming events', ['error' => $e->getMessage()]);
 
             return Response::error('Failed to retrieve incoming events', [], 500);
@@ -80,7 +81,7 @@ class HomeController extends Controller
             ]);
 
             return Response::success('Popular products retrieved successfully', PopularProductResource::collection($products));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             System::error('Failed to retrieve popular products', ['error' => $e->getMessage()]);
 
             return Response::error('Failed to retrieve popular products', [], 500);
@@ -95,6 +96,7 @@ class HomeController extends Controller
         try {
             $shops = $businessRepository->recommendedShops([
                 'id',
+                'category_id',
                 'name',
                 'slug',
                 'address',
@@ -105,7 +107,7 @@ class HomeController extends Controller
             ]);
 
             return Response::success('Recommended shops retrieved successfully', RecommendShopResource::collection($shops));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             System::error('Failed to retrieve recommended shops', ['error' => $e->getMessage()]);
 
             return Response::error('Failed to retrieve recommended shops', [], 500);

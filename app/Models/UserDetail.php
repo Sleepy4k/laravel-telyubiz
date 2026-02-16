@@ -37,6 +37,14 @@ class UserDetail extends Model
     protected $hidden = [];
 
     /**
+     * Get the user that owns the detail.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -44,25 +52,17 @@ class UserDetail extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
-            'user_id' => 'string',
-            'bio' => 'string',
-            'address' => 'string',
-            'city' => 'string',
-            'state' => 'string',
-            'country' => 'string',
-            'postal_code' => 'string',
+            'id'                  => 'string',
+            'user_id'             => 'string',
+            'bio'                 => 'string',
+            'address'             => 'string',
+            'city'                => 'string',
+            'state'               => 'string',
+            'country'             => 'string',
+            'postal_code'         => 'string',
             'profile_picture_url' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'created_at'          => 'datetime',
+            'updated_at'          => 'datetime',
         ];
-    }
-
-    /**
-     * Get the user that owns the detail.
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
     }
 }

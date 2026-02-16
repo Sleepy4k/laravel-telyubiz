@@ -39,13 +39,13 @@ class BankAccount extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
-            'user_id' => 'string',
-            'bank_name' => 'string',
-            'account_number' => 'string',
+            'id'                  => 'string',
+            'user_id'             => 'string',
+            'bank_name'           => 'string',
+            'account_number'      => 'string',
             'account_holder_name' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'created_at'          => 'datetime',
+            'updated_at'          => 'datetime',
         ];
     }
 }

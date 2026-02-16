@@ -30,22 +30,6 @@ class BusinessMember extends Model
     protected $hidden = [];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'id' => 'string',
-            'business_id' => 'string',
-            'user_id' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
-
-    /**
      * Get the business that the member belongs to.
      */
     public function business(): BelongsTo
@@ -59,5 +43,21 @@ class BusinessMember extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'          => 'string',
+            'business_id' => 'string',
+            'user_id'     => 'string',
+            'created_at'  => 'datetime',
+            'updated_at'  => 'datetime',
+        ];
     }
 }

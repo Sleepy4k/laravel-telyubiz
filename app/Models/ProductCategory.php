@@ -29,6 +29,14 @@ class ProductCategory extends Model
     protected $hidden = [];
 
     /**
+     * Get the products for the category.
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -36,16 +44,8 @@ class ProductCategory extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
+            'id'   => 'string',
             'name' => 'string',
         ];
-    }
-
-    /**
-     * Get the products for the category.
-     */
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'category_id');
     }
 }

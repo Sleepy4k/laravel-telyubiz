@@ -12,10 +12,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap services.
@@ -26,10 +23,10 @@ class RouteServiceProvider extends ServiceProvider
             return;
         }
 
-        RateLimiter::for('web', function ($request) {
+        RateLimiter::for('web', static function($request) {
             return Limit::perMinute(60)
                 ->by(optional($request->user())->id ?: $request->ip())
-                ->response(function (Request $request) {
+                ->response(static function(Request $request) {
                     if ($request->wantsJson() || $request->expectsJson()) {
                         return response()->json([
                             'message' => 'Too Many Attempts.',
@@ -40,19 +37,15 @@ class RouteServiceProvider extends ServiceProvider
                 });
         });
 
-        RateLimiter::for('api', function ($request) {
-            return Limit::perMinute(60)->by($request->ip())
-                ->response(function (Request $request, array $headers) {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Too Many Attempts.',
-                        'data' => [
-                            'limit' => $headers['X-RateLimit-Limit'],
-                            'remaining' => $headers['X-RateLimit-Remaining'],
-                            'reset' => $headers['X-RateLimit-Reset'],
-                        ],
-                    ], 429);
-                });
-        });
+        RateLimiter::for('api', static fn($request) => Limit::perMinute(60)->by($request->ip())
+            ->response(static fn(Request $request, array $headers) => response()->json([
+                'status'  => 'error',
+                'message' => 'Too Many Attempts.',
+                'data'    => [
+                    'limit'     => $headers['X-RateLimit-Limit'],
+                    'remaining' => $headers['X-RateLimit-Remaining'],
+                    'reset'     => $headers['X-RateLimit-Reset'],
+                ],
+            ], 429)));
     }
 }

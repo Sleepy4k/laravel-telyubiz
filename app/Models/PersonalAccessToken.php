@@ -12,17 +12,15 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
     /**
      * Check if the token has the given ability.
      *
-     * @param  string  $ability
+     * @param string $ability
      */
     public function can($ability): bool
     {
-        if (! $this->tokenable->can($ability)) {
+        if (!$this->tokenable->can($ability)) {
             return false;
         }
 
-        $abilities = collect($this->abilities)->filter(function ($ability) {
-            return $ability !== '*';
-        })->toArray();
+        $abilities = collect($this->abilities)->filter(static fn($ability) => $ability !== '*')->toArray();
 
         if (count($abilities) > 0) {
             return $this->canDb($abilities);
@@ -34,7 +32,7 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
     /**
      * Check if the token has the given ability in the database.
      *
-     * @param  array<string|int, mixed>  $ability
+     * @param array<int|string, mixed> $ability
      */
     protected function canDb(array $ability): bool
     {

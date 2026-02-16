@@ -12,9 +12,9 @@ enum WithdrawalStatus: string
     public function label(): string
     {
         return match ($this) {
-            WithdrawalStatus::REQUESTED => 'Requested',
-            WithdrawalStatus::APPROVED => 'Approved',
-            WithdrawalStatus::REJECTED => 'Rejected',
+            WithdrawalStatus::REQUESTED   => 'Requested',
+            WithdrawalStatus::APPROVED    => 'Approved',
+            WithdrawalStatus::REJECTED    => 'Rejected',
             WithdrawalStatus::TRANSFERRED => 'Transferred',
         };
     }

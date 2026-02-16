@@ -11,12 +11,15 @@ class VerificationController extends Controller
 {
     /**
      * Handle the incoming request.
+     *
+     * @param mixed $id
+     * @param mixed $hash
      */
     public function verify(Request $request, $id, $hash): JsonResponse
     {
         $user = auth('api')->user();
 
-        if (! $user || $user->id != $id) {
+        if (!$user || $user->id != $id) {
             return Response::error('Unauthorized.', [], 401);
         }
 
@@ -24,7 +27,7 @@ class VerificationController extends Controller
             return Response::error('Email already verified.', [], 400);
         }
 
-        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+        if (!hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
             return Response::error('Invalid verification link.', [], 400);
         }
 
@@ -40,7 +43,7 @@ class VerificationController extends Controller
     {
         $user = auth('api')->user();
 
-        if (! $user) {
+        if (!$user) {
             return Response::error('Unauthorized.', [], 401);
         }
 

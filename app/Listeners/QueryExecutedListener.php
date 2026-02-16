@@ -18,9 +18,9 @@ class QueryExecutedListener
 
         $params = [
             'bindings' => $event->bindings,
-            'time' => $event->time,
+            'time'     => $event->time,
         ];
 
-        Log::channel('query')->info('query executed: '.$event->sql, $params);
+        Log::channel('query')->info('query executed: ' . $event->sql, $params);
     }
 }

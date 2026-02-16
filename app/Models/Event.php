@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Event extends Model
@@ -39,33 +40,7 @@ class Event extends Model
      */
     protected $hidden = [];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'id' => 'string',
-            'created_by' => 'string',
-            'title' => 'string',
-            'slug' => 'string',
-            'description' => 'string',
-            'location' => 'string',
-            'start_time' => 'datetime',
-            'end_time' => 'datetime',
-            'is_open_for_registration' => 'boolean',
-            'logo_url' => 'string',
-            'banner_url' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
-
-    /*
-     * Get the user that created the event.
-     */
+    // Get the user that created the event.
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -74,9 +49,24 @@ class Event extends Model
     /**
      * Get the categories that belong to the event.
      */
-    public function detail(): HasOne
+    public function details(): HasOne
     {
         return $this->hasOne(EventDetail::class);
+    }
+
+    /**
+     * Get the categories that belong to the event.
+     */
+    public function categories(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            EventCategory::class,
+            EventHasCategory::class,
+            'event_id',
+            'id',
+            'id',
+            'category_id',
+        );
     }
 
     /**
@@ -109,5 +99,29 @@ class Event extends Model
     public function timelines(): HasMany
     {
         return $this->hasMany(EventTimeline::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'                       => 'string',
+            'created_by'               => 'string',
+            'title'                    => 'string',
+            'slug'                     => 'string',
+            'description'              => 'string',
+            'location'                 => 'string',
+            'start_time'               => 'datetime',
+            'end_time'                 => 'datetime',
+            'is_open_for_registration' => 'boolean',
+            'logo_url'                 => 'string',
+            'banner_url'               => 'string',
+            'created_at'               => 'datetime',
+            'updated_at'               => 'datetime',
+        ];
     }
 }

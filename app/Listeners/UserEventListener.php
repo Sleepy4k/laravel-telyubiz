@@ -15,14 +15,10 @@ use Spatie\Activitylog\Models\Activity;
 
 class UserEventListener
 {
-    /**
-     * The IP address of the user.
-     */
+    /** The IP address of the user. */
     protected string $ipAddress;
 
-    /**
-     * The user agent of the request.
-     */
+    /** The user agent of the request. */
     protected string $userAgent;
 
     /**
@@ -35,40 +31,12 @@ class UserEventListener
     }
 
     /**
-     * Get the user properties for logging.
-     *
-     * @param  mixed  $user
-     */
-    protected function getUserProperties($user, array $extra = []): array
-    {
-        if (Browser::isMobile()) {
-            $extra['device_family'] = Browser::deviceFamily() ?? 'unknown';
-            $extra['device_model'] = Browser::deviceModel() ?? 'unknown';
-        } else {
-            $extra['device_family'] = Browser::platformFamily() ?? 'unknown';
-            $extra['device_model'] = Browser::platformName() ?? 'unknown';
-        }
-
-        return array_merge([
-            'email' => $user?->email ?? '',
-            'email_verified_at' => $user?->email_verified_at
-                ? date('d F Y H:i:s', strtotime($user->email_verified_at))
-                : null,
-            'ip_address' => $this->ipAddress,
-            'user_agent' => $this->userAgent,
-            'device_type' => Browser::deviceType() ?? 'unknown',
-            'browser_family' => Browser::browserFamily() ?? 'unknown',
-            'browser_version' => Browser::browserVersion() ?? 'unknown',
-        ], $extra);
-    }
-
-    /**
      * Handle user login event.
      */
     public function handleUserLogin(Login $event): void
     {
         $user = $event->user;
-        if (! $user) {
+        if (!$user) {
             return;
         }
 
@@ -83,13 +51,13 @@ class UserEventListener
             ->orderBy('created_at', 'desc')
             ->first();
 
-        if ($lastActivity && ! is_null($lastActivity)) {
+        if ($lastActivity && !is_null($lastActivity)) {
             $lastProperties = $lastActivity->properties;
 
             if (
-                $lastProperties['device_family'] !== $properties['device_family'] ||
-                $lastProperties['device_model'] !== $properties['device_model'] ||
-                $lastProperties['ip_address'] !== $properties['ip_address']
+                $lastProperties['device_family'] !== $properties['device_family']
+                || $lastProperties['device_model'] !== $properties['device_model']
+                || $lastProperties['ip_address'] !== $properties['ip_address']
             ) {
                 Notification::sendNow($user, new NewDeviceDetected($user->name, $user->email));
             }
@@ -108,7 +76,7 @@ class UserEventListener
     public function handleUserLogout(Logout $event): void
     {
         $user = $event->user;
-        if (! $user) {
+        if (!$user) {
             return;
         }
 
@@ -129,7 +97,7 @@ class UserEventListener
     public function handleUserRegistration(Registered $event): void
     {
         $user = $event->user;
-        if (! $user) {
+        if (!$user) {
             return;
         }
 
@@ -152,9 +120,37 @@ class UserEventListener
     public function subscribe(Dispatcher $events): array
     {
         return [
-            Login::class => 'handleUserLogin',
-            Logout::class => 'handleUserLogout',
+            Login::class      => 'handleUserLogin',
+            Logout::class     => 'handleUserLogout',
             Registered::class => 'handleUserRegistration',
         ];
+    }
+
+    /**
+     * Get the user properties for logging.
+     *
+     * @param mixed $user
+     */
+    protected function getUserProperties($user, array $extra = []): array
+    {
+        if (Browser::isMobile()) {
+            $extra['device_family'] = Browser::deviceFamily() ?? 'unknown';
+            $extra['device_model'] = Browser::deviceModel() ?? 'unknown';
+        } else {
+            $extra['device_family'] = Browser::platformFamily() ?? 'unknown';
+            $extra['device_model'] = Browser::platformName() ?? 'unknown';
+        }
+
+        return array_merge([
+            'email'             => $user?->email ?? '',
+            'email_verified_at' => $user?->email_verified_at
+                ? date('d F Y H:i:s', strtotime($user->email_verified_at))
+                : null,
+            'ip_address'      => $this->ipAddress,
+            'user_agent'      => $this->userAgent,
+            'device_type'     => Browser::deviceType() ?? 'unknown',
+            'browser_family'  => Browser::browserFamily() ?? 'unknown',
+            'browser_version' => Browser::browserVersion() ?? 'unknown',
+        ], $extra);
     }
 }

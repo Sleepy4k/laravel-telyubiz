@@ -30,6 +30,14 @@ class EventCategory extends Model
     protected $hidden = [];
 
     /**
+     * Get the events that belong to the category.
+     */
+    public function events(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class, 'event_has_categories', 'category_id', 'event_id');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -37,18 +45,10 @@ class EventCategory extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
-            'name' => 'string',
+            'id'         => 'string',
+            'name'       => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
-    }
-
-    /**
-     * Get the events that belong to the category.
-     */
-    public function events(): BelongsToMany
-    {
-        return $this->belongsToMany(Event::class, 'event_has_categories', 'category_id', 'event_id');
     }
 }

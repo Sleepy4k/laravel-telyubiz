@@ -5,19 +5,18 @@ namespace App\Repositories\Eloquent;
 use App\Facades\System;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class UserRepository implements IUserRepository
 {
-    /**
-     * Store model instance
-     */
+    /** Store model instance */
     protected Model $model;
 
     /**
-     * Base respository constructor
+     * Base respository constructor.
      *
-     * @param  Model  $model
+     * @param Model $model
      */
     public function __construct(User $model)
     {
@@ -25,7 +24,7 @@ class UserRepository implements IUserRepository
     }
 
     /**
-     * Get user by unique data
+     * Get user by unique data.
      */
     public function getUserByUniqueData(string $uniqueData, string $column, array $returnColumns = ['*']): ?Model
     {
@@ -39,7 +38,7 @@ class UserRepository implements IUserRepository
     }
 
     /**
-     * Register a new user
+     * Register a new user.
      */
     public function registerUser(array $data): ?Model
     {
@@ -47,12 +46,12 @@ class UserRepository implements IUserRepository
             return $this->model
                 ->query()
                 ->create([
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    'phone' => $data['phone'],
+                    'name'     => $data['name'],
+                    'email'    => $data['email'],
+                    'phone'    => $data['phone'],
                     'password' => $data['password'],
                 ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             System::error('Failed to register new user', ['error' => $e->getMessage()]);
 
             return null;
@@ -60,15 +59,13 @@ class UserRepository implements IUserRepository
     }
 
     /**
-     * Get total number of users
+     * Get total number of users.
      */
     public function getTotalUsers(?array $roles = null): int
     {
         return $this->model
             ->query()
-            ->when(! is_null($roles) && is_array($roles) && ! empty($roles), function ($q) use ($roles) {
-                return $q->role($roles);
-            })
+            ->when(!is_null($roles) && is_array($roles) && !empty($roles), static fn($q) => $q->role($roles))
             ->count();
     }
 }

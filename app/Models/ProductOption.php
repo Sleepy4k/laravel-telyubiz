@@ -32,6 +32,14 @@ class ProductOption extends Model
     protected $hidden = [];
 
     /**
+     * Get the product that owns the option.
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -39,20 +47,12 @@ class ProductOption extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
+            'id'         => 'string',
             'product_id' => 'string',
-            'title' => 'string',
-            'values' => 'array',
+            'title'      => 'string',
+            'values'     => 'array',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
-    }
-
-    /**
-     * Get the product that owns the option.
-     */
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
     }
 }

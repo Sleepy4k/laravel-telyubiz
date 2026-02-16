@@ -28,8 +28,8 @@ class Role extends SpatieRole
     protected function casts(): array
     {
         return [
-            'id' => 'string',
-            'name' => 'string',
+            'id'         => 'string',
+            'name'       => 'string',
             'guard_name' => 'string',
         ];
     }

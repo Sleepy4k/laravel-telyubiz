@@ -18,17 +18,6 @@ trait Loggable
     protected static $logName = ActivityEventType::MODEL->value;
 
     /**
-     * The parse description for the spatie log.
-     */
-    private function parseDescription(string $eventName): string
-    {
-        $logName = ucfirst(static::$logName);
-        $table = $this->table ?? 'N/A';
-
-        return "{$logName} {$table} has been {$eventName}";
-    }
-
-    /**
      * The spatie log that setting log option.
      *
      * @var bool
@@ -38,7 +27,18 @@ trait Loggable
         return LogOptions::defaults()
             ->logOnly($this->fillable)
             ->useLogName(static::$logName)
-            ->setDescriptionForEvent(fn (string $eventName) => $this->parseDescription($eventName))
+            ->setDescriptionForEvent(fn(string $eventName) => $this->parseDescription($eventName))
             ->dontSubmitEmptyLogs();
+    }
+
+    /**
+     * The parse description for the spatie log.
+     */
+    private function parseDescription(string $eventName): string
+    {
+        $logName = ucfirst(static::$logName);
+        $table = $this->table ?? 'N/A';
+
+        return "{$logName} {$table} has been {$eventName}";
     }
 }

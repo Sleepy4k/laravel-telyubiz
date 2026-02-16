@@ -30,6 +30,14 @@ class BusinessCategory extends Model
     protected $hidden = [];
 
     /**
+     * Get the businesses that belong to the category.
+     */
+    public function businesses(): HasMany
+    {
+        return $this->hasMany(Business::class, 'category_id');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -37,18 +45,10 @@ class BusinessCategory extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
-            'name' => 'string',
+            'id'         => 'string',
+            'name'       => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
-    }
-
-    /**
-     * Get the businesses that belong to the category.
-     */
-    public function businesses(): HasMany
-    {
-        return $this->hasMany(Business::class, 'category_id');
     }
 }

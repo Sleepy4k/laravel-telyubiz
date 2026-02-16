@@ -41,31 +41,6 @@ class Business extends Model
     protected $hidden = [];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'id' => 'string',
-            'owner_id' => 'string',
-            'category_id' => 'string',
-            'name' => 'string',
-            'slug' => 'string',
-            'address' => 'string',
-            'phone' => 'string',
-            'description' => 'string',
-            'logo_url' => 'string',
-            'banner_url' => 'string',
-            'status' => 'string',
-            'balance' => 'decimal:2',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
-
-    /**
      * Get the owner of the business.
      */
     public function owner(): BelongsTo
@@ -111,5 +86,30 @@ class Business extends Model
     public function operationalHours(): HasMany
     {
         return $this->hasMany(BusinessOperational::class, 'business_id');
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'          => 'string',
+            'owner_id'    => 'string',
+            'category_id' => 'string',
+            'name'        => 'string',
+            'slug'        => 'string',
+            'address'     => 'string',
+            'phone'       => 'string',
+            'description' => 'string',
+            'logo_url'    => 'string',
+            'banner_url'  => 'string',
+            'status'      => 'string',
+            'balance'     => 'decimal:2',
+            'created_at'  => 'datetime',
+            'updated_at'  => 'datetime',
+        ];
     }
 }

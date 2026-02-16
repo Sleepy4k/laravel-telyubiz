@@ -16,14 +16,15 @@ class RecommendShopResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' => $this->name,
-            'slug' => $this->slug,
-            'address' => $this->address,
+            'name'        => $this->name,
+            'slug'        => $this->slug,
+            'category'    => $this->whenLoaded('category', $this->category ? $this->category->name : null),
+            'address'     => $this->address,
             'description' => Str::limit($this->description, 60),
             'order_count' => $this->orders_count,
-            'rating' => $this->calculateAverageRating(),
-            'logo_url' => $this->logo_url,
-            'banner_url' => $this->banner_url,
+            'rating'      => $this->calculateAverageRating(),
+            'logo_url'    => $this->logo_url,
+            'banner_url'  => $this->banner_url,
         ];
     }
 
@@ -32,11 +33,11 @@ class RecommendShopResource extends JsonResource
      */
     private function calculateAverageRating(): float
     {
-        if (! $this->products || $this->products->isEmpty()) {
+        if (!$this->products || $this->products->isEmpty()) {
             return 0.0;
         }
 
-        $stats = $this->products->reduce(function ($carry, $product) {
+        $stats = $this->products->reduce(static function($carry, $product) {
             $carry['total_rating'] += $product->reviews->sum('rating');
             $carry['total_reviews'] += $product->reviews->count();
 

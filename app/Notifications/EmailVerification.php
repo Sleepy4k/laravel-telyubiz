@@ -17,21 +17,23 @@ class EmailVerification extends VerifyEmail
      * Create a new notification instance.
      */
     public function __construct(
-        protected string $name
+        protected string $name,
     ) {}
 
     /**
      * Create a signed URL for email verification.
+     *
+     * @param mixed $notifiable
      */
     public static function createVerificationUrl($notifiable)
     {
         return URL::temporarySignedRoute(
-            'api.verification.verify',
+            'verification.verify',
             Carbon::now()->addMinutes(Config::get('auth.passwords.users.expire', 60)),
             [
-                'id' => $notifiable->getKey(),
+                'id'   => $notifiable->getKey(),
                 'hash' => sha1($notifiable->getEmailForVerification()),
-            ]
+            ],
         );
     }
 
@@ -50,7 +52,7 @@ class EmailVerification extends VerifyEmail
      */
     public function toMail(mixed $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Verify Your Email Address')
             ->greeting("Hello {$this->name},")
             ->line('Please click the button below to verify your email address.')
@@ -66,7 +68,6 @@ class EmailVerification extends VerifyEmail
     public function toArray(object $notifiable): array
     {
         return [
-            //
         ];
     }
 }

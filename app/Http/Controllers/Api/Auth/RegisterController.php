@@ -20,7 +20,7 @@ class RegisterController extends Controller
 
         $user = $userRepository->registerUser($data);
 
-        if (! $user) {
+        if (!$user) {
             return Response::error('Something went wrong while creating the user.', [], 500);
         }
 

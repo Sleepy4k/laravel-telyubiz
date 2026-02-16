@@ -11,7 +11,7 @@ enum EventParticipantStatus: string
     public function label(): string
     {
         return match ($this) {
-            EventParticipantStatus::PENDING => 'Pending',
+            EventParticipantStatus::PENDING  => 'Pending',
             EventParticipantStatus::APPROVED => 'Approved',
             EventParticipantStatus::REJECTED => 'Rejected',
         };

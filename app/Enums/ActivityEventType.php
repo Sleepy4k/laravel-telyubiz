@@ -12,9 +12,9 @@ enum ActivityEventType: string
     public function label(): string
     {
         return match ($this) {
-            ActivityEventType::MODEL => 'Model',
-            ActivityEventType::LOGIN => 'Login',
-            ActivityEventType::LOGOUT => 'Logout',
+            ActivityEventType::MODEL    => 'Model',
+            ActivityEventType::LOGIN    => 'Login',
+            ActivityEventType::LOGOUT   => 'Logout',
             ActivityEventType::REGISTER => 'Register',
         };
     }

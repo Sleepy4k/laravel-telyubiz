@@ -36,27 +36,6 @@ class Review extends Model
     protected $hidden = [];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'id' => 'string',
-            'user_id' => 'string',
-            'product_id' => 'string',
-            'order_id' => 'string',
-            'rating' => 'integer',
-            'comment' => 'string',
-            'images' => 'array',
-            'is_visible' => 'boolean',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
-
-    /**
      * Get the product that the review belongs to.
      */
     public function product(): BelongsTo
@@ -78,5 +57,26 @@ class Review extends Model
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'         => 'string',
+            'user_id'    => 'string',
+            'product_id' => 'string',
+            'order_id'   => 'string',
+            'rating'     => 'integer',
+            'comment'    => 'string',
+            'images'     => 'array',
+            'is_visible' => 'boolean',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
     }
 }

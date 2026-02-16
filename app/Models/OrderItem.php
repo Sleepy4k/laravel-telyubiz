@@ -39,10 +39,10 @@ class OrderItem extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
-            'order_id' => 'string',
+            'id'         => 'string',
+            'order_id'   => 'string',
             'product_id' => 'string',
-            'quantity' => 'integer',
+            'quantity'   => 'integer',
             'unit_price' => 'decimal:2',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',

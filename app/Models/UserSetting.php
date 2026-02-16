@@ -37,12 +37,20 @@ class UserSetting extends Model
      * @var array<string, mixed>
      */
     protected $attributes = [
-        'theme' => 'dark',
+        'theme'                    => 'dark',
         'notification_preferences' => [
             'email' => true,
-            'push' => true,
+            'push'  => true,
         ],
     ];
+
+    /**
+     * Get the user that owns the detail.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -52,20 +60,12 @@ class UserSetting extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
-            'user_id' => 'string',
-            'theme' => 'string',
+            'id'                       => 'string',
+            'user_id'                  => 'string',
+            'theme'                    => 'string',
             'notification_preferences' => 'array',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'created_at'               => 'datetime',
+            'updated_at'               => 'datetime',
         ];
-    }
-
-    /**
-     * Get the user that owns the detail.
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
     }
 }

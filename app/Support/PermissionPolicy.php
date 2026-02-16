@@ -29,13 +29,14 @@ class PermissionPolicy
     /**
      * Parse specific policy value.
      *
-     * @param  array<mixed>  $config
+     * @param array<mixed> $config
      */
     protected function addgeneralDirective(array $config): string
     {
         if ($config['none'] ?? false) {
             return '()';
-        } elseif ($config['*'] ?? false) {
+        }
+        if ($config['*'] ?? false) {
             return '*';
         }
 
@@ -51,7 +52,7 @@ class PermissionPolicy
     /**
      * Get valid origins.
      *
-     * @param  array<string>  $origins
+     * @param  array<string> $origins
      * @return array<string>
      */
     protected function origins(array $origins): array
@@ -64,8 +65,6 @@ class PermissionPolicy
 
         $urls = array_values($passes);
 
-        return array_map(function (string $url) {
-            return "'$url'";
-        }, $urls);
+        return array_map(static fn(string $url) => "'{$url}'", $urls);
     }
 }

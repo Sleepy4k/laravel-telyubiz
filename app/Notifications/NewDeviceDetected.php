@@ -15,7 +15,7 @@ class NewDeviceDetected extends Notification
      */
     public function __construct(
         protected string $name,
-        protected string $email
+        protected string $email,
     ) {}
 
     /**
@@ -33,7 +33,7 @@ class NewDeviceDetected extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('New Device Detected for Your Account')
             ->greeting("Hello {$this->name},")
             ->line("We detected a new device being used to access your account ({$this->email}).")
@@ -49,7 +49,6 @@ class NewDeviceDetected extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
         ];
     }
 }

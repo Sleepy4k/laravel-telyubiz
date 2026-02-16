@@ -34,6 +34,14 @@ class EventTimeline extends Model
     protected $hidden = [];
 
     /**
+     * Get the event that owns the timeline entry.
+     */
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -41,22 +49,14 @@ class EventTimeline extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
-            'event_id' => 'string',
-            'title' => 'string',
+            'id'          => 'string',
+            'event_id'    => 'string',
+            'title'       => 'string',
             'description' => 'string',
-            'start_time' => 'datetime',
-            'end_time' => 'datetime',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'start_time'  => 'datetime',
+            'end_time'    => 'datetime',
+            'created_at'  => 'datetime',
+            'updated_at'  => 'datetime',
         ];
-    }
-
-    /**
-     * Get the event that owns the timeline entry.
-     */
-    public function event(): BelongsTo
-    {
-        return $this->belongsTo(Event::class);
     }
 }

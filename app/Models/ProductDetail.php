@@ -36,6 +36,14 @@ class ProductDetail extends Model
     protected $hidden = [];
 
     /**
+     * Get the product that owns the details.
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -43,24 +51,16 @@ class ProductDetail extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
-            'product_id' => 'integer',
-            'images' => 'array',
-            'discount_active' => 'boolean',
-            'discount_amount' => 'float',
-            'discount_type' => 'string',
+            'id'                  => 'string',
+            'product_id'          => 'integer',
+            'images'              => 'array',
+            'discount_active'     => 'boolean',
+            'discount_amount'     => 'float',
+            'discount_type'       => 'string',
             'discount_start_date' => 'datetime',
-            'discount_end_date' => 'datetime',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'discount_end_date'   => 'datetime',
+            'created_at'          => 'datetime',
+            'updated_at'          => 'datetime',
         ];
-    }
-
-    /**
-     * Get the product that owns the details.
-     */
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
     }
 }

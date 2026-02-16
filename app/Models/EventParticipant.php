@@ -37,10 +37,10 @@ class EventParticipant extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
-            'event_id' => 'string',
-            'user_id' => 'string',
-            'status' => 'string',
+            'id'         => 'string',
+            'event_id'   => 'string',
+            'user_id'    => 'string',
+            'status'     => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];

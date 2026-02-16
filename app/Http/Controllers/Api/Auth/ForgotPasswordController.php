@@ -32,7 +32,7 @@ class ForgotPasswordController extends Controller
     {
         $data = $request->validated();
 
-        $status = Password::reset($data, function ($user, $password) {
+        $status = Password::reset($data, static function($user, $password): void {
             $user->forceFill([
                 'password' => $password,
             ]);

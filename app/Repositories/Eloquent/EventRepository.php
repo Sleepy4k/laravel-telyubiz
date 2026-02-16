@@ -9,15 +9,13 @@ use Illuminate\Support\Collection;
 
 class EventRepository implements IEventRepository
 {
-    /**
-     * Store model instance
-     */
+    /** Store model instance */
     protected Model $model;
 
     /**
-     * Base respository constructor
+     * Base respository constructor.
      *
-     * @param  Model  $model
+     * @param Model $model
      */
     public function __construct(Event $model)
     {
@@ -25,14 +23,18 @@ class EventRepository implements IEventRepository
     }
 
     /**
-     * Get incoming events
+     * Get incoming events.
      */
     public function getIncomingEvents(array $columns = ['*']): ?Collection
     {
         return $this->model
             ->query()
             ->select($columns)
-            ->with(['creator:id,name'])
+            ->with([
+                'creator:id,name',
+                'categories:id,name',
+                'details:id,event_id,capacity,free_entry,ticket_price',
+            ])
             ->withCount('participants')
             ->orderBy('start_time', 'asc')
             ->orderBy('end_time', 'asc')

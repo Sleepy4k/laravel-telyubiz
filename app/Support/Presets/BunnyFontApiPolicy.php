@@ -9,7 +9,7 @@ use Spatie\Csp\Preset;
 class BunnyFontApiPolicy implements Preset
 {
     /**
-     * Configure csp policies for general and other policy
+     * Configure csp policies for general and other policy.
      */
     public function configure(Policy $policy): void
     {

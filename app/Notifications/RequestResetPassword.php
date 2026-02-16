@@ -15,7 +15,7 @@ class RequestResetPassword extends Notification
      */
     public function __construct(
         protected string $name,
-        protected string $url
+        protected string $url,
     ) {}
 
     /**
@@ -23,7 +23,7 @@ class RequestResetPassword extends Notification
      */
     public function toMail(mixed $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Password Reset Request')
             ->greeting("Hello {$this->name},")
             ->line('You are receiving this email because we received a password reset request for your account.')
@@ -40,7 +40,6 @@ class RequestResetPassword extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
         ];
     }
 }

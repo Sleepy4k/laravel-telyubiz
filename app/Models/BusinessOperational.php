@@ -34,6 +34,14 @@ class BusinessOperational extends Model
     protected $hidden = [];
 
     /**
+     * Get the businesses that belong to the operational status.
+     */
+    public function businesses(): BelongsTo
+    {
+        return $this->belongsTo(Business::class, 'business_id');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -41,21 +49,13 @@ class BusinessOperational extends Model
     protected function casts(): array
     {
         return [
-            'id' => 'string',
+            'id'          => 'string',
             'business_id' => 'string',
             'day_of_week' => 'string',
-            'open_time' => TimeCast::class,
-            'close_time' => TimeCast::class,
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'open_time'   => TimeCast::class,
+            'close_time'  => TimeCast::class,
+            'created_at'  => 'datetime',
+            'updated_at'  => 'datetime',
         ];
-    }
-
-    /**
-     * Get the businesses that belong to the operational status.
-     */
-    public function businesses(): BelongsTo
-    {
-        return $this->belongsTo(Business::class, 'business_id');
     }
 }

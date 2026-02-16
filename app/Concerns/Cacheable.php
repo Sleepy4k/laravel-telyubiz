@@ -23,6 +23,16 @@ trait Cacheable
     protected static $cacheConfig = [];
 
     /**
+     * The cacheable properties that should be cached.
+     */
+    public function getCacheableProperties(): array
+    {
+        return array_merge(config('cacheable'), array_merge([
+            'prefix' => $this->setCachePrefix(),
+        ], $this->setCacheConfig()));
+    }
+
+    /**
      * Set the cache prefix.
      */
     protected function setCachePrefix(): string
@@ -36,15 +46,5 @@ trait Cacheable
     protected function setCacheConfig(): array
     {
         return static::$cacheConfig;
-    }
-
-    /**
-     * The cacheable properties that should be cached.
-     */
-    public function getCacheableProperties(): array
-    {
-        return array_merge(config('cacheable'), array_merge([
-            'prefix' => $this->setCachePrefix(),
-        ], $this->setCacheConfig()));
     }
 }

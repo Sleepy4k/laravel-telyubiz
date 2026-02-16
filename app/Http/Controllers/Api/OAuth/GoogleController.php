@@ -39,15 +39,15 @@ class GoogleController extends Controller
 
             if ($user) {
                 $user->update([
-                    'provider' => 'google',
+                    'provider'    => 'google',
                     'provider_id' => $socialUser->getId(),
                 ]);
             } else {
                 $user = User::create([
-                    'email' => $socialUser->getEmail(),
-                    'name' => $socialUser->getName() ?? $socialUser->getNickname(),
-                    'password' => Str::random(16),
-                    'provider' => 'google',
+                    'email'       => $socialUser->getEmail(),
+                    'name'        => $socialUser->getName() ?? $socialUser->getNickname(),
+                    'password'    => Str::random(16),
+                    'provider'    => 'google',
                     'provider_id' => $socialUser->getId(),
                 ]);
             }
@@ -56,10 +56,10 @@ class GoogleController extends Controller
 
             return Response::success('Login successful', [
                 'access_token' => $token,
-                'token_type' => 'Bearer',
+                'token_type'   => 'Bearer',
             ]);
         } catch (Exception $e) {
-            return Response::error('Authentication failed: '.$e->getMessage(), [], 500);
+            return Response::error('Authentication failed: ' . $e->getMessage(), [], 500);
         }
     }
 }

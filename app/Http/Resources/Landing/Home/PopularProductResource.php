@@ -16,18 +16,20 @@ class PopularProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         $now = now();
-        $hasDetails = ! is_null($this->details);
+        $hasDetails = !is_null($this->details);
         $isDiscounted = $hasDetails
             && $this->details->discount_active
             && $this->details->discount_start_date <= $now
             && $this->details->discount_end_date >= $now;
 
         $result = [
-            'name' => $this->name,
-            'slug' => $this->slug,
-            'price' => Format::formatCurrency($this->price),
+            'name'          => $this->name,
+            'slug'          => $this->slug,
+            'price'         => Format::formatCurrency($this->price),
+            'rating'        => round($this->reviews_avg_rating, 2),
+            'order_count'   => $this->orders_count,
             'business_name' => $this->business->name,
-            'image_url' => $this->when($hasDetails && $this->details->images, $this->details->images[0] ?? null),
+            'image_url'     => $this->when($hasDetails && $this->details->images, $this->details->images[0] ?? null),
             'is_discounted' => $isDiscounted,
         ];
 
@@ -43,7 +45,7 @@ class PopularProductResource extends JsonResource
                 ? $this->price * (1 - $discountAmount / 100)
                 : max(0, $this->price - $discountAmount);
 
-            $result['discount'] = Format::formatNumber($percentage, 0).'%';
+            $result['discount'] = Format::formatNumber($percentage, 0) . '%';
             $result['final_price'] = Format::formatCurrency($finalPrice);
         }
 

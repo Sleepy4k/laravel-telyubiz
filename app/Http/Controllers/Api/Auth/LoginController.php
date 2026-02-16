@@ -20,14 +20,14 @@ class LoginController extends Controller
         $user = $userRepository->getUserByUniqueData(
             $data['phone_email'],
             filter_var($data['phone_email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'phone',
-            ['id', 'name', 'email', 'phone', 'password']
+            ['id', 'name', 'email', 'phone', 'password'],
         );
 
-        if (! $user) {
+        if (!$user) {
             return Response::error('User record not found in our database.', [], 401);
         }
 
-        if (! password_verify($data['password'], $user->password)) {
+        if (!password_verify($data['password'], $user->password)) {
             return Response::error('The provided credentials are incorrect.', [], 401);
         }
 
@@ -35,7 +35,7 @@ class LoginController extends Controller
 
         return Response::success('Login successful', [
             'access_token' => $token,
-            'token_type' => 'Bearer',
+            'token_type'   => 'Bearer',
         ]);
     }
 }

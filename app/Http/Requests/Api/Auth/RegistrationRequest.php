@@ -19,14 +19,14 @@ class RegistrationRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, array<mixed>|string|ValidationRule>
      */
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:3', 'max:50'],
-            'phone' => ['required', 'string', 'min:8', 'regex:/^628[1-9][0-9]{6,10}$/', Rule::unique(User::class, 'phone')],
-            'email' => ['required', 'string', 'email', Rule::unique(User::class, 'email')],
+            'name'     => ['required', 'string', 'min:3', 'max:50'],
+            'phone'    => ['required', 'string', 'min:8', 'regex:/^628[1-9][0-9]{6,10}$/', Rule::unique(User::class, 'phone')],
+            'email'    => ['required', 'string', 'email', Rule::unique(User::class, 'email')],
             'password' => ['required', 'string', 'min:8', 'max:34', 'confirmed'],
         ];
     }

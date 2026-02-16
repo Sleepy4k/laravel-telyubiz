@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 interface IEventRepository
 {
     /**
-     * Get incoming events
+     * Get incoming events.
      */
     public function getIncomingEvents(array $columns = ['*']): ?Collection;
 }

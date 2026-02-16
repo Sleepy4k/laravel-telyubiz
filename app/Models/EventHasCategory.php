@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 namespace App\Models;
 
 use App\Concerns\Cacheable;
@@ -30,22 +31,6 @@ class EventHasCategory extends Model
     protected $hidden = [];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'id' => 'string',
-            'event_id' => 'string',
-            'category_id' => 'string',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
-
-    /**
      * Get the event that belongs to the category.
      */
     public function event(): BelongsTo
@@ -59,5 +44,21 @@ class EventHasCategory extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(EventCategory::class, 'category_id');
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'          => 'string',
+            'event_id'    => 'string',
+            'category_id' => 'string',
+            'created_at'  => 'datetime',
+            'updated_at'  => 'datetime',
+        ];
     }
 }
