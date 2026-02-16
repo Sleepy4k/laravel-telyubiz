@@ -18,12 +18,14 @@ class RoleFactory extends Factory
     {
         $data = config('rbac.list.roles');
 
-        if (empty($data)) return [];
+        if (empty($data)) {
+            return [];
+        }
 
         $currentTime = now();
 
         foreach ($data as $index => &$entry) {
-            $entry = !is_string($entry) ? $entry : ['name' => $entry];
+            $entry = ! is_string($entry) ? $entry : ['name' => $entry];
             $entry['guard_name'] = 'web';
             $entry['created_at'] = $currentTime;
             $entry['updated_at'] = $currentTime;

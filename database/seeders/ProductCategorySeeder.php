@@ -12,8 +12,12 @@ class ProductCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        if (app()->isProduction()) return;
-        if (ProductCategory::query()->withoutCache()->count() > 0) return;
+        if (app()->isProduction()) {
+            return;
+        }
+        if (ProductCategory::query()->withoutCache()->count() > 0) {
+            return;
+        }
 
         ProductCategory::factory()->count(10)->create();
     }

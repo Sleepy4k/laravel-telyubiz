@@ -18,11 +18,13 @@ class PermissionFactory extends Factory
     {
         $data = config('rbac.list.permissions');
 
-        if (empty($data)) return [];
+        if (empty($data)) {
+            return [];
+        }
 
         $currentTime = now();
         foreach ($data as $index => &$entry) {
-            $tmp = !is_string($entry) ? $entry : ['name' => $entry];
+            $tmp = ! is_string($entry) ? $entry : ['name' => $entry];
             $tmp['guard_name'] = 'web';
             $tmp['created_at'] = $currentTime;
             $tmp['updated_at'] = $currentTime;

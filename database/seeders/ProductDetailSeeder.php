@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use App\Models\ProductDetail;
 use Illuminate\Database\Seeder;
 
@@ -12,9 +13,19 @@ class ProductDetailSeeder extends Seeder
      */
     public function run(): void
     {
-        if (app()->isProduction()) return;
-        if (ProductDetail::query()->withoutCache()->count() > 0) return;
+        if (app()->isProduction()) {
+            return;
+        }
+        if (ProductDetail::query()->withoutCache()->count() > 0) {
+            return;
+        }
 
-        ProductDetail::factory()->count(10)->create();
+        $products = Product::query()->withoutCache()->select('id')->get();
+        $details = ProductDetail::factory()->count($products->count())->make();
+
+        $details->map(function (ProductDetail $detail, int $index) use ($products) {
+            $detail->product_id = $products[$index]->id;
+            $detail->save();
+        });
     }
 }

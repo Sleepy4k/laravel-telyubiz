@@ -21,7 +21,6 @@ return new class extends Migration
             $table->text('location')->nullable();
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();
-            $table->integer('capacity')->nullable()->default(0);
             $table->boolean('is_open_for_registration')->default(false);
             $table->text('logo_url')->nullable();
             $table->text('banner_url')->nullable();

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Product::class)->constrained()->onDelete('cascade');
             $table->json('images')->nullable();
             $table->boolean('discount_active')->default(false);
-            $table->decimal('discount_amount', 10, 2)->nullable();
+            $table->decimal('discount_amount', 25, 2)->nullable();
             $table->enum('discount_type', ['percentage', 'fixed'])->nullable();
             $table->timestamp('discount_start_date')->nullable();
             $table->timestamp('discount_end_date')->nullable();

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Business::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(BankAccount::class, 'bank_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2);
-            $table->enum('status', array_map(fn($case) => $case->value, WithdrawalStatus::cases()))->default(WithdrawalStatus::REQUESTED->value);
+            $table->enum('status', array_map(fn ($case) => $case->value, WithdrawalStatus::cases()))->default(WithdrawalStatus::REQUESTED->value);
             $table->timestamps();
         });
     }

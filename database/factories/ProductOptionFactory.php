@@ -28,9 +28,9 @@ class ProductOptionFactory extends Factory
                 'values' => [
                     fake()->word(),
                     fake()->word(),
-                    fake()->word()
-                ]
-            ])
+                    fake()->word(),
+                ],
+            ]),
         ];
     }
 }

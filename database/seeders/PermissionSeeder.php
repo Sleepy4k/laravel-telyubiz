@@ -13,13 +13,15 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Permission::query()->count() > 0) return;
+        if (Permission::query()->count() > 0) {
+            return;
+        }
 
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $permissions = Permission::factory()->make();
 
-        Permission::insert(
+        Permission::query()->insert(
             array_filter($permissions->toArray(), 'is_int', ARRAY_FILTER_USE_KEY)
         );
     }

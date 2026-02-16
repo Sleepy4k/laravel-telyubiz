@@ -14,7 +14,9 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        if (Role::query()->count() > 0) return;
+        if (Role::query()->count() > 0) {
+            return;
+        }
 
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 

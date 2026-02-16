@@ -12,8 +12,12 @@ class BusinessSeeder extends Seeder
      */
     public function run(): void
     {
-        if (app()->isProduction()) return;
-        if (Business::query()->withoutCache()->count() > 0) return;
+        if (app()->isProduction()) {
+            return;
+        }
+        if (Business::query()->withoutCache()->count() > 0) {
+            return;
+        }
 
         Business::factory()->count(10)->create();
     }

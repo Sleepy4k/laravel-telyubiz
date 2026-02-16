@@ -18,7 +18,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignIdFor(Event::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Business::class)->constrained()->onDelete('cascade');
-            $table->enum('status', array_map(fn($case) => $case->value, EventParticipantStatus::cases()))->default(EventParticipantStatus::PENDING->value);
+            $table->enum('status', array_map(fn ($case) => $case->value, EventParticipantStatus::cases()))->default(EventParticipantStatus::PENDING->value);
             $table->timestamps();
         });
     }

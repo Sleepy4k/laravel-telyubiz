@@ -12,8 +12,12 @@ class ProductOptionSeeder extends Seeder
      */
     public function run(): void
     {
-        if (app()->isProduction()) return;
-        if (ProductOption::query()->withoutCache()->count() > 0) return;
+        if (app()->isProduction()) {
+            return;
+        }
+        if (ProductOption::query()->withoutCache()->count() > 0) {
+            return;
+        }
 
         ProductOption::factory()->count(10)->create();
     }

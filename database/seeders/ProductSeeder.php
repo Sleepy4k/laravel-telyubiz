@@ -12,9 +12,13 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        if (app()->isProduction()) return;
-        if (Product::query()->withoutCache()->count() > 0) return;
+        if (app()->isProduction()) {
+            return;
+        }
+        if (Product::query()->withoutCache()->count() > 0) {
+            return;
+        }
 
-        Product::factory()->count(10)->create();
+        Product::factory()->count(50)->create();
     }
 }

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('logo_url')->nullable();
             $table->text('banner_url')->nullable();
-            $table->enum('status', array_map(fn($case) => $case->value, BusinessStatus::cases()))->default(BusinessStatus::ACTIVE->value);
+            $table->enum('status', array_map(fn ($case) => $case->value, BusinessStatus::cases()))->default(BusinessStatus::ACTIVE->value);
             $table->decimal('balance', 9, 2)->default(0);
             $table->timestamps();
         });

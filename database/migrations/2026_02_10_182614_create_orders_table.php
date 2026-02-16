@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(Event::class)->nullable()->constrained()->nullOnDelete();
             $table->decimal('total_amount', 10, 2);
             $table->boolean('is_paid')->default(false);
-            $table->enum('status', array_map(fn($case) => $case->value, OrderStatus::cases()))->default(OrderStatus::PENDING->value);
+            $table->enum('status', array_map(fn ($case) => $case->value, OrderStatus::cases()))->default(OrderStatus::PENDING->value);
             $table->text('payment_gateway_reference')->nullable();
             $table->timestamps();
         });

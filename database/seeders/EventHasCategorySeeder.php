@@ -12,8 +12,12 @@ class EventHasCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        if (app()->isProduction()) return;
-        if (EventHasCategory::query()->withoutCache()->count() > 0) return;
+        if (app()->isProduction()) {
+            return;
+        }
+        if (EventHasCategory::query()->withoutCache()->count() > 0) {
+            return;
+        }
 
         EventHasCategory::factory()->count(50)->create();
     }

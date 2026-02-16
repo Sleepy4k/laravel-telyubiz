@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -26,9 +27,22 @@ class UserFactory extends Factory
             'id' => Str::uuid(),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'phone' => "628" . fake()->unique()->numerify('##########'),
-            'email_verified_at' => now(),
+            'phone' => '628'.fake()->unique()->numerify('##########'),
+            'password' => static::$password ??= 'password',
         ];
+    }
+
+    /**
+     * Indicate that the model's email address should be verified.
+     */
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email_verified_at' => now(),
+        ])
+            ->afterCreating(function (User $user) {
+                $user->assignRole(config('rbac.role.default'));
+            });
     }
 
     /**
