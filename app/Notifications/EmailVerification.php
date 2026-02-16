@@ -51,11 +51,11 @@ class EmailVerification extends VerifyEmail
     public function toMail(mixed $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Verify Your Email Address")
+            ->subject('Verify Your Email Address')
             ->greeting("Hello {$this->name},")
-            ->line("Please click the button below to verify your email address.")
-            ->action("Verify Email", $this->verificationUrl($notifiable))
-            ->line("If you did not create an account, no further action is required.");
+            ->line('Please click the button below to verify your email address.')
+            ->action('Verify Email', $this->verificationUrl($notifiable))
+            ->line('If you did not create an account, no further action is required.');
     }
 
     /**

@@ -24,26 +24,22 @@ trait Cacheable
 
     /**
      * Set the cache prefix.
-     *
-     * @return string
      */
-    protected function setCachePrefix(): string {
+    protected function setCachePrefix(): string
+    {
         return static::$cachePrefix;
     }
 
     /**
      * Set the cache config.
-     *
-     * @return array
      */
-    protected function setCacheConfig(): array {
+    protected function setCacheConfig(): array
+    {
         return static::$cacheConfig;
     }
 
     /**
      * The cacheable properties that should be cached.
-     *
-     * @return array
      */
     public function getCacheableProperties(): array
     {

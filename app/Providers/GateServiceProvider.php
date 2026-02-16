@@ -9,9 +9,6 @@ class GateServiceProvider extends ServiceProvider
 {
     /**
      * Scan the policies directory and return an array of policy files.
-     *
-     * @param string $dir
-     * @return array
      */
     protected function scanPolicies(string $dir): array
     {
@@ -19,14 +16,16 @@ class GateServiceProvider extends ServiceProvider
         $directories = [];
 
         foreach (scandir($dir) as $item) {
-            if ($item === '.' || $item === '..') continue;
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
 
-            $path = $dir . DIRECTORY_SEPARATOR . $item;
+            $path = $dir.DIRECTORY_SEPARATOR.$item;
 
             if (is_dir($path)) {
-            $directories[] = $path;
+                $directories[] = $path;
             } elseif (is_file($path) && pathinfo($path, PATHINFO_EXTENSION) === 'php') {
-            $files[] = $path;
+                $files[] = $path;
             }
         }
 
@@ -62,6 +61,7 @@ class GateServiceProvider extends ServiceProvider
         if (app()->isProduction()) {
             Gate::before(function ($user, $ability) {
                 $highestRole = config('rbac.role.highest');
+
                 return $user->hasRole($highestRole) ?: null;
             });
         }
@@ -69,7 +69,7 @@ class GateServiceProvider extends ServiceProvider
         $policyPath = app_path('Policies');
         $modelPath = app_path('Models');
 
-        if (!is_dir($policyPath)) {
+        if (! is_dir($policyPath)) {
             return;
         }
 
@@ -77,20 +77,22 @@ class GateServiceProvider extends ServiceProvider
 
         foreach ($policyFiles as $file) {
             // Get relative path and class name
-            $relativePath = str_replace([$policyPath . DIRECTORY_SEPARATOR, '.php'], '', $file);
-            if (strpos($relativePath, 'Install') === 0) continue;
+            $relativePath = str_replace([$policyPath.DIRECTORY_SEPARATOR, '.php'], '', $file);
+            if (strpos($relativePath, 'Install') === 0) {
+                continue;
+            }
 
-            $class = 'App\\Policies\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
+            $class = 'App\\Policies\\'.str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
 
             // Get policy name (without "Policy" suffix)
             $policyName = basename($file, '.php');
             $modelName = preg_replace('/Policy$/', '', $policyName);
 
             // Check if model exists
-            $modelFile = $modelPath . DIRECTORY_SEPARATOR . $modelName . '.php';
+            $modelFile = $modelPath.DIRECTORY_SEPARATOR.$modelName.'.php';
 
             if (file_exists($modelFile)) {
-                $modelClass = 'App\\Models\\' . $modelName;
+                $modelClass = 'App\\Models\\'.$modelName;
                 Gate::policy($modelClass, $class);
             } else {
                 Gate::policy($class, $class);

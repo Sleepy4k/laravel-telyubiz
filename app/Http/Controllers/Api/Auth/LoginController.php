@@ -23,11 +23,11 @@ class LoginController extends Controller
             ['id', 'name', 'email', 'phone', 'password']
         );
 
-        if (!$user) {
+        if (! $user) {
             return Response::error('User record not found in our database.', [], 401);
         }
 
-        if (!password_verify($data['password'], $user->password)) {
+        if (! password_verify($data['password'], $user->password)) {
             return Response::error('The provided credentials are incorrect.', [], 401);
         }
 

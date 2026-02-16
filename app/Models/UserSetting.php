@@ -7,8 +7,9 @@ use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OrderItem extends Model
+class UserSetting extends Model
 {
     use Cacheable, HasFactory, HasUuid, Loggable;
 
@@ -18,10 +19,9 @@ class OrderItem extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'order_id',
-        'product_id',
-        'quantity',
-        'unit_price',
+        'user_id',
+        'theme',
+        'notification_preferences',
     ];
 
     /**
@@ -32,6 +32,19 @@ class OrderItem extends Model
     protected $hidden = [];
 
     /**
+     * The default attribute values.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'theme' => 'dark',
+        'notification_preferences' => [
+            'email' => true,
+            'push' => true,
+        ],
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -40,12 +53,19 @@ class OrderItem extends Model
     {
         return [
             'id' => 'string',
-            'order_id' => 'string',
-            'product_id' => 'string',
-            'quantity' => 'integer',
-            'unit_price' => 'decimal:2',
+            'user_id' => 'string',
+            'theme' => 'string',
+            'notification_preferences' => 'array',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the user that owns the detail.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BusinessMember extends Model
 {
-    use HasUuid, Loggable, Cacheable;
+    use Cacheable, HasUuid, Loggable;
 
     /**
      * The attributes that are mass assignable.

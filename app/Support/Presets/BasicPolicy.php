@@ -13,8 +13,6 @@ class BasicPolicy implements Preset
 {
     /**
      * Configure csp policies for general and other policy
-     *
-     * @return void
      */
     public function configure(Policy $policy): void
     {

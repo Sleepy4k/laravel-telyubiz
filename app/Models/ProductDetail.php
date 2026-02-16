@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductDetail extends Model
 {
-    use HasFactory, HasUuid, Loggable, Cacheable;
+    use Cacheable, HasFactory, HasUuid, Loggable;
 
     /**
      * The attributes that are mass assignable.
@@ -44,14 +44,13 @@ class ProductDetail extends Model
     {
         return [
             'id' => 'string',
-            'product_id' => 'string',
+            'product_id' => 'integer',
             'images' => 'array',
             'discount_active' => 'boolean',
-            'discount_amount' => 'decimal:2',
+            'discount_amount' => 'float',
             'discount_type' => 'string',
             'discount_start_date' => 'datetime',
             'discount_end_date' => 'datetime',
-            'category_id' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];

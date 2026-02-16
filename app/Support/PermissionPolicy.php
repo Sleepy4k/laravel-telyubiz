@@ -6,8 +6,6 @@ class PermissionPolicy
 {
     /**
      * Configure the permissions policy for the application.
-     *
-     * @return string
      */
     public function configure(): string
     {

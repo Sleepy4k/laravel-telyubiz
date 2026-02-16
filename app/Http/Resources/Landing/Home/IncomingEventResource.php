@@ -20,6 +20,11 @@ class IncomingEventResource extends JsonResource
             'slug' => $this->slug,
             'description' => Str::limit($this->description, 125),
             'location' => $this->location,
+            'capacity' => $this->capacity,
+            'participants_count' => $this->participants_count,
+            $this->mergeWhen($this->relationLoaded('creator') && $this->creator, [
+                'creator' => $this->creator->name,
+            ]),
             'start' => [
                 'date' => $this->start_time->format('d F Y'),
                 'time' => $this->start_time->format('H:i'),

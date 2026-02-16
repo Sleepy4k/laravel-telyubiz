@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-    use HasFactory, HasUuid, Loggable, Cacheable;
+    use Cacheable, HasFactory, HasUuid, Loggable;
 
     /**
      * The attributes that are mass assignable.
@@ -58,8 +58,8 @@ class Order extends Model
     }
 
     /**
-    * Get the buyer that owns the order.
-    */
+     * Get the buyer that owns the order.
+     */
     public function buyer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'buyer_id');
@@ -82,8 +82,8 @@ class Order extends Model
     }
 
     /**
-      * Get the order items for the order.
-      */
+     * Get the order items for the order.
+     */
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);

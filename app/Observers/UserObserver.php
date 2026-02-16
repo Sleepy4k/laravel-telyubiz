@@ -13,7 +13,7 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        if ($user instanceof MustVerifyEmail && !$user->hasVerifiedEmail()) {
+        if ($user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail()) {
             $user->sendEmailVerificationNotification();
         }
 

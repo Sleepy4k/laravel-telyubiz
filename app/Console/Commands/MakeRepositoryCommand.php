@@ -41,15 +41,11 @@ class MakeRepositoryCommand extends Command
 
     /**
      * The filesystem instance.
-     *
-     * @var \Illuminate\Filesystem\Filesystem
      */
     protected Filesystem $files;
 
     /**
      * Create a new command instance.
-     *
-     * @param \Illuminate\Filesystem\Filesystem $files
      */
     public function __construct(Filesystem $files)
     {
@@ -87,7 +83,7 @@ class MakeRepositoryCommand extends Command
             replacements: [
                 '{{ namespace }}' => $repositoryNamespace,
                 '{{ class }}' => $repositoryName,
-                '{{ interfaceNamespace }}' => $interfaceNamespace . '\\' . $interfaceName,
+                '{{ interfaceNamespace }}' => $interfaceNamespace.'\\'.$interfaceName,
                 '{{ interface }}' => $interfaceName,
             ]
         );
@@ -105,11 +101,13 @@ class MakeRepositoryCommand extends Command
 
         if ($this->files->exists($path)) {
             $this->components->error("{$type} already exists: {$className}");
+
             return;
         }
 
-        if (!$this->files->exists($stubPath)) {
+        if (! $this->files->exists($stubPath)) {
             $this->components->error("Stub not found: {$stubPath}");
+
             return;
         }
 
@@ -129,7 +127,7 @@ class MakeRepositoryCommand extends Command
     {
         $name = Str::replaceFirst($this->laravel->getNamespace(), '', $namespace);
 
-        return $this->laravel['path'] . '/' . str_replace('\\', '/', $name) . '/' . $className . '.php';
+        return $this->laravel['path'].'/'.str_replace('\\', '/', $name).'/'.$className.'.php';
     }
 
     /**
@@ -137,7 +135,7 @@ class MakeRepositoryCommand extends Command
      */
     protected function makeDirectory(string $path): void
     {
-        if (!$this->files->isDirectory(dirname($path))) {
+        if (! $this->files->isDirectory(dirname($path))) {
             $this->files->makeDirectory(dirname($path), 0755, true);
         }
     }

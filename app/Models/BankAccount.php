@@ -5,11 +5,12 @@ namespace App\Models;
 use App\Concerns\Cacheable;
 use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BankAccount extends Model
 {
-    use HasUuid, Loggable, Cacheable;
+    use Cacheable, HasFactory, HasUuid, Loggable;
 
     /**
      * The attributes that are mass assignable.

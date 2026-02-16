@@ -59,7 +59,7 @@ class MicrosoftController extends Controller
                 'token_type' => 'Bearer',
             ]);
         } catch (Exception $e) {
-            return Response::error('Authentication failed: ' . $e->getMessage(), [], 500);
+            return Response::error('Authentication failed: '.$e->getMessage(), [], 500);
         }
     }
 }

@@ -14,7 +14,7 @@ class PasswordFormat implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/', $value)) {
+        if (! preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/', $value)) {
             $fail('The :attribute must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.');
         }
     }

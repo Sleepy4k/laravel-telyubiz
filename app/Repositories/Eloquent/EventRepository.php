@@ -11,7 +11,6 @@ class EventRepository implements IEventRepository
 {
     /**
      * Store model instance
-     * @var Model
      */
     protected Model $model;
 
@@ -27,17 +26,17 @@ class EventRepository implements IEventRepository
 
     /**
      * Get incoming events
-     *
-     * @param  array  $columns
-     * @return Collection|null
      */
     public function getIncomingEvents(array $columns = ['*']): ?Collection
     {
         return $this->model
             ->query()
             ->select($columns)
-            ->where('start_time', '>', now())
+            ->with(['creator:id,name'])
+            ->withCount('participants')
             ->orderBy('start_time', 'asc')
+            ->orderBy('end_time', 'asc')
+            ->where('start_time', '>', now())
             ->take(4)
             ->get();
     }

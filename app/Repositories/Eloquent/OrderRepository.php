@@ -10,7 +10,6 @@ class OrderRepository implements IOrderRepository
 {
     /**
      * Store model instance
-     * @var Model
      */
     protected Model $model;
 
@@ -26,10 +25,6 @@ class OrderRepository implements IOrderRepository
 
     /**
      * Get total number of orders
-     *
-     * @param  bool  $paidOnly
-     * @param  string|null  $status
-     * @return int
      */
     public function getTotalOrders(bool $paidOnly = false, ?string $status = null): int
     {
@@ -38,7 +33,7 @@ class OrderRepository implements IOrderRepository
             ->when($paidOnly, function ($q) {
                 return $q->where('is_paid', true);
             })
-            ->when(!is_null($status) && is_string($status), function ($q) use ($status) {
+            ->when(! is_null($status) && is_string($status), function ($q) use ($status) {
                 return $q->where('status', $status);
             })
             ->count();

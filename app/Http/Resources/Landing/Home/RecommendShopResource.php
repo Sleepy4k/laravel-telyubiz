@@ -32,7 +32,7 @@ class RecommendShopResource extends JsonResource
      */
     private function calculateAverageRating(): float
     {
-        if (!$this->products || $this->products->isEmpty()) {
+        if (! $this->products || $this->products->isEmpty()) {
             return 0.0;
         }
 

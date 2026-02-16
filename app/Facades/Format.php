@@ -8,23 +8,23 @@ use Modules\Parse\FormatManager;
 /**
  * @method static string formatFileSize(int|float $bytes, int $precision)
  * @method static string formatNumber(int|float $number, int $precision)
+ * @method static string formatCurrency(int|float $amount, string $currencySymbol, int $precision)
  * @method static string formatDate(string $date, string $format)
+ * @method static \Carbon\Carbon fromFormatDate(string $date, string $format)
  * @method static array getFileUploadTypes()
  * @method static array getFileExtensions()
  * @method static array getImageExtensions()
  * @method static int getServerMaxUploadSize()
  * @method static array uploadSizeOptions(int $serverThreshold, int $step = 1024)
  *
- * @see \Modules\Storage\FormatManager
+ * @see \Modules\Parse\FormatManager
  *
- * @mixins \Modules\Storage\FormatManager
+ * @mixins \Modules\Parse\FormatManager
  */
 class Format extends Facade
 {
     /**
      * Get the registered name of the component.
-     *
-     * @return string
      */
     protected static function getFacadeAccessor(): string
     {

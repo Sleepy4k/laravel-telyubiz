@@ -17,15 +17,11 @@ class UserEventListener
 {
     /**
      * The IP address of the user.
-     *
-     * @var string
      */
     protected string $ipAddress;
 
     /**
      * The user agent of the request.
-     *
-     * @var string
      */
     protected string $userAgent;
 
@@ -42,8 +38,6 @@ class UserEventListener
      * Get the user properties for logging.
      *
      * @param  mixed  $user
-     * @param  array  $extra
-     * @return array
      */
     protected function getUserProperties($user, array $extra = []): array
     {
@@ -70,14 +64,13 @@ class UserEventListener
 
     /**
      * Handle user login event.
-     *
-     * @param  Login  $event
-     * @return void
      */
     public function handleUserLogin(Login $event): void
     {
         $user = $event->user;
-        if (!$user) return;
+        if (! $user) {
+            return;
+        }
 
         $properties = $this->getUserProperties($user, [
             'login_at' => now()->toDateTimeString(),
@@ -90,7 +83,7 @@ class UserEventListener
             ->orderBy('created_at', 'desc')
             ->first();
 
-        if ($lastActivity && !is_null($lastActivity)) {
+        if ($lastActivity && ! is_null($lastActivity)) {
             $lastProperties = $lastActivity->properties;
 
             if (
@@ -111,14 +104,13 @@ class UserEventListener
 
     /**
      * Handle user logout event.
-     *
-     * @param  Logout  $event
-     * @return void
      */
     public function handleUserLogout(Logout $event): void
     {
         $user = $event->user;
-        if (!$user) return;
+        if (! $user) {
+            return;
+        }
 
         $properties = $this->getUserProperties($user, [
             'logout_at' => now()->toDateTimeString(),
@@ -133,14 +125,13 @@ class UserEventListener
 
     /**
      * Handle user registration event.
-     *
-     * @param  Registered  $event
-     * @return void
      */
     public function handleUserRegistration(Registered $event): void
     {
         $user = $event->user;
-        if (!$user) return;
+        if (! $user) {
+            return;
+        }
 
         $properties = $this->getUserProperties($user, [
             'registered_at' => now()->toDateTimeString(),

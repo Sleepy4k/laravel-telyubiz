@@ -12,7 +12,9 @@ class QueryExecutedListener
      */
     public function handle(QueryExecuted $event): void
     {
-        if (app()->isProduction()) return;
+        if (app()->isProduction()) {
+            return;
+        }
 
         $params = [
             'bindings' => $event->bindings,

@@ -8,9 +8,6 @@ interface IEventRepository
 {
     /**
      * Get incoming events
-     *
-     * @param  array  $columns
-     * @return Collection|null
      */
     public function getIncomingEvents(array $columns = ['*']): ?Collection;
 }

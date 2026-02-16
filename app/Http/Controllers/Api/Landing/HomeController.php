@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Landing;
 
+use App\Facades\System;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Landing\Home\IncomingEventResource;
 use App\Http\Resources\Landing\Home\PopularProductResource;
@@ -33,7 +34,7 @@ class HomeController extends Controller
             'total_users' => $userRepository->getTotalUsers(array_diff($roles, [config('rbac.role.highest')])),
         ];
 
-        return Response::success("Statistics retrieved successfully", $statistics);
+        return Response::success('Statistics retrieved successfully', $statistics);
     }
 
     /**
@@ -44,19 +45,23 @@ class HomeController extends Controller
         try {
             $events = $eventRepository->getIncomingEvents([
                 'id',
+                'created_by',
                 'title',
                 'slug',
                 'description',
                 'location',
+                'capacity',
                 'start_time',
                 'end_time',
                 'logo_url',
-                'banner_url'
+                'banner_url',
             ]);
 
-            return Response::success("Incoming events retrieved successfully", IncomingEventResource::collection($events));
+            return Response::success('Incoming events retrieved successfully', IncomingEventResource::collection($events));
         } catch (\Exception $e) {
-            return Response::error("Failed to retrieve incoming events", [], 500);
+            System::error('Failed to retrieve incoming events', ['error' => $e->getMessage()]);
+
+            return Response::error('Failed to retrieve incoming events', [], 500);
         }
     }
 
@@ -68,15 +73,17 @@ class HomeController extends Controller
         try {
             $products = $productRepository->popularProducts([
                 'id',
+                'business_id',
                 'name',
                 'slug',
                 'price',
-                'business_id'
             ]);
 
-            return Response::success("Popular products retrieved successfully", PopularProductResource::collection($products));
+            return Response::success('Popular products retrieved successfully', PopularProductResource::collection($products));
         } catch (\Exception $e) {
-            return Response::error("Failed to retrieve popular products", [], 500);
+            System::error('Failed to retrieve popular products', ['error' => $e->getMessage()]);
+
+            return Response::error('Failed to retrieve popular products', [], 500);
         }
     }
 
@@ -94,12 +101,14 @@ class HomeController extends Controller
                 'description',
                 'logo_url',
                 'banner_url',
-                'status'
+                'status',
             ]);
 
-            return Response::success("Recommended shops retrieved successfully", RecommendShopResource::collection($shops));
+            return Response::success('Recommended shops retrieved successfully', RecommendShopResource::collection($shops));
         } catch (\Exception $e) {
-            return Response::error("Failed to retrieve recommended shops", [], 500);
+            System::error('Failed to retrieve recommended shops', ['error' => $e->getMessage()]);
+
+            return Response::error('Failed to retrieve recommended shops', [], 500);
         }
     }
 }

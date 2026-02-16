@@ -7,11 +7,11 @@ use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EventDetail extends Model
 {
-    use HasFactory, HasUuid, Loggable, Cacheable;
+    use Cacheable, HasFactory, HasUuid, Loggable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,16 +19,11 @@ class EventDetail extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'created_by',
-        'title',
-        'slug',
-        'description',
-        'location',
-        'start_time',
-        'end_time',
-        'is_open_for_registration',
-        'logo_url',
-        'banner_url',
+        'event_id',
+        'capacity',
+        'free_entry',
+        'ticket_price',
+        'additional_info',
     ];
 
     /**
@@ -47,26 +42,21 @@ class EventDetail extends Model
     {
         return [
             'id' => 'string',
-            'created_by' => 'string',
-            'title' => 'string',
-            'slug' => 'string',
-            'description' => 'string',
-            'location' => 'string',
-            'start_time' => 'datetime',
-            'end_time' => 'datetime',
-            'is_open_for_registration' => 'boolean',
-            'logo_url' => 'string',
-            'banner_url' => 'string',
+            'event_id' => 'string',
+            'capacity' => 'integer',
+            'free_entry' => 'boolean',
+            'ticket_price' => 'decimal:2',
+            'additional_info' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
     }
 
     /**
-     * Get the categories that belong to the event.
+     * Get the event that owns the details.
      */
-    public function categories(): BelongsToMany
+    public function event(): BelongsTo
     {
-        return $this->belongsToMany(EventCategory::class, 'event_has_categories', 'event_id', 'category_id');
+        return $this->belongsTo(Event::class);
     }
 }

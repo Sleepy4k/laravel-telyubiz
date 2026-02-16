@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Casts\TimeCast;
 use App\Concerns\Cacheable;
 use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OrderItem extends Model
+class BusinessOperational extends Model
 {
     use Cacheable, HasFactory, HasUuid, Loggable;
 
@@ -18,10 +20,10 @@ class OrderItem extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'order_id',
-        'product_id',
-        'quantity',
-        'unit_price',
+        'business_id',
+        'day_of_week',
+        'open_time',
+        'close_time',
     ];
 
     /**
@@ -40,12 +42,20 @@ class OrderItem extends Model
     {
         return [
             'id' => 'string',
-            'order_id' => 'string',
-            'product_id' => 'string',
-            'quantity' => 'integer',
-            'unit_price' => 'decimal:2',
+            'business_id' => 'string',
+            'day_of_week' => 'string',
+            'open_time' => TimeCast::class,
+            'close_time' => TimeCast::class,
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the businesses that belong to the operational status.
+     */
+    public function businesses(): BelongsTo
+    {
+        return $this->belongsTo(Business::class, 'business_id');
     }
 }

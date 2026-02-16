@@ -8,8 +8,6 @@ trait HasUlid
 {
     /**
      * Get the primary key for the model.
-     *
-     * @return string
      */
     public function getKeyName(): string
     {
@@ -28,8 +26,6 @@ trait HasUlid
 
     /**
      * Get the data type of the primary key ID.
-     *
-     * @return string
      */
     public function getKeyType(): string
     {
@@ -38,10 +34,6 @@ trait HasUlid
 
     /**
      * Generate a new ULID for the model.
-     *
-     * @param string|null $keyname
-     *
-     * @return string
      */
     public static function generateUlid(?string $keyname): string
     {
@@ -62,7 +54,7 @@ trait HasUlid
     protected static function bootHasUlid()
     {
         static::creating(function ($model) {
-            if (!$model->{$model->getKeyName()}) {
+            if (! $model->{$model->getKeyName()}) {
                 $model->{$model->getKeyName()} = static::generateUlid($model->getKeyName());
             }
         });

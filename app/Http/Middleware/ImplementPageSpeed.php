@@ -18,7 +18,7 @@ class ImplementPageSpeed
     {
         $response = $next($request);
 
-        if (!PageSpeed::shouldProcessPageSpeed($request, $response)) {
+        if (! PageSpeed::shouldProcessPageSpeed($request, $response)) {
             return $response;
         }
 

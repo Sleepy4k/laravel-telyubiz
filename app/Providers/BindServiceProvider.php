@@ -8,8 +8,6 @@ class BindServiceProvider extends ServiceProvider
 {
     /**
      * The model observers.
-     *
-     * @var array
      */
     protected array $modelObservers = [];
 
@@ -23,11 +21,11 @@ class BindServiceProvider extends ServiceProvider
 
         foreach (glob("{$repositoryPath}/*.php") as $interfaceFile) {
             $interfaceName = pathinfo($interfaceFile, PATHINFO_FILENAME);
-            $implementationFile = "{$implementationPath}/" . str_replace('I', '', $interfaceName) . ".php";
+            $implementationFile = "{$implementationPath}/".str_replace('I', '', $interfaceName).'.php';
 
             if (file_exists($implementationFile)) {
                 $interfaceClass = "App\Repositories\Contracts\\{$interfaceName}";
-                $implementationClass = "App\Repositories\Eloquent\\" . str_replace('I', '', $interfaceName);
+                $implementationClass = "App\Repositories\Eloquent\\".str_replace('I', '', $interfaceName);
 
                 $this->app->bind($interfaceClass, $implementationClass);
             }
@@ -39,14 +37,14 @@ class BindServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (app()->runningInConsole() || !empty($this->modelObservers)) {
+        if (app()->runningInConsole() || ! empty($this->modelObservers)) {
             return;
         }
 
         $modelsPath = app_path('Models');
         $observersPath = app_path('Observers');
 
-        if (!is_dir($observersPath)) {
+        if (! is_dir($observersPath)) {
             return;
         }
 
@@ -54,7 +52,9 @@ class BindServiceProvider extends ServiceProvider
             $modelName = pathinfo($modelFile, PATHINFO_FILENAME);
             $observerFile = "{$observersPath}/{$modelName}Observer.php";
 
-            if (!file_exists($observerFile)) continue;
+            if (! file_exists($observerFile)) {
+                continue;
+            }
 
             $modelClass = "App\Models\\{$modelName}";
             $observerClass = "App\Observers\\{$modelName}Observer";

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductCategory extends Model
 {
-    use HasFactory, HasUuid, Loggable, Cacheable;
+    use Cacheable, HasFactory, HasUuid, Loggable;
 
     /**
      * The attributes that are mass assignable.

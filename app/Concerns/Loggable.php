@@ -19,15 +19,12 @@ trait Loggable
 
     /**
      * The parse description for the spatie log.
-     *
-     * @param string $eventName
-     *
-     * @return string
      */
     private function parseDescription(string $eventName): string
     {
         $logName = ucfirst(static::$logName);
         $table = $this->table ?? 'N/A';
+
         return "{$logName} {$table} has been {$eventName}";
     }
 

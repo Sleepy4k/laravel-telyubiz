@@ -11,7 +11,6 @@ class UserRepository implements IUserRepository
 {
     /**
      * Store model instance
-     * @var Model
      */
     protected Model $model;
 
@@ -27,11 +26,6 @@ class UserRepository implements IUserRepository
 
     /**
      * Get user by unique data
-     *
-     * @param  string  $uniqueData
-     * @param  string  $column
-     * @param  array  $returnColumns
-     * @return Model|null
      */
     public function getUserByUniqueData(string $uniqueData, string $column, array $returnColumns = ['*']): ?Model
     {
@@ -46,9 +40,6 @@ class UserRepository implements IUserRepository
 
     /**
      * Register a new user
-     *
-     * @param  array  $data
-     * @return Model|null
      */
     public function registerUser(array $data): ?Model
     {
@@ -63,21 +54,19 @@ class UserRepository implements IUserRepository
                 ]);
         } catch (\Exception $e) {
             System::error('Failed to register new user', ['error' => $e->getMessage()]);
+
             return null;
         }
     }
 
     /**
      * Get total number of users
-     *
-     * @param  array|null  $roles
-     * @return int
      */
     public function getTotalUsers(?array $roles = null): int
     {
         return $this->model
             ->query()
-            ->when(!is_null($roles) && is_array($roles) && !empty($roles), function ($q) use ($roles) {
+            ->when(! is_null($roles) && is_array($roles) && ! empty($roles), function ($q) use ($roles) {
                 return $q->role($roles);
             })
             ->count();

@@ -6,10 +6,13 @@ use App\Concerns\Cacheable;
 use App\Concerns\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Event extends Model
 {
-    use HasFactory, Loggable, Cacheable;
+    use Cacheable, HasFactory, Loggable;
 
     /**
      * The attributes that are mass assignable.
@@ -58,5 +61,53 @@ class Event extends Model
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /*
+     * Get the user that created the event.
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Get the categories that belong to the event.
+     */
+    public function detail(): HasOne
+    {
+        return $this->hasOne(EventDetail::class);
+    }
+
+    /**
+     * Get the participants of the event.
+     */
+    public function participants(): HasMany
+    {
+        return $this->hasMany(EventParticipant::class);
+    }
+
+    /**
+     * Get the terms associated with the event.
+     */
+    public function terms(): HasMany
+    {
+        return $this->hasMany(EventTerm::class);
+    }
+
+    /**
+     * Get the facilities associated with the event.
+     */
+    public function facilities(): HasMany
+    {
+        return $this->hasMany(EventFacility::class);
+    }
+
+    /**
+     * Get the timeline entries associated with the event.
+     */
+    public function timelines(): HasMany
+    {
+        return $this->hasMany(EventTimeline::class);
     }
 }

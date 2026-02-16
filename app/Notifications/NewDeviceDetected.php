@@ -34,11 +34,11 @@ class NewDeviceDetected extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("New Device Detected for Your Account")
+            ->subject('New Device Detected for Your Account')
             ->greeting("Hello {$this->name},")
             ->line("We detected a new device being used to access your account ({$this->email}).")
             ->line("If this wasn't you, please change your password immediately.")
-            ->line("If this was a legitimate activity, no further action is required.");
+            ->line('If this was a legitimate activity, no further action is required.');
     }
 
     /**

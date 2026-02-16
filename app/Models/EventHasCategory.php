@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EventHasCategory extends Model
 {
-    use HasFactory, Loggable, Cacheable;
+    use Cacheable, HasFactory, Loggable;
 
     /**
      * The attributes that are mass assignable.

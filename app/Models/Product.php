@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
-    use HasFactory, Loggable, Cacheable;
+    use Cacheable, HasFactory, Loggable;
 
     /**
      * The attributes that are mass assignable.

@@ -7,8 +7,9 @@ use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class OrderItem extends Model
+class BusinessCategory extends Model
 {
     use Cacheable, HasFactory, HasUuid, Loggable;
 
@@ -18,10 +19,7 @@ class OrderItem extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'order_id',
-        'product_id',
-        'quantity',
-        'unit_price',
+        'name',
     ];
 
     /**
@@ -40,12 +38,17 @@ class OrderItem extends Model
     {
         return [
             'id' => 'string',
-            'order_id' => 'string',
-            'product_id' => 'string',
-            'quantity' => 'integer',
-            'unit_price' => 'decimal:2',
+            'name' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the businesses that belong to the category.
+     */
+    public function businesses(): HasMany
+    {
+        return $this->hasMany(Business::class, 'category_id');
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EventParticipant extends Model
 {
-    use HasUuid, Loggable, Cacheable;
+    use Cacheable, HasUuid, Loggable;
 
     /**
      * The attributes that are mass assignable.

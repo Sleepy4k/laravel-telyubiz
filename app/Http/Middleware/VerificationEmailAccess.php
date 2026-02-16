@@ -16,7 +16,7 @@ class VerificationEmailAccess
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth('web')->check()) {
+        if (! auth('web')->check()) {
             if ($request->expectsJson()) {
                 return FacadesResponse::error('You must be logged in to access this page.', [], 401);
             } else {

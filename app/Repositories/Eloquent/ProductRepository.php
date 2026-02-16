@@ -11,7 +11,6 @@ class ProductRepository implements IProductRepository
 {
     /**
      * Store model instance
-     * @var Model
      */
     protected Model $model;
 
@@ -27,9 +26,6 @@ class ProductRepository implements IProductRepository
 
     /**
      * Get popular products
-     *
-     * @param  array  $columns
-     * @return Collection|null
      */
     public function popularProducts(array $columns = ['*']): ?Collection
     {
@@ -37,16 +33,9 @@ class ProductRepository implements IProductRepository
             ->query()
             ->select($columns)
             ->with([
-                'details' => function ($query) {
-                    $query->select(
-                        'product_id', 'images', 'discount_active',
-                        'discount_amount', 'discount_type', 'discount_start_date',
-                        'discount_end_date'
-                    );
-                },
-                'reviews' => function ($query) {
-                    $query->select('product_id', 'order_id', 'rating');
-                }
+                'details:product_id,images,discount_active,discount_amount,discount_type,discount_start_date,discount_end_date',
+                'reviews:product_id,order_id,rating',
+                'business:id,name',
             ])
             ->withCount('orders')
             ->take(8)
@@ -55,13 +44,31 @@ class ProductRepository implements IProductRepository
 
     /**
      * Get total number of products
-     *
-     * @return int
      */
     public function getTotalProducts(): int
     {
         return $this->model
             ->query()
             ->count();
+    }
+
+    /**
+     * Get popular products by business slug
+     */
+    public function popularProductsByBusiness(string $businessSlug, array $columns = ['*']): ?Collection
+    {
+        return $this->model
+            ->query()
+            ->select($columns)
+            ->whereHas('business', function ($query) use ($businessSlug) {
+                $query->where('slug', $businessSlug);
+            })
+            ->with([
+                'details:product_id,images,discount_active,discount_amount,discount_type,discount_start_date,discount_end_date',
+                'reviews:product_id,order_id,rating',
+            ])
+            ->withCount('orders')
+            ->take(8)
+            ->get();
     }
 }

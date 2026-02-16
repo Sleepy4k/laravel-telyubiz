@@ -50,7 +50,7 @@ class RouteServiceProvider extends ServiceProvider
                             'limit' => $headers['X-RateLimit-Limit'],
                             'remaining' => $headers['X-RateLimit-Remaining'],
                             'reset' => $headers['X-RateLimit-Reset'],
-                        ]
+                        ],
                     ], 429);
                 });
         });

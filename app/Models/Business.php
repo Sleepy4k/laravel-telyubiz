@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Business extends Model
 {
-    use HasFactory, Loggable, Cacheable;
+    use Cacheable, HasFactory, Loggable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +21,7 @@ class Business extends Model
      */
     protected $fillable = [
         'owner_id',
+        'category_id',
         'name',
         'slug',
         'address',
@@ -48,6 +50,7 @@ class Business extends Model
         return [
             'id' => 'string',
             'owner_id' => 'string',
+            'category_id' => 'string',
             'name' => 'string',
             'slug' => 'string',
             'address' => 'string',
@@ -84,5 +87,29 @@ class Business extends Model
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    /**
+     * Get the category of the business.
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(BusinessCategory::class, 'category_id');
+    }
+
+    /**
+     * Get all reviews for the business through products.
+     */
+    public function reviews(): HasManyThrough
+    {
+        return $this->hasManyThrough(Review::class, Product::class);
+    }
+
+    /**
+     * Get the operational hours for the business.
+     */
+    public function operationalHours(): HasMany
+    {
+        return $this->hasMany(BusinessOperational::class, 'business_id');
     }
 }

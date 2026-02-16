@@ -9,6 +9,8 @@ use App\Notifications\EmailVerification;
 use App\Notifications\RequestResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -16,7 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, Cacheable, HasRoles, Loggable, HasApiTokens, HasUuid;
+    use Cacheable, HasApiTokens, HasFactory, HasRoles, HasUuid, Loggable, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -59,10 +61,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Set the cache prefix.
-     *
-     * @return string
      */
-    public function setCachePrefix(): string {
+    public function setCachePrefix(): string
+    {
         return 'user.cache';
     }
 
@@ -71,9 +72,10 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return array<string>
      */
-    public function setLoggableField(): array {
+    public function setLoggableField(): array
+    {
         return array_filter($this->fillable, function ($field) {
-            return !in_array($field, $this->hidden);
+            return ! in_array($field, $this->hidden);
         });
     }
 
@@ -81,8 +83,6 @@ class User extends Authenticatable implements MustVerifyEmail
      * Send a password reset notification to the user.
      *
      * @param  string  $token
-     *
-     * @return void
      */
     public function sendPasswordResetNotification($token): void
     {
@@ -92,11 +92,49 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Send an email verification notification to the user.
-     *
-     * @return void
      */
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new EmailVerification($this->name));
+    }
+
+    /**
+     * Get the user details associated with the user.
+     */
+    public function details(): HasOne
+    {
+        return $this->hasOne(UserDetail::class);
+    }
+
+    /**
+     * Get the user settings associated with the user.
+     */
+    public function settings(): HasOne
+    {
+        return $this->hasOne(UserSetting::class);
+    }
+
+    /**
+     * Get the businesses owned by the user.
+     */
+    public function businesses(): HasMany
+    {
+        return $this->hasMany(Business::class, 'owner_id');
+    }
+
+    /**
+     * Get the orders made by the user.
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class, 'buyer_id');
+    }
+
+    /**
+     * Get the reviews written by the user.
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'user_id');
     }
 }

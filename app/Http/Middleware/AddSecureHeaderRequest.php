@@ -18,17 +18,19 @@ class AddSecureHeaderRequest
     {
         $response = $next($request);
 
-        if (!config('secure-headers.enable.permissions')) {
-            $permissions = (new PermissionPolicy())->configure();
+        if (! config('secure-headers.enable.permissions')) {
+            $permissions = (new PermissionPolicy)->configure();
             $response->headers->set('Permissions-Policy', $permissions, true);
         }
 
-        if (!config('secure-headers.enable.headers')) {
+        if (! config('secure-headers.enable.headers')) {
             return $response;
         }
 
         foreach (config('secure-headers.headers') as $key => $value) {
-            if (empty($value)) continue;
+            if (empty($value)) {
+                continue;
+            }
 
             $response->headers->set($key, $value, true);
         }

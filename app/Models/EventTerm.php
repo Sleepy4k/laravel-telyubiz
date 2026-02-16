@@ -7,8 +7,9 @@ use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OrderItem extends Model
+class EventTerm extends Model
 {
     use Cacheable, HasFactory, HasUuid, Loggable;
 
@@ -18,10 +19,8 @@ class OrderItem extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'order_id',
-        'product_id',
-        'quantity',
-        'unit_price',
+        'event_id',
+        'term',
     ];
 
     /**
@@ -40,12 +39,18 @@ class OrderItem extends Model
     {
         return [
             'id' => 'string',
-            'order_id' => 'string',
-            'product_id' => 'string',
-            'quantity' => 'integer',
-            'unit_price' => 'decimal:2',
+            'event_id' => 'string',
+            'term' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Get the event that owns the term entry.
+     */
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
     }
 }
