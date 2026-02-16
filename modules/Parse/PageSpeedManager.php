@@ -58,13 +58,13 @@ class PageSpeedManager
     /**
      * Should Process
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Illuminate\Http\Response $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Response  $response
      * @return bool
      */
     public function shouldProcessPageSpeed($request, $response)
     {
-        if (!$this->isEnable()) {
+        if (! $this->isEnable()) {
             return false;
         }
 
@@ -88,7 +88,7 @@ class PageSpeedManager
     /**
      * Parse content and apply Page Speed optimizations
      *
-     * @param string $content
+     * @param  string  $content
      * @return string
      */
     public function parseContent($content)
@@ -166,7 +166,7 @@ class PageSpeedManager
      */
     protected function isEnable()
     {
-        if (!is_null(static::$isEnabled)) {
+        if (! is_null(static::$isEnabled)) {
             return static::$isEnabled;
         }
 
@@ -178,8 +178,7 @@ class PageSpeedManager
     /**
      * Replace content response.
      *
-     * @param  array $replace
-     * @param  string $buffer
+     * @param  string  $buffer
      * @return string
      */
     protected function replace(array $replace, $buffer)
@@ -190,9 +189,8 @@ class PageSpeedManager
     /**
      * Match all occurrences of the html tags given
      *
-     * @param array  $tags   Html tags to match in the given buffer
-     * @param string $buffer Middleware response buffer
-     *
+     * @param  array  $tags  Html tags to match in the given buffer
+     * @param  string  $buffer  Middleware response buffer
      * @return array $matches Html tags found in the buffer
      */
     protected function matchAllHtmlTag(array $tags, string $buffer): array
@@ -209,10 +207,9 @@ class PageSpeedManager
     /**
      * Match occurrences of the html tags given
      *
-     * @param array  $tags   Html tags to match in the given buffer
-     * @param string $pattern Regex pattern to match the html tags
-     * @param string $buffer Middleware response buffer
-     *
+     * @param  array  $tags  Html tags to match in the given buffer
+     * @param  string  $pattern  Regex pattern to match the html tags
+     * @param  string  $buffer  Middleware response buffer
      * @return array $matches Html tags found in the buffer
      */
     protected function matchTags(array $tags, string $pattern, string $buffer): array
@@ -231,11 +228,10 @@ class PageSpeedManager
     /**
      * Replace occurrences of regex pattern inside of given HTML tags
      *
-     * @param array  $tags    Html tags to match and run regex to replace occurrences
-     * @param string $regex   Regex rule to match on the given HTML tags
-     * @param string $replace Content to replace
-     * @param string $buffer  Middleware response buffer
-     *
+     * @param  array  $tags  Html tags to match and run regex to replace occurrences
+     * @param  string  $regex  Regex rule to match on the given HTML tags
+     * @param  string  $replace  Content to replace
+     * @param  string  $buffer  Middleware response buffer
      * @return string $buffer Middleware response buffer
      */
     protected function replaceInsideHtmlTags(array $tags, string $regex, string $replace, string $buffer): string
@@ -253,11 +249,10 @@ class PageSpeedManager
     /**
      * Replace occurrences of regex pattern inside of given HTML tags
      *
-     * @param array  $tags    Html tags to match and run regex to replace occurrences
-     * @param string $regex   Regex rule to match on the given HTML tags
-     * @param string $replace Content to replace
-     * @param string $buffer  Middleware response buffer
-     *
+     * @param  array  $tags  Html tags to match and run regex to replace occurrences
+     * @param  string  $regex  Regex rule to match on the given HTML tags
+     * @param  string  $replace  Content to replace
+     * @param  string  $buffer  Middleware response buffer
      * @return string $buffer Middleware response buffer
      */
     private function implementDnsPrefetch($content)
@@ -280,7 +275,7 @@ class PageSpeedManager
         })->unique()->implode("\n");
 
         $replace = [
-            '#<head>(.*?)#' => "<head>\n{$dnsPrefetch}"
+            '#<head>(.*?)#' => "<head>\n{$dnsPrefetch}",
         ];
 
         return $this->replace($replace, $content);
@@ -289,7 +284,7 @@ class PageSpeedManager
     /**
      * Implement inline CSS
      *
-     * @param string $content
+     * @param  string  $content
      * @return string
      */
     private function implementInlineCss($content)
@@ -304,7 +299,7 @@ class PageSpeedManager
         );
 
         $this->class = collect($matches[1])->mapWithKeys(function ($item) {
-            return [ 'page_speed_'.rand() => $item[0] ];
+            return ['page_speed_'.rand() => $item[0]];
         })->unique();
 
         return $this->injectStyle()
@@ -332,7 +327,7 @@ class PageSpeedManager
         $injectStyle = implode(' ', $this->inline);
 
         $replace = [
-            '#</head>(.*?)#' => "\n<style nonce=\"".app('csp-nonce')."\"> {$injectStyle}</style>\n</head>"
+            '#</head>(.*?)#' => "\n<style nonce=\"".app('csp-nonce')."\"> {$injectStyle}</style>\n</head>",
         ];
 
         $this->html = $this->replace($replace, $this->html);
@@ -369,7 +364,7 @@ class PageSpeedManager
         $tmp = explode('<', $this->html);
 
         $replaceClass = [
-            '/class="(.*?)"/' => "",
+            '/class="(.*?)"/' => '',
         ];
 
         foreach ($tmp as $value) {
@@ -377,7 +372,7 @@ class PageSpeedManager
 
             if (count($matches[1]) > 1) {
                 $replace = [
-                    '/>/' => "class=\"".implode(' ', $matches[1])."\">",
+                    '/>/' => 'class="'.implode(' ', $matches[1]).'">',
                 ];
 
                 $newHTML[] = str_replace(
@@ -398,8 +393,8 @@ class PageSpeedManager
     /**
      * Implement JavaScript minification
      *
-     * @param string $content
-     * @param array $options
+     * @param  string  $content
+     * @param  array  $options
      * @return string
      */
     private function implementJavaScriptMinification($content, $options = [])
@@ -448,7 +443,7 @@ class PageSpeedManager
             $minifiedJs = $this->minifyJavaScript($jsCode, $options);
 
             // Replace the original script with minified version
-            $minifiedTag = '<script' . $attributes . '>' . $minifiedJs . '</script>';
+            $minifiedTag = '<script'.$attributes.'>'.$minifiedJs.'</script>';
             $content = str_replace($fullTag, $minifiedTag, $content);
         }
 
@@ -458,8 +453,8 @@ class PageSpeedManager
     /**
      * Minify JavaScript code
      *
-     * @param string $jsCode
-     * @param array $options
+     * @param  string  $jsCode
+     * @param  array  $options
      * @return string
      */
     private function minifyJavaScript($jsCode, $options = [])
@@ -495,24 +490,24 @@ class PageSpeedManager
     /**
      * Minify variable and function names using global mappings
      *
-     * @param string $jsCode
-     * @param array $preserveVars
-     * @param array $preserveFuncs
+     * @param  string  $jsCode
+     * @param  array  $preserveVars
+     * @param  array  $preserveFuncs
      * @return string
      */
     private function minifyVariableNames($jsCode, $preserveVars = [], $preserveFuncs = [])
     {
         // Apply global variable mappings
         foreach ($this->globalVariableMap as $originalName => $minifiedName) {
-            if (!in_array($originalName, $preserveVars)) {
-                $jsCode = preg_replace('/\b' . preg_quote($originalName, '/') . '\b/', $minifiedName, $jsCode);
+            if (! in_array($originalName, $preserveVars)) {
+                $jsCode = preg_replace('/\b'.preg_quote($originalName, '/').'\b/', $minifiedName, $jsCode);
             }
         }
 
         // Apply global function mappings
         foreach ($this->globalFunctionMap as $originalName => $minifiedName) {
-            if (!in_array($originalName, $preserveFuncs)) {
-                $jsCode = preg_replace('/\b' . preg_quote($originalName, '/') . '\b/', $minifiedName, $jsCode);
+            if (! in_array($originalName, $preserveFuncs)) {
+                $jsCode = preg_replace('/\b'.preg_quote($originalName, '/').'\b/', $minifiedName, $jsCode);
             }
         }
 
@@ -522,7 +517,7 @@ class PageSpeedManager
     /**
      * Extract variables from JavaScript code
      *
-     * @param string $jsCode
+     * @param  string  $jsCode
      * @return array
      */
     private function extractVariables($jsCode)
@@ -536,7 +531,7 @@ class PageSpeedManager
     /**
      * Extract functions from JavaScript code
      *
-     * @param string $jsCode
+     * @param  string  $jsCode
      * @return array
      */
     private function extractFunctions($jsCode)
@@ -550,9 +545,9 @@ class PageSpeedManager
     /**
      * Create global mappings for variables and functions
      *
-     * @param array $allVariables
-     * @param array $allFunctions
-     * @param array $options
+     * @param  array  $allVariables
+     * @param  array  $allFunctions
+     * @param  array  $options
      * @return void
      */
     private function createGlobalMappings($allVariables, $allFunctions, $options)
@@ -564,12 +559,12 @@ class PageSpeedManager
         $allVariables = array_unique($allVariables);
         $allFunctions = array_unique($allFunctions);
 
-        $filteredVars = array_filter($allVariables, function($var) use ($preserveVars) {
-            return !in_array($var, $preserveVars) && !$this->isReservedKeyword($var);
+        $filteredVars = array_filter($allVariables, function ($var) use ($preserveVars) {
+            return ! in_array($var, $preserveVars) && ! $this->isReservedKeyword($var);
         });
 
-        $filteredFuncs = array_filter($allFunctions, function($func) use ($preserveFuncs) {
-            return !in_array($func, $preserveFuncs) && !$this->isReservedKeyword($func);
+        $filteredFuncs = array_filter($allFunctions, function ($func) use ($preserveFuncs) {
+            return ! in_array($func, $preserveFuncs) && ! $this->isReservedKeyword($func);
         });
 
         // Generate short names for all items
@@ -591,7 +586,7 @@ class PageSpeedManager
     /**
      * Generate short variable names
      *
-     * @param int $count
+     * @param  int  $count
      * @return array
      */
     private function generateShortNames($count)
@@ -612,7 +607,7 @@ class PageSpeedManager
             // Double letter names
             for ($i = 0; $i < 26; $i++) {
                 for ($j = 0; $j < 26; $j++) {
-                    $names[] = $alphabet[$i] . $alphabet[$j];
+                    $names[] = $alphabet[$i].$alphabet[$j];
                 }
             }
 
@@ -620,7 +615,7 @@ class PageSpeedManager
             for ($i = 0; $i < 26; $i++) {
                 for ($j = 0; $j < 26; $j++) {
                     for ($k = 0; $k < 26; $k++) {
-                        $names[] = $alphabet[$i] . $alphabet[$j] . $alphabet[$k];
+                        $names[] = $alphabet[$i].$alphabet[$j].$alphabet[$k];
                     }
                 }
             }
@@ -635,7 +630,7 @@ class PageSpeedManager
     /**
      * Check if a name is a reserved JavaScript keyword
      *
-     * @param string $name
+     * @param  string  $name
      * @return bool
      */
     private function isReservedKeyword($name)
@@ -652,7 +647,7 @@ class PageSpeedManager
             'with', 'yield', 'console', 'window', 'document', 'alert', 'confirm',
             'prompt', 'setTimeout', 'setInterval', 'clearTimeout', 'clearInterval',
             'parseInt', 'parseFloat', 'isNaN', 'isFinite', 'escape', 'unescape',
-            'encodeURI', 'encodeURIComponent', 'decodeURI', 'decodeURIComponent'
+            'encodeURI', 'encodeURIComponent', 'decodeURI', 'decodeURIComponent',
         ];
 
         return in_array(strtolower($name), $reservedKeywords);

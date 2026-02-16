@@ -12,15 +12,12 @@ class FileManager
 {
     /**
      * Set path root when unknown file.
-     *
-     * @var string
      */
     private static string $unknownPath = 'unknown';
 
     /**
      * Set path for storage when upload file.
      *
-     * @param UploadFileType $type
      *
      * @return string
      */
@@ -29,7 +26,8 @@ class FileManager
         try {
             $types = UploadFileType::toArray();
             $path = in_array($type->value, $types) ? $type->value : self::$unknownPath;
-            return rtrim($path, '/') . '/';
+
+            return rtrim($path, '/').'/';
         } catch (\Throwable $th) {
             System::error($th->getMessage());
             throw $th;
@@ -39,19 +37,17 @@ class FileManager
     /**
      * Transform name file
      *
-     * @param UploadFileType $type
-     * @param string $file
-     *
+     * @param  string  $file
      * @return string
      */
     private function transformName(UploadFileType $type, $file)
     {
         try {
             $types = UploadFileType::toArray();
-            $baseUrl = request()->getSchemeAndHttpHost() . '/storage';
+            $baseUrl = request()->getSchemeAndHttpHost().'/storage';
             $path = in_array($type->value, $types) ? $type->value : self::$unknownPath;
 
-            return $baseUrl . '/' . $path . '/' . $file;
+            return $baseUrl.'/'.$path.'/'.$file;
         } catch (\Throwable $th) {
             System::error($th->getMessage());
             throw $th;
@@ -61,14 +57,14 @@ class FileManager
     /**
      * Parse image name
      *
-     * @param string $file
-     *
+     * @param  string  $file
      * @return string
      */
     private function parseImage($file)
     {
         try {
             $parsedUrl = parse_url($file);
+
             return basename($parsedUrl['path'] ?? '');
         } catch (\Throwable $th) {
             System::error($th->getMessage());
@@ -79,9 +75,7 @@ class FileManager
     /**
      * Save file in storage app
      *
-     * @param UploadFileType $type
-     * @param UploadedFile $file
-     *
+     * @param  UploadedFile  $file
      * @return string
      */
     private function putFile(UploadFileType $type, $file)
@@ -89,8 +83,8 @@ class FileManager
         try {
             $user = auth('web')->user();
             $fileExtension = $file->getClientOriginalExtension();
-            $clientCode = $user ? $user->id . '_' . $user->created_at->format('dmY') : rand(1, 999) . '_' . date('His');
-            $fileName = preg_replace('/\s+/', '_', uniqid() . '_' . date('dmY') . '_' . $clientCode . '.' . $fileExtension);
+            $clientCode = $user ? $user->id.'_'.$user->created_at->format('dmY') : rand(1, 999).'_'.date('His');
+            $fileName = preg_replace('/\s+/', '_', uniqid().'_'.date('dmY').'_'.$clientCode.'.'.$fileExtension);
 
             if ($this->checkFile($type, $fileName, true)) {
                 return $this->putFile($type, $file);
@@ -104,29 +98,29 @@ class FileManager
                 $currentPath = '';
 
                 foreach ($segments as $segment) {
-                    $currentPath = ltrim($currentPath . '/' . $segment, '/');
+                    $currentPath = ltrim($currentPath.'/'.$segment, '/');
 
-                    if (!Storage::exists($currentPath)) {
+                    if (! Storage::exists($currentPath)) {
                         Storage::makeDirectory($currentPath);
                     }
 
-                    $indexFilePath = $currentPath . '/index.html';
+                    $indexFilePath = $currentPath.'/index.html';
 
-                    if (!Storage::exists($indexFilePath)) {
+                    if (! Storage::exists($indexFilePath)) {
                         Storage::put($indexFilePath, Storage::disk('public')->get('index.html'));
                     }
                 }
             } else {
-                if (!Storage::exists(rtrim($directory, '/'))) {
+                if (! Storage::exists(rtrim($directory, '/'))) {
                     Storage::makeDirectory(rtrim($directory, '/'));
                 }
             }
 
             if (in_array($fileExtension, ['jpg', 'jpeg', 'webp'])) {
-                $manager = new ImageManager(new Driver());
+                $manager = new ImageManager(new Driver);
                 $image = $manager->read($file)->toWebp(5);
-                $fileName = pathinfo($fileName, PATHINFO_FILENAME) . '.webp';
-                $storagePath = Storage::disk(config('filesystems.default'))->path($directory . $fileName);
+                $fileName = pathinfo($fileName, PATHINFO_FILENAME).'.webp';
+                $storagePath = Storage::disk(config('filesystems.default'))->path($directory.$fileName);
                 $image->save($storagePath);
             } else {
                 $file->storeAs($this->storageDisk($type), $fileName);
@@ -142,18 +136,18 @@ class FileManager
     /**
      * Delete file in storage app
      *
-     * @param UploadFileType $type
-     * @param string $file
-     *
+     * @param  string  $file
      * @return bool
      */
     public function deleteFile(UploadFileType $type, $file)
     {
         try {
-            if (!$this->checkFile($type, $file)) return false;
+            if (! $this->checkFile($type, $file)) {
+                return false;
+            }
 
             $parsedFile = $this->parseImage($file);
-            Storage::delete($this->storageDisk($type) . $parsedFile);
+            Storage::delete($this->storageDisk($type).$parsedFile);
 
             return true;
         } catch (\Throwable $th) {
@@ -165,10 +159,8 @@ class FileManager
     /**
      * Check file in storage app
      *
-     * @param UploadFileType $type
-     * @param string $file
-     * @param bool $save
-     *
+     * @param  string  $file
+     * @param  bool  $save
      * @return bool
      */
     public function checkFile(UploadFileType $type, $file, $save = false)
@@ -176,7 +168,7 @@ class FileManager
         try {
             $parsedFile = $save ? $file : $this->parseImage($file);
 
-            return Storage::exists($this->storageDisk($type) . $parsedFile);
+            return Storage::exists($this->storageDisk($type).$parsedFile);
         } catch (\Throwable $th) {
             System::error($th->getMessage());
             throw $th;
@@ -186,15 +178,14 @@ class FileManager
     /**
      * Save single file to storage app
      *
-     * @param UploadFileType $type
-     * @param UploadedFile $file
-     *
-     * @return string|null
+     * @param  UploadedFile  $file
      */
-    public function saveSingleFile(UploadFileType $type, $file): string|null
+    public function saveSingleFile(UploadFileType $type, $file): ?string
     {
         try {
-            if (is_null($file)) return null;
+            if (is_null($file)) {
+                return null;
+            }
 
             return $this->putFile($type, $file);
         } catch (\Throwable $th) {
@@ -206,18 +197,17 @@ class FileManager
     /**
      * Update old file with the new one
      *
-     * @param UploadFileType $type
-     * @param UploadedFile $file
-     * @param string $old_file
-     *
-     * @return string|null
+     * @param  UploadedFile  $file
+     * @param  string  $old_file
      */
-    public function updateSingleFile(UploadFileType $type, $file, $old_file): string|null
+    public function updateSingleFile(UploadFileType $type, $file, $old_file): ?string
     {
         try {
-            if (is_null($file)) return null;
+            if (is_null($file)) {
+                return null;
+            }
 
-            if (!$this->checkFile($type, $old_file)) {
+            if (! $this->checkFile($type, $old_file)) {
                 return $this->putFile($type, $file);
             }
 
@@ -233,19 +223,18 @@ class FileManager
     /**
      * Get file size in storage app
      *
-     * @param UploadFileType $type
-     * @param string $file
-     *
-     * @return int|null
+     * @param  string  $file
      */
-    public function getFileSize(UploadFileType $type, $file): int|null
+    public function getFileSize(UploadFileType $type, $file): ?int
     {
         try {
-            if (!$this->checkFile($type, $file)) return null;
+            if (! $this->checkFile($type, $file)) {
+                return null;
+            }
 
             $parsedFile = $this->parseImage($file);
 
-            return Storage::size($this->storageDisk($type) . $parsedFile);
+            return Storage::size($this->storageDisk($type).$parsedFile);
         } catch (\Throwable $th) {
             System::error($th->getMessage());
             throw $th;
@@ -255,19 +244,18 @@ class FileManager
     /**
      * Get file type in storage app
      *
-     * @param UploadFileType $type
-     * @param string $file
-     *
-     * @return string|null
+     * @param  string  $file
      */
-    public function getFileType(UploadFileType $type, $file): string|null
+    public function getFileType(UploadFileType $type, $file): ?string
     {
         try {
-            if (!$this->checkFile($type, $file)) return null;
+            if (! $this->checkFile($type, $file)) {
+                return null;
+            }
 
             $parsedFile = $this->parseImage($file);
 
-            return Storage::mimeType($this->storageDisk($type) . $parsedFile);
+            return Storage::mimeType($this->storageDisk($type).$parsedFile);
         } catch (\Throwable $th) {
             System::error($th->getMessage());
             throw $th;
@@ -277,19 +265,18 @@ class FileManager
     /**
      * Get file path in storage app
      *
-     * @param UploadFileType $type
-     * @param string $file
-     *
-     * @return string|null
+     * @param  string  $file
      */
-    public function getFilePath(UploadFileType $type, $file): string|null
+    public function getFilePath(UploadFileType $type, $file): ?string
     {
         try {
-            if (!$this->checkFile($type, $file)) return null;
+            if (! $this->checkFile($type, $file)) {
+                return null;
+            }
 
             $parsedFile = $this->parseImage($file);
 
-            return $this->storageDisk($type) . $parsedFile;
+            return $this->storageDisk($type).$parsedFile;
         } catch (\Throwable $th) {
             System::error($th->getMessage());
             throw $th;

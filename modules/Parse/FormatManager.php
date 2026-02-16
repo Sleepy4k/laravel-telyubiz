@@ -8,15 +8,11 @@ class FormatManager
 {
     /**
      * The size units.
-     *
-     * @var array
      */
     protected static array $sizeUnits = ['B', 'KB', 'MB', 'GB', 'TB'];
 
     /**
      * The image file extensions.
-     *
-     * @var array
      */
     protected static array $imageExtensions = [
         'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'tiff', 'ico',
@@ -24,8 +20,6 @@ class FormatManager
 
     /**
      * The file extensions.
-     *
-     * @var array
      */
     protected static array $fileExtensions = [
         'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ods', 'odp', 'rtf', 'txt', 'csv',
@@ -34,11 +28,6 @@ class FormatManager
 
     /**
      * Format the file size.
-     *
-     * @param int|float $bytes
-     * @param int $precision
-     *
-     * @return string
      */
     public function formatFileSize(int|float $bytes, int $precision = 2): string
     {
@@ -53,11 +42,6 @@ class FormatManager
 
     /**
      * Format the number.
-     *
-     * @param int|float $number
-     * @param int $precision
-     *
-     * @return string
      */
     public function formatNumber(int|float $number, int $precision = 2): string
     {
@@ -65,12 +49,15 @@ class FormatManager
     }
 
     /**
+     * Format the currency.
+     */
+    public function formatCurrency(int|float $amount, string $currencySymbol = 'Rp', int $precision = 0): string
+    {
+        return $currencySymbol.' '.number_format($amount, $precision, ',', '.');
+    }
+
+    /**
      * Format the date.
-     *
-     * @param string $date
-     * @param string $format
-     *
-     * @return string
      */
     public function formatDate(string $date, string $format = 'd-m-Y'): string
     {
@@ -78,9 +65,15 @@ class FormatManager
     }
 
     /**
+     * Format the time.
+     */
+    public function fromFormatDate(string $date, string $format = 'd-m-Y'): Carbon
+    {
+        return Carbon::createFromFormat($format, $date);
+    }
+
+    /**
      * Get the file upload types.
-     *
-     * @return array
      */
     public function getFileUploadTypes(): array
     {
@@ -92,8 +85,6 @@ class FormatManager
 
     /**
      * Get the file extensions.
-     *
-     * @return array
      */
     public function getFileExtensions(): array
     {
@@ -102,13 +93,12 @@ class FormatManager
             static::$fileExtensions
         );
         $content = array_map('strtoupper', $fileTypes);
+
         return array_combine($fileTypes, $content);
     }
 
     /**
      * Get the image file extensions.
-     *
-     * @return array
      */
     public function getImageExtensions(): array
     {
@@ -120,8 +110,6 @@ class FormatManager
 
     /**
      * Get the server's maximum upload size in bytes.
-     *
-     * @return int
      */
     public function getServerMaxUploadSize(): int
     {
@@ -131,22 +119,18 @@ class FormatManager
             $serverMaxUploadSize,
             $serverMaxPostSize
         );
+
         return (int) preg_replace('/[^0-9]/', '', $serverThreshold) * 1024;
     }
 
     /**
      * Get the maximum upload size options.
-     *
-     * @param int $serverThreshold
-     * @param int $step
-     *
-     * @return array
      */
     public function uploadSizeOptions(int $serverThreshold, int $step = 1024): array
     {
         $maxSizeOptions = [];
         foreach (range(1024, $serverThreshold, $step) as $size) {
-            $maxSizeOptions[$size] = $size . ' KB';
+            $maxSizeOptions[$size] = $size.' KB';
         }
 
         return $maxSizeOptions;
