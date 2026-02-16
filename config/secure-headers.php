@@ -1,14 +1,13 @@
 <?php
 
 return [
-
     'enable' => [
-        'headers' => env('SECURE_HEADERS_ENABLED', false),
+        'headers'     => env('SECURE_HEADERS_ENABLED', false),
         'permissions' => env('PERMISSIONS_POLICY_ENABLED', false),
     ],
 
     'headers' => [
-        /**
+        /*
          * Server
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Server
@@ -17,7 +16,7 @@ return [
          */
         'server' => env('APP_NAME', 'Laravel'),
 
-        /**
+        /*
          * X-Content-Type-Options
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
@@ -26,7 +25,7 @@ return [
          */
         'x-content-type-options' => 'nosniff',
 
-        /**
+        /*
          * X-DNS-Prefetch-Control
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control
@@ -35,7 +34,7 @@ return [
          */
         'x-dns-prefetch-control' => 'on',
 
-        /**
+        /*
          * X-Download-Options
          *
          * @see https://msdn.microsoft.com/en-us/library/jj542450(v=vs.85).aspx
@@ -44,7 +43,7 @@ return [
          */
         'x-download-options' => 'noopen',
 
-        /**
+        /*
          * X-Frame-Options
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
@@ -54,7 +53,7 @@ return [
          */
         'x-frame-options' => 'deny',
 
-        /**
+        /*
          * X-Permitted-Cross-Domain-Policies
          *
          * @see https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/xdomain.html
@@ -63,7 +62,7 @@ return [
          */
         'x-permitted-cross-domain-policies' => 'none',
 
-        /**
+        /*
          * X-Powered-By
          *
          * Note: it will not add to response header if the value is empty string.
@@ -75,7 +74,7 @@ return [
          */
         'x-powered-by' => '',
 
-        /**
+        /*
          * X-XSS-Protection
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
@@ -85,7 +84,7 @@ return [
          */
         'x-xss-protection' => '1; mode=block',
 
-        /**
+        /*
          * Referrer-Policy
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
@@ -95,7 +94,7 @@ return [
          */
         'referrer-policy' => 'no-referrer',
 
-        /**
+        /*
          * Cross-Origin-Embedder-Policy
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy
@@ -104,7 +103,7 @@ return [
          */
         'cross-origin-embedder-policy' => 'unsafe-none',
 
-        /**
+        /*
          * Cross-Origin-Opener-Policy
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy
@@ -113,7 +112,7 @@ return [
          */
         'cross-origin-opener-policy' => 'unsafe-none',
 
-        /**
+        /*
          * Cross-Origin-Resource-Policy
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy
@@ -123,7 +122,7 @@ return [
         'cross-origin-resource-policy' => 'cross-origin',
     ],
 
-    /**
+    /*
      * Permissions Policy
      *
      * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
@@ -492,5 +491,4 @@ return [
             'origins' => [],
         ],
     ],
-
 ];

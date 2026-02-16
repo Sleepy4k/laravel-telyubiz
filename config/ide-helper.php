@@ -1,7 +1,9 @@
 <?php
 
-return [
+use Illuminate\Http\Client\Factory;
+use Illuminate\Http\Client\PendingRequest;
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Filename
@@ -93,7 +95,7 @@ return [
     |
     */
 
-    'write_model_relation_count_properties' => true,
+    'write_model_relation_count_properties'  => true,
     'write_model_relation_exists_properties' => false,
 
     /*
@@ -124,8 +126,8 @@ return [
     'include_helpers' => false,
 
     'helper_files' => [
-        base_path().'/vendor/laravel/framework/src/Illuminate/Support/helpers.php',
-        base_path().'/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php',
+        base_path() . '/vendor/laravel/framework/src/Illuminate/Support/helpers.php',
+        base_path() . '/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php',
     ],
 
     /*
@@ -184,7 +186,7 @@ return [
 
     'extra' => [
         'Eloquent' => ['Illuminate\Database\Eloquent\Builder', 'Illuminate\Database\Query\Builder'],
-        'Session' => ['Illuminate\Session\Store'],
+        'Session'  => ['Illuminate\Session\Store'],
     ],
 
     'magic' => [],
@@ -287,7 +289,7 @@ return [
     |
     */
     'macro_default_return_types' => [
-        Illuminate\Http\Client\Factory::class => Illuminate\Http\Client\PendingRequest::class,
+        Factory::class => PendingRequest::class,
     ],
 
     /*
@@ -350,5 +352,4 @@ return [
     'post_migrate' => [
         // 'ide-helper:models --nowrite',
     ],
-
 ];

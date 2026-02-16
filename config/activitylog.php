@@ -1,10 +1,9 @@
 <?php
 
-return [
+use Spatie\Activitylog\Models\Activity;
 
-    /*
-     * If set to false, no activities will be saved to the database.
-     */
+return [
+    // If set to false, no activities will be saved to the database.
     'enabled' => env('ACTIVITY_LOGGER_ENABLED', true),
 
     /*
@@ -25,9 +24,7 @@ return [
      */
     'default_auth_driver' => null,
 
-    /*
-     * If set to true, the subject returns soft deleted models.
-     */
+    // If set to true, the subject returns soft deleted models.
     'subject_returns_soft_deleted_models' => false,
 
     /*
@@ -35,7 +32,7 @@ return [
      * It should implement the Spatie\Activitylog\Contracts\Activity interface
      * and extend Illuminate\Database\Eloquent\Model.
      */
-    'activity_model' => \Spatie\Activitylog\Models\Activity::class,
+    'activity_model' => Activity::class,
 
     /*
      * This is the name of the table that will be created by the migration and

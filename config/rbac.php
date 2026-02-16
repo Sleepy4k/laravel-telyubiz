@@ -1,7 +1,7 @@
 <?php
 
 return [
-    /* Configurations for application */
+    // Configurations for application
     'role' => [
         // Default role assigned to users when they are created
         // This should match the default role in your RBAC configuration
@@ -13,7 +13,7 @@ return [
         'highest' => 'admin',
     ],
 
-    /* List of roles and permissions */
+    // List of roles and permissions
     'list' => [
         'roles' => [
             'admin',
@@ -21,27 +21,23 @@ return [
             'user',
         ],
         'permissions' => [
-
         ],
     ],
 
-    /* Roles that can assign other roles */
+    // Roles that can assign other roles
     'assign' => [
-        'admin' => ['admin', 'committee', 'user'],
+        'admin'     => ['admin', 'committee', 'user'],
         'committee' => ['committee', 'user'],
-        'user' => ['user'],
+        'user'      => ['user'],
     ],
 
-    /* Permissions for each role */
+    // Permissions for each role
     'permissions' => [
         'admin' => [
-
         ],
         'committee' => [
-
         ],
         'user' => [
-
         ],
     ],
 ];

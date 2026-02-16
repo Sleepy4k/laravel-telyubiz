@@ -4,7 +4,6 @@ use GuzzleHttp\RequestOptions;
 use Spatie\Sitemap\Crawler\Profile;
 
 return [
-
     /*
      * These options will be passed to GuzzleHttp\Client when it is created.
      * For in-depth information on all options see the Guzzle docs:
@@ -12,10 +11,7 @@ return [
      * http://docs.guzzlephp.org/en/stable/request-options.html
      */
     'guzzle_options' => [
-
-        /*
-         * Whether or not cookies are used in a request.
-         */
+        // Whether or not cookies are used in a request.
         RequestOptions::COOKIES => true,
 
         /*
@@ -24,14 +20,10 @@ return [
          */
         RequestOptions::CONNECT_TIMEOUT => 10,
 
-        /*
-         * The timeout of the request in seconds. Use 0 to wait indefinitely.
-         */
+        // The timeout of the request in seconds. Use 0 to wait indefinitely.
         RequestOptions::TIMEOUT => 10,
 
-        /*
-         * Describes the redirect behavior of a request.
-         */
+        // Describes the redirect behavior of a request.
         RequestOptions::ALLOW_REDIRECTS => false,
     ],
 
@@ -53,5 +45,4 @@ return [
      * which urls should be crawled for the sitemap.
      */
     'crawl_profile' => Profile::class,
-
 ];

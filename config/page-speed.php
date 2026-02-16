@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Enable Laravel Page Speed
@@ -11,7 +10,7 @@ return [
     | You would probably replace that in your local configuration to get a readable output.
     |
     */
-    'enable' => ! env('APP_DEBUG', false),
+    'enable' => !env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -24,25 +23,25 @@ return [
     'middleware' => [
         'collapse_whitespace' => [
             'enable' => true,
-            'regex' => [
-                "/\n([\S])/" => '$1',
-                "/\r/" => '',
-                "/\n/" => '',
-                "/\t/" => '',
-                '/ +/' => ' ',
-                '/> +</' => '><',
+            'regex'  => [
+                "/\n([\\S])/" => '$1',
+                "/\r/"        => '',
+                "/\n/"        => '',
+                "/\t/"        => '',
+                '/ +/'        => ' ',
+                '/> +</'      => '><',
             ],
         ],
         'defer_javascript' => [
             'enable' => false,
-            'regex' => [
+            'regex'  => [
                 '/<script(?=[^>]+src[^>]+)((?![^>]+defer|data-pagespeed-no-defer[^>]+)[^>]+)/i' => '<script $1 defer',
             ],
         ],
         'elide_attributes' => [
             'enable' => true,
-            'regex' => [
-                '/ method=("get"|get)/' => '',
+            'regex'  => [
+                '/ method=("get"|get)/'   => '',
                 '/ disabled=[^ >]*(.*?)/' => ' disabled',
                 '/ selected=[^ >]*(.*?)/' => ' selected',
             ],
@@ -55,7 +54,7 @@ return [
         ],
         'remove_comments' => [
             'enable' => false, // disabled due beta version
-            'regex' => [
+            'regex'  => [
                 // Remove HTML comments, but not conditional comments or IE hacks
                 '/<!--(?!\[if|\s*\]).*?-->/s' => '',
                 // Remove CSS comments, but not inside url() or data URIs
@@ -69,24 +68,24 @@ return [
         ],
         'remove_quotes' => [
             'enable' => true,
-            'regex' => [
-                '/ src="(.\S*?)"/' => ' src=$1',
-                '/ width="(.\S*?)"/' => ' width=$1',
-                '/ height="(.\S*?)"/' => ' height=$1',
-                '/ name="(.\S*?)"/' => ' name=$1',
-                '/ charset="(.\S*?)"/' => ' charset=$1',
-                '/ align="(.\S*?)"/' => ' align=$1',
-                '/ border="(.\S*?)"/' => ' border=$1',
+            'regex'  => [
+                '/ src="(.\S*?)"/'         => ' src=$1',
+                '/ width="(.\S*?)"/'       => ' width=$1',
+                '/ height="(.\S*?)"/'      => ' height=$1',
+                '/ name="(.\S*?)"/'        => ' name=$1',
+                '/ charset="(.\S*?)"/'     => ' charset=$1',
+                '/ align="(.\S*?)"/'       => ' align=$1',
+                '/ border="(.\S*?)"/'      => ' border=$1',
                 '/ crossorigin="(.\S*?)"/' => ' crossorigin=$1',
-                '/ type="(.\S*?)"/' => ' type=$1',
+                '/ type="(.\S*?)"/'        => ' type=$1',
             ],
         ],
         'trim_urls' => [
             'enable' => true,
-            'regex' => '/https?:/',
+            'regex'  => '/https?:/',
         ],
         'minify_javascript' => [
-            'enable' => false, // disabled due beta version
+            'enable'             => false, // disabled due beta version
             'preserve_variables' => [], // Variables to preserve from minification
             'preserve_functions' => ['select2'], // Function names to preserve from minification
         ],

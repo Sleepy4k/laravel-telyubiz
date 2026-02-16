@@ -1,9 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Boost Master Switch
@@ -42,10 +39,9 @@ return [
     */
 
     'executable_paths' => [
-        'php' => env('BOOST_PHP_EXECUTABLE_PATH'),
-        'composer' => env('BOOST_COMPOSER_EXECUTABLE_PATH'),
-        'npm' => env('BOOST_NPM_EXECUTABLE_PATH'),
+        'php'        => env('BOOST_PHP_EXECUTABLE_PATH'),
+        'composer'   => env('BOOST_COMPOSER_EXECUTABLE_PATH'),
+        'npm'        => env('BOOST_NPM_EXECUTABLE_PATH'),
         'vendor_bin' => env('BOOST_VENDOR_BIN_EXECUTABLE_PATH'),
     ],
-
 ];
