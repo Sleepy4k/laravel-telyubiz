@@ -11,7 +11,7 @@ return [
     | You would probably replace that in your local configuration to get a readable output.
     |
     */
-    'enable' => !env('APP_DEBUG', false),
+    'enable' => ! env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,15 +29,15 @@ return [
                 "/\r/" => '',
                 "/\n/" => '',
                 "/\t/" => '',
-                "/ +/" => ' ',
-                "/> +</" => '><',
-            ]
+                '/ +/' => ' ',
+                '/> +</' => '><',
+            ],
         ],
         'defer_javascript' => [
             'enable' => false,
             'regex' => [
                 '/<script(?=[^>]+src[^>]+)((?![^>]+defer|data-pagespeed-no-defer[^>]+)[^>]+)/i' => '<script $1 defer',
-            ]
+            ],
         ],
         'elide_attributes' => [
             'enable' => true,
@@ -45,7 +45,7 @@ return [
                 '/ method=("get"|get)/' => '',
                 '/ disabled=[^ >]*(.*?)/' => ' disabled',
                 '/ selected=[^ >]*(.*?)/' => ' selected',
-            ]
+            ],
         ],
         'inline_css' => [
             'enable' => true,
@@ -65,7 +65,7 @@ return [
                 '/(?<!https:|http:|file:|ftp:)\/\/[^\n\r]*/' => '',
                 // Remove JS multi-line comments, but not inside strings or regex
                 '/\/\*(?!\!)[\s\S]*?\*\//' => '',
-            ]
+            ],
         ],
         'remove_quotes' => [
             'enable' => true,
@@ -79,11 +79,11 @@ return [
                 '/ border="(.\S*?)"/' => ' border=$1',
                 '/ crossorigin="(.\S*?)"/' => ' crossorigin=$1',
                 '/ type="(.\S*?)"/' => ' type=$1',
-            ]
+            ],
         ],
         'trim_urls' => [
             'enable' => true,
-            'regex' => '/https?:/'
+            'regex' => '/https?:/',
         ],
         'minify_javascript' => [
             'enable' => false, // disabled due beta version
