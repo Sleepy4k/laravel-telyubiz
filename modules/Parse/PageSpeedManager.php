@@ -2,6 +2,8 @@
 
 namespace Modules\Parse;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -9,37 +11,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class PageSpeedManager
 {
     /**
-     * Store HTML content.
-     */
-    private $html = '';
-
-    /**
-     * Store class attributes.
-     */
-    private $class = [];
-
-    /**
-     * Store style attributes.
-     */
-    private $style = [];
-
-    /**
-     * Store inline styles.
-     */
-    private $inline = [];
-
-    /**
-     * Store global variable mapping for consistent minification across script tags
-     */
-    private $globalVariableMap = [];
-
-    /**
-     * Store global function mapping for consistent minification across script tags
-     */
-    private $globalFunctionMap = [];
-
-    /**
-     * Is Laravel Page Speed enabled
+     * Is Laravel Page Speed enabled.
      *
      * @var bool
      */
@@ -55,16 +27,34 @@ class PageSpeedManager
         'link', 'meta', 'param', 'source', 'track', 'wbr',
     ];
 
+    /** Store HTML content. */
+    private $html = '';
+
+    /** Store class attributes. */
+    private $class = [];
+
+    /** Store style attributes. */
+    private $style = [];
+
+    /** Store inline styles. */
+    private $inline = [];
+
+    /** Store global variable mapping for consistent minification across script tags */
+    private $globalVariableMap = [];
+
+    /** Store global function mapping for consistent minification across script tags */
+    private $globalFunctionMap = [];
+
     /**
-     * Should Process
+     * Should Process.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
+     * @param  Request  $request
+     * @param  Response $response
      * @return bool
      */
     public function shouldProcessPageSpeed($request, $response)
     {
-        if (! $this->isEnable()) {
+        if (!$this->isEnable()) {
             return false;
         }
 
@@ -86,9 +76,9 @@ class PageSpeedManager
     }
 
     /**
-     * Parse content and apply Page Speed optimizations
+     * Parse content and apply Page Speed optimizations.
      *
-     * @param  string  $content
+     * @param  string $content
      * @return string
      */
     public function parseContent($content)
@@ -102,7 +92,7 @@ class PageSpeedManager
         if ($options['elide_attributes']['enable']) {
             $content = $this->replace(
                 $options['elide_attributes']['regex'],
-                $content
+                $content,
             );
         }
 
@@ -114,7 +104,7 @@ class PageSpeedManager
         if ($options['remove_comments']['enable']) {
             $content = $this->replace(
                 $options['remove_comments']['regex'],
-                $content
+                $content,
             );
         }
 
@@ -122,14 +112,14 @@ class PageSpeedManager
         if ($options['minify_javascript']['enable']) {
             $content = $this->implementJavaScriptMinification(
                 $content,
-                $options['minify_javascript']
+                $options['minify_javascript'],
             );
         }
 
         if ($options['collapse_whitespace']['enable']) {
             $content = $this->replace(
                 $options['collapse_whitespace']['regex'],
-                $content
+                $content,
             );
         }
 
@@ -138,21 +128,21 @@ class PageSpeedManager
                 ['a', 'img', 'link', 'script', 'iframe', 'source', 'video', 'audio'],
                 $options['trim_urls']['regex'],
                 '',
-                $content
+                $content,
             );
         }
 
         if ($options['remove_quotes']['enable']) {
             $content = $this->replace(
                 $options['remove_quotes']['regex'],
-                $content
+                $content,
             );
         }
 
         if ($options['defer_javascript']['enable']) {
             $content = $this->replace(
                 $options['defer_javascript']['regex'],
-                $content
+                $content,
             );
         }
 
@@ -160,13 +150,13 @@ class PageSpeedManager
     }
 
     /**
-     * Check Laravel Page Speed is enabled or not
+     * Check Laravel Page Speed is enabled or not.
      *
      * @return bool
      */
     protected function isEnable()
     {
-        if (! is_null(static::$isEnabled)) {
+        if (!is_null(static::$isEnabled)) {
             return static::$isEnabled;
         }
 
@@ -178,7 +168,7 @@ class PageSpeedManager
     /**
      * Replace content response.
      *
-     * @param  string  $buffer
+     * @param  string $buffer
      * @return string
      */
     protected function replace(array $replace, $buffer)
@@ -187,11 +177,11 @@ class PageSpeedManager
     }
 
     /**
-     * Match all occurrences of the html tags given
+     * Match all occurrences of the html tags given.
      *
-     * @param  array  $tags  Html tags to match in the given buffer
-     * @param  string  $buffer  Middleware response buffer
-     * @return array $matches Html tags found in the buffer
+     * @param  array  $tags   Html tags to match in the given buffer
+     * @param  string $buffer Middleware response buffer
+     * @return array  $matches Html tags found in the buffer
      */
     protected function matchAllHtmlTag(array $tags, string $buffer): array
     {
@@ -200,17 +190,17 @@ class PageSpeedManager
 
         return array_merge(
             $this->matchTags($voidTags, '/\<\s*(%tags)[^>]*\>/', $buffer),
-            $this->matchTags($normalTags, '/\<\s*(%tags)[^>]*\>((.|\n)*?)\<\s*\/\s*(%tags)\>/', $buffer)
+            $this->matchTags($normalTags, '/\<\s*(%tags)[^>]*\>((.|\n)*?)\<\s*\/\s*(%tags)\>/', $buffer),
         );
     }
 
     /**
-     * Match occurrences of the html tags given
+     * Match occurrences of the html tags given.
      *
-     * @param  array  $tags  Html tags to match in the given buffer
-     * @param  string  $pattern  Regex pattern to match the html tags
-     * @param  string  $buffer  Middleware response buffer
-     * @return array $matches Html tags found in the buffer
+     * @param  array  $tags    Html tags to match in the given buffer
+     * @param  string $pattern Regex pattern to match the html tags
+     * @param  string $buffer  Middleware response buffer
+     * @return array  $matches Html tags found in the buffer
      */
     protected function matchTags(array $tags, string $pattern, string $buffer): array
     {
@@ -226,12 +216,12 @@ class PageSpeedManager
     }
 
     /**
-     * Replace occurrences of regex pattern inside of given HTML tags
+     * Replace occurrences of regex pattern inside of given HTML tags.
      *
-     * @param  array  $tags  Html tags to match and run regex to replace occurrences
-     * @param  string  $regex  Regex rule to match on the given HTML tags
-     * @param  string  $replace  Content to replace
-     * @param  string  $buffer  Middleware response buffer
+     * @param  array  $tags    Html tags to match and run regex to replace occurrences
+     * @param  string $regex   Regex rule to match on the given HTML tags
+     * @param  string $replace Content to replace
+     * @param  string $buffer  Middleware response buffer
      * @return string $buffer Middleware response buffer
      */
     protected function replaceInsideHtmlTags(array $tags, string $regex, string $replace, string $buffer): string
@@ -247,12 +237,9 @@ class PageSpeedManager
     }
 
     /**
-     * Replace occurrences of regex pattern inside of given HTML tags
+     * Replace occurrences of regex pattern inside of given HTML tags.
      *
-     * @param  array  $tags  Html tags to match and run regex to replace occurrences
-     * @param  string  $regex  Regex rule to match on the given HTML tags
-     * @param  string  $replace  Content to replace
-     * @param  string  $buffer  Middleware response buffer
+     * @param  mixed  $content
      * @return string $buffer Middleware response buffer
      */
     private function implementDnsPrefetch($content)
@@ -261,14 +248,14 @@ class PageSpeedManager
             '#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#',
             $content,
             $matches,
-            PREG_OFFSET_CAPTURE
+            PREG_OFFSET_CAPTURE,
         );
 
-        $dnsPrefetch = collect($matches[0])->map(function ($item) {
+        $dnsPrefetch = collect($matches[0])->map(function($item) {
             $domain = $this->replace(['/https:/' => '', '/http:/' => ''], $item[0]);
             $domain = explode(
                 '/',
-                str_replace('//', '', $domain)
+                str_replace('//', '', $domain),
             );
 
             return "<link rel=\"dns-prefetch\" href=\"//{$domain[0]}\">";
@@ -282,9 +269,9 @@ class PageSpeedManager
     }
 
     /**
-     * Implement inline CSS
+     * Implement inline CSS.
      *
-     * @param  string  $content
+     * @param  string $content
      * @return string
      */
     private function implementInlineCss($content)
@@ -295,12 +282,10 @@ class PageSpeedManager
             '#style="(.*?)"#',
             $this->html,
             $matches,
-            PREG_OFFSET_CAPTURE
+            PREG_OFFSET_CAPTURE,
         );
 
-        $this->class = collect($matches[1])->mapWithKeys(function ($item) {
-            return ['page_speed_'.rand() => $item[0]];
-        })->unique();
+        $this->class = collect($matches[1])->mapWithKeys(static fn($item) => ['page_speed_' . rand() => $item[0]])->unique();
 
         return $this->injectStyle()
             ->injectClass()
@@ -309,25 +294,24 @@ class PageSpeedManager
     }
 
     /**
-     * Replace style attributes with class attributes
+     * Replace style attributes with class attributes.
      *
      * @return $this
      */
     private function injectStyle()
     {
-        collect($this->class)->each(function ($attributes, $class) {
-
+        collect($this->class)->each(function($attributes, $class): void {
             $this->inline[] = ".{$class}{ {$attributes} }";
 
             $this->style[] = [
-                'class' => $class,
+                'class'      => $class,
                 'attributes' => preg_quote($attributes, '/')];
         });
 
         $injectStyle = implode(' ', $this->inline);
 
         $replace = [
-            '#</head>(.*?)#' => "\n<style nonce=\"".app('csp-nonce')."\"> {$injectStyle}</style>\n</head>",
+            '#</head>(.*?)#' => "\n<style nonce=\"" . app('csp-nonce') . "\"> {$injectStyle}</style>\n</head>",
         ];
 
         $this->html = $this->replace($replace, $this->html);
@@ -336,15 +320,15 @@ class PageSpeedManager
     }
 
     /**
-     * Replace style attributes with class attributes
+     * Replace style attributes with class attributes.
      *
      * @return $this
      */
     private function injectClass()
     {
-        collect($this->style)->each(function ($item) {
+        collect($this->style)->each(function($item): void {
             $replace = [
-                '/style="'.$item['attributes'].'"/' => "class=\"{$item['class']}\"",
+                '/style="' . $item['attributes'] . '"/' => "class=\"{$item['class']}\"",
             ];
 
             $this->html = $this->replace($replace, $this->html);
@@ -354,7 +338,7 @@ class PageSpeedManager
     }
 
     /**
-     * Fix HTML structure
+     * Fix HTML structure.
      *
      * @return $this
      */
@@ -372,13 +356,13 @@ class PageSpeedManager
 
             if (count($matches[1]) > 1) {
                 $replace = [
-                    '/>/' => 'class="'.implode(' ', $matches[1]).'">',
+                    '/>/' => 'class="' . implode(' ', $matches[1]) . '">',
                 ];
 
                 $newHTML[] = str_replace(
                     '  ',
                     ' ',
-                    $this->replace($replace, $this->replace($replaceClass, $value))
+                    $this->replace($replace, $this->replace($replaceClass, $value)),
                 );
             } else {
                 $newHTML[] = $value;
@@ -391,9 +375,9 @@ class PageSpeedManager
     }
 
     /**
-     * Implement JavaScript minification
+     * Implement JavaScript minification.
      *
-     * @param  string  $content
+     * @param  string $content
      * @param  array  $options
      * @return string
      */
@@ -435,7 +419,7 @@ class PageSpeedManager
             $jsCode = $match[2];
 
             // Skip if script tag has src attribute or is empty
-            if (empty(trim($jsCode)) || strpos($attributes, 'src=') !== false) {
+            if (empty(trim($jsCode)) || str_contains($attributes, 'src=')) {
                 continue;
             }
 
@@ -443,7 +427,7 @@ class PageSpeedManager
             $minifiedJs = $this->minifyJavaScript($jsCode, $options);
 
             // Replace the original script with minified version
-            $minifiedTag = '<script'.$attributes.'>'.$minifiedJs.'</script>';
+            $minifiedTag = '<script' . $attributes . '>' . $minifiedJs . '</script>';
             $content = str_replace($fullTag, $minifiedTag, $content);
         }
 
@@ -451,9 +435,9 @@ class PageSpeedManager
     }
 
     /**
-     * Minify JavaScript code
+     * Minify JavaScript code.
      *
-     * @param  string  $jsCode
+     * @param  string $jsCode
      * @param  array  $options
      * @return string
      */
@@ -482,15 +466,13 @@ class PageSpeedManager
         $jsCode = preg_replace('/;(\s*})/', '$1', $jsCode);
 
         // Trim whitespace
-        $jsCode = trim($jsCode);
-
-        return $jsCode;
+        return trim($jsCode);
     }
 
     /**
-     * Minify variable and function names using global mappings
+     * Minify variable and function names using global mappings.
      *
-     * @param  string  $jsCode
+     * @param  string $jsCode
      * @param  array  $preserveVars
      * @param  array  $preserveFuncs
      * @return string
@@ -499,15 +481,15 @@ class PageSpeedManager
     {
         // Apply global variable mappings
         foreach ($this->globalVariableMap as $originalName => $minifiedName) {
-            if (! in_array($originalName, $preserveVars)) {
-                $jsCode = preg_replace('/\b'.preg_quote($originalName, '/').'\b/', $minifiedName, $jsCode);
+            if (!in_array($originalName, $preserveVars)) {
+                $jsCode = preg_replace('/\b' . preg_quote($originalName, '/') . '\b/', $minifiedName, $jsCode);
             }
         }
 
         // Apply global function mappings
         foreach ($this->globalFunctionMap as $originalName => $minifiedName) {
-            if (! in_array($originalName, $preserveFuncs)) {
-                $jsCode = preg_replace('/\b'.preg_quote($originalName, '/').'\b/', $minifiedName, $jsCode);
+            if (!in_array($originalName, $preserveFuncs)) {
+                $jsCode = preg_replace('/\b' . preg_quote($originalName, '/') . '\b/', $minifiedName, $jsCode);
             }
         }
 
@@ -515,9 +497,9 @@ class PageSpeedManager
     }
 
     /**
-     * Extract variables from JavaScript code
+     * Extract variables from JavaScript code.
      *
-     * @param  string  $jsCode
+     * @param  string $jsCode
      * @return array
      */
     private function extractVariables($jsCode)
@@ -529,9 +511,9 @@ class PageSpeedManager
     }
 
     /**
-     * Extract functions from JavaScript code
+     * Extract functions from JavaScript code.
      *
-     * @param  string  $jsCode
+     * @param  string $jsCode
      * @return array
      */
     private function extractFunctions($jsCode)
@@ -543,14 +525,13 @@ class PageSpeedManager
     }
 
     /**
-     * Create global mappings for variables and functions
+     * Create global mappings for variables and functions.
      *
-     * @param  array  $allVariables
-     * @param  array  $allFunctions
-     * @param  array  $options
-     * @return void
+     * @param array $allVariables
+     * @param array $allFunctions
+     * @param array $options
      */
-    private function createGlobalMappings($allVariables, $allFunctions, $options)
+    private function createGlobalMappings($allVariables, $allFunctions, $options): void
     {
         $preserveVars = $options['preserve_variables'] ?? [];
         $preserveFuncs = $options['preserve_functions'] ?? [];
@@ -559,13 +540,9 @@ class PageSpeedManager
         $allVariables = array_unique($allVariables);
         $allFunctions = array_unique($allFunctions);
 
-        $filteredVars = array_filter($allVariables, function ($var) use ($preserveVars) {
-            return ! in_array($var, $preserveVars) && ! $this->isReservedKeyword($var);
-        });
+        $filteredVars = array_filter($allVariables, fn($var) => !in_array($var, $preserveVars) && !$this->isReservedKeyword($var));
 
-        $filteredFuncs = array_filter($allFunctions, function ($func) use ($preserveFuncs) {
-            return ! in_array($func, $preserveFuncs) && ! $this->isReservedKeyword($func);
-        });
+        $filteredFuncs = array_filter($allFunctions, fn($func) => !in_array($func, $preserveFuncs) && !$this->isReservedKeyword($func));
 
         // Generate short names for all items
         $totalCount = count($filteredVars) + count($filteredFuncs);
@@ -584,9 +561,9 @@ class PageSpeedManager
     }
 
     /**
-     * Generate short variable names
+     * Generate short variable names.
      *
-     * @param  int  $count
+     * @param  int   $count
      * @return array
      */
     private function generateShortNames($count)
@@ -607,7 +584,7 @@ class PageSpeedManager
             // Double letter names
             for ($i = 0; $i < 26; $i++) {
                 for ($j = 0; $j < 26; $j++) {
-                    $names[] = $alphabet[$i].$alphabet[$j];
+                    $names[] = $alphabet[$i] . $alphabet[$j];
                 }
             }
 
@@ -615,7 +592,7 @@ class PageSpeedManager
             for ($i = 0; $i < 26; $i++) {
                 for ($j = 0; $j < 26; $j++) {
                     for ($k = 0; $k < 26; $k++) {
-                        $names[] = $alphabet[$i].$alphabet[$j].$alphabet[$k];
+                        $names[] = $alphabet[$i] . $alphabet[$j] . $alphabet[$k];
                     }
                 }
             }
@@ -628,9 +605,9 @@ class PageSpeedManager
     }
 
     /**
-     * Check if a name is a reserved JavaScript keyword
+     * Check if a name is a reserved JavaScript keyword.
      *
-     * @param  string  $name
+     * @param  string $name
      * @return bool
      */
     private function isReservedKeyword($name)

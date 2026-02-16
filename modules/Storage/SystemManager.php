@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 class SystemManager
 {
-    /**
-     * Indicates if the application is in production.
-     */
+    /** Indicates if the application is in production. */
     private bool $isProduction;
 
     /**

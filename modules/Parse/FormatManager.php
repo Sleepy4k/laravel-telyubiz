@@ -6,21 +6,15 @@ use Illuminate\Support\Carbon;
 
 class FormatManager
 {
-    /**
-     * The size units.
-     */
+    /** The size units. */
     protected static array $sizeUnits = ['B', 'KB', 'MB', 'GB', 'TB'];
 
-    /**
-     * The image file extensions.
-     */
+    /** The image file extensions. */
     protected static array $imageExtensions = [
         'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'tiff', 'ico',
     ];
 
-    /**
-     * The file extensions.
-     */
+    /** The file extensions. */
     protected static array $fileExtensions = [
         'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ods', 'odp', 'rtf', 'txt', 'csv',
         'zip', 'rar', '7z', 'tar', 'gz',
@@ -29,7 +23,7 @@ class FormatManager
     /**
      * Format the file size.
      */
-    public function formatFileSize(int|float $bytes, int $precision = 2): string
+    public function formatFileSize(float|int $bytes, int $precision = 2): string
     {
         $bytes = max($bytes, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
@@ -37,13 +31,13 @@ class FormatManager
 
         $bytes /= pow(1024, $pow);
 
-        return round($bytes, $precision).' '.static::$sizeUnits[$pow];
+        return round($bytes, $precision) . ' ' . static::$sizeUnits[$pow];
     }
 
     /**
      * Format the number.
      */
-    public function formatNumber(int|float $number, int $precision = 2): string
+    public function formatNumber(float|int $number, int $precision = 2): string
     {
         return number_format($number, $precision);
     }
@@ -51,9 +45,9 @@ class FormatManager
     /**
      * Format the currency.
      */
-    public function formatCurrency(int|float $amount, string $currencySymbol = 'Rp', int $precision = 0): string
+    public function formatCurrency(float|int $amount, string $currencySymbol = 'Rp', int $precision = 0): string
     {
-        return $currencySymbol.' '.number_format($amount, $precision, ',', '.');
+        return $currencySymbol . ' ' . number_format($amount, $precision, ',', '.');
     }
 
     /**
@@ -79,7 +73,7 @@ class FormatManager
     {
         return [
             'image' => 'Image',
-            'file' => 'File',
+            'file'  => 'File',
         ];
     }
 
@@ -90,7 +84,7 @@ class FormatManager
     {
         $fileTypes = array_merge(
             static::$imageExtensions,
-            static::$fileExtensions
+            static::$fileExtensions,
         );
         $content = array_map('strtoupper', $fileTypes);
 
@@ -104,7 +98,7 @@ class FormatManager
     {
         return array_combine(
             static::$imageExtensions,
-            array_map('strtoupper', static::$imageExtensions)
+            array_map('strtoupper', static::$imageExtensions),
         );
     }
 
@@ -117,7 +111,7 @@ class FormatManager
         $serverMaxPostSize = ini_get('post_max_size');
         $serverThreshold = max(
             $serverMaxUploadSize,
-            $serverMaxPostSize
+            $serverMaxPostSize,
         );
 
         return (int) preg_replace('/[^0-9]/', '', $serverThreshold) * 1024;
@@ -130,7 +124,7 @@ class FormatManager
     {
         $maxSizeOptions = [];
         foreach (range(1024, $serverThreshold, $step) as $size) {
-            $maxSizeOptions[$size] = $size.' KB';
+            $maxSizeOptions[$size] = $size . ' KB';
         }
 
         return $maxSizeOptions;
