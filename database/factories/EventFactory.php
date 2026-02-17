@@ -19,7 +19,7 @@ class EventFactory extends Factory
     public function definition(): array
     {
         $users = User::pluck('id')->toArray();
-        $title = fake()->sentence();
+        $title = fake()->unique()->sentence();
 
         return [
             'created_by'               => fake()->randomElement($users),

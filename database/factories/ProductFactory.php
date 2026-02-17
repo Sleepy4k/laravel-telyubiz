@@ -21,7 +21,7 @@ class ProductFactory extends Factory
     {
         $categories = ProductCategory::pluck('id')->toArray();
         $businesses = Business::pluck('id')->toArray();
-        $name = fake()->word();
+        $name = fake()->unique()->word();
 
         return [
             'business_id' => fake()->randomElement($businesses),

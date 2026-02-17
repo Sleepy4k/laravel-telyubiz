@@ -21,7 +21,7 @@ class BusinessFactory extends Factory
     {
         $users = User::pluck('id')->toArray();
         $categories = BusinessCategory::pluck('id')->toArray();
-        $name = fake()->company();
+        $name = fake()->unique()->company();
 
         return [
             'owner_id'    => fake()->randomElement($users),
