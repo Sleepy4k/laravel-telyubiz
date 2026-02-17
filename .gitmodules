@@ -1,0 +1,3 @@
+[submodule "vendor/telyubiz-cdn"]
+    path = vendor/telyubiz-cdn
+    url = https://github.com/Sleepy4k/fastify-telyubiz-cdn.git
