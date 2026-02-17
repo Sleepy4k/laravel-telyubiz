@@ -33,8 +33,19 @@ Route::prefix('/landing')->name('api.landing.')->group(static function(): void {
 
     Route::prefix('/businesses')->controller(Landing\BusinessController::class)->group(static function(): void {
         Route::get('/', 'index')->name('list-business');
-        Route::get('/{slug}', 'show')->name('detail-business');
-        Route::get('/{slug}/products', 'products')->name('business-products');
+
+        Route::prefix('/{slug}')->group(static function(): void {
+            Route::get('/', 'show')->name('detail-business');
+
+            Route::prefix('/products')->group(static function(): void {
+                Route::get('/', 'products')->name('business-products');
+                Route::get('/categories', 'productCategories')->name('business-product-categories');
+            });
+
+            Route::prefix('/reviews')->group(static function(): void {
+                Route::get('/', 'shopLatestReviews')->name('business-latest-reviews');
+            });
+        });
     });
 });
 
