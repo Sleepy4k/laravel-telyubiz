@@ -71,20 +71,54 @@ class ProductRepository implements IProductRepository
     /**
      * Get popular products by business slug.
      */
-    public function popularProductsByBusiness(string $businessSlug, array $columns = ['*']): ?Collection
+    public function popularProductsByBusiness(string $businessSlug, array $filter = [], array $columns = ['*']): ?Collection
     {
-        return $this->model
+        $products = $this->model
             ->query()
             ->select($columns)
             ->whereHas('business', static function($query) use ($businessSlug): void {
                 $query->where('slug', $businessSlug);
             })
+            ->when(isset($filter['category_id']), static function($query) use ($filter): void {
+                $query->where('category_id', $filter['category_id']);
+            })
             ->with([
+                'business:id,name',
                 'details:product_id,images,discount_active,discount_amount,discount_type,discount_start_date,discount_end_date',
-                'reviews:product_id,order_id,rating',
             ])
+            ->withAvg('reviews', 'rating')
             ->withCount('orders')
-            ->take(8)
             ->get();
+
+        return $products
+            ->map(static function($product) {
+                $ordersCount = $product->orders_count ?? 0;
+                $avgRating = $product->reviews_avg_rating ?? 0;
+
+                $product->popularity_score = ($ordersCount * self::POPULARITY_WEIGHTS['orders']) + ($avgRating * self::POPULARITY_WEIGHTS['rating']);
+
+                return $product;
+            })
+            ->sortByDesc('popularity_score')
+            ->take(8)
+            ->values();
+    }
+
+    /**
+     * Get all product categories from a specific business.
+     */
+    public function getProductCategoriesByBusiness(string $businessSlug): ?Collection
+    {
+        return $this->model
+            ->query()
+            ->select(['id', 'business_id', 'category_id'])
+            ->whereHas('business', static function($query) use ($businessSlug): void {
+                $query->where('slug', $businessSlug);
+            })
+            ->with('category:id,name')
+            ->get()
+            ->pluck('category')
+            ->unique('id')
+            ->values();
     }
 }

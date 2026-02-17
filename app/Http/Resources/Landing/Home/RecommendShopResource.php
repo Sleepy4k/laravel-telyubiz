@@ -16,36 +16,20 @@ class RecommendShopResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name'        => $this->name,
-            'slug'        => $this->slug,
-            'category'    => $this->whenLoaded('category', $this->category ? $this->category->name : null),
-            'address'     => $this->address,
-            'description' => Str::limit($this->description, 60),
-            'order_count' => $this->orders_count,
-            'rating'      => $this->calculateAverageRating(),
-            'logo_url'    => $this->logo_url,
-            'banner_url'  => $this->banner_url,
+            'name'          => $this->name,
+            'slug'          => $this->slug,
+            'category'      => $this->whenLoaded('category', $this->category ? $this->category->name : null),
+            'address'       => $this->address,
+            'description'   => Str::limit($this->description, 60),
+            'total_reviews' => $this->products->sum(static fn($product) => $product->reviews->count()),
+            'rating'        => $this->when($this->relationLoaded('products') && $this->products->isNotEmpty(), function() {
+                $totalRating = $this->products->sum(static fn($product) => $product->reviews->sum('rating'));
+                $totalReviews = $this->products->sum(static fn($product) => $product->reviews->count());
+
+                return $totalReviews > 0 ? round($totalRating / $totalReviews, 1) : 0.0;
+            }, 0.0),
+            'logo_url'   => $this->logo_url,
+            'banner_url' => $this->banner_url,
         ];
-    }
-
-    /**
-     * Calculate the average rating across all products and their reviews.
-     */
-    private function calculateAverageRating(): float
-    {
-        if (!$this->products || $this->products->isEmpty()) {
-            return 0.0;
-        }
-
-        $stats = $this->products->reduce(static function($carry, $product) {
-            $carry['total_rating'] += $product->reviews->sum('rating');
-            $carry['total_reviews'] += $product->reviews->count();
-
-            return $carry;
-        }, ['total_rating' => 0, 'total_reviews' => 0]);
-
-        return $stats['total_reviews'] > 0
-            ? round($stats['total_rating'] / $stats['total_reviews'], 2)
-            : 0.0;
     }
 }

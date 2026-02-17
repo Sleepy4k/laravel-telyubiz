@@ -40,6 +40,14 @@ class Event extends Model
      */
     protected $hidden = [];
 
+    /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'event.cache';
+    }
+
     // Get the user that created the event.
     public function creator(): BelongsTo
     {

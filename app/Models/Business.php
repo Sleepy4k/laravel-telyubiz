@@ -41,6 +41,14 @@ class Business extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'business.cache';
+    }
+
+    /**
      * Get the owner of the business.
      */
     public function owner(): BelongsTo
@@ -77,7 +85,7 @@ class Business extends Model
      */
     public function reviews(): HasManyThrough
     {
-        return $this->hasManyThrough(Review::class, Product::class);
+        return $this->hasManyThrough(Review::class, Product::class, 'business_id', 'product_id', 'id', 'id');
     }
 
     /**

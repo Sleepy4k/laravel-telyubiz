@@ -29,6 +29,14 @@ class ProductCategory extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'product.category.cache';
+    }
+
+    /**
      * Get the products for the category.
      */
     public function products()

@@ -31,6 +31,14 @@ class EventTerm extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'event.term.cache';
+    }
+
+    /**
      * Get the event that owns the term entry.
      */
     public function event(): BelongsTo

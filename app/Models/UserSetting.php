@@ -45,6 +45,14 @@ class UserSetting extends Model
     ];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'user.setting.cache';
+    }
+
+    /**
      * Get the user that owns the detail.
      */
     public function user(): BelongsTo

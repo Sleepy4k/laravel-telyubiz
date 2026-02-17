@@ -30,6 +30,14 @@ class BusinessCategory extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'business.category.cache';
+    }
+
+    /**
      * Get the businesses that belong to the category.
      */
     public function businesses(): HasMany

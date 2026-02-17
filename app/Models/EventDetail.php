@@ -34,6 +34,14 @@ class EventDetail extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'event.detail.cache';
+    }
+
+    /**
      * Get the event that owns the details.
      */
     public function event(): BelongsTo

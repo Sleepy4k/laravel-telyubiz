@@ -36,6 +36,14 @@ class ProductDetail extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'product.detail.cache';
+    }
+
+    /**
      * Get the product that owns the details.
      */
     public function product(): BelongsTo

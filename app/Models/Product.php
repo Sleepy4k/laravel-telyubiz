@@ -38,6 +38,14 @@ class Product extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'product.category.cache';
+    }
+
+    /**
      * Get the business that owns the product.
      */
     public function business(): BelongsTo

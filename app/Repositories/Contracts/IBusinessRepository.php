@@ -26,4 +26,9 @@ interface IBusinessRepository
      * Get details of a shop by slug.
      */
     public function getShopDetails(string $slug, array $columns = ['*']): ?Business;
+
+    /**
+     * Get latest reviews for a shop by slug.
+     */
+    public function getShopLatestReviews(string $slug, int $limit = 5): ?Business;
 }

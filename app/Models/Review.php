@@ -36,6 +36,14 @@ class Review extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'review.cache';
+    }
+
+    /**
      * Get the product that the review belongs to.
      */
     public function product(): BelongsTo

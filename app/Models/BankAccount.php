@@ -32,6 +32,14 @@ class BankAccount extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'bank.account.cache';
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

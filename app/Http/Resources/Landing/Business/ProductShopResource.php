@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Landing\Home;
+namespace App\Http\Resources\Landing\Business;
 
 use App\Facades\Format;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PopularProductResource extends JsonResource
+class ProductShopResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,10 +25,10 @@ class PopularProductResource extends JsonResource
         return [
             'name'          => $this->name,
             'slug'          => $this->slug,
-            'price'         => Format::formatCurrency($this->price, 'Rp'),
-            'rating'        => $this->when($this->relationLoaded('reviews_avg_rating'), round($this->reviews_avg_rating, 1), 0),
-            'order_count'   => $this->when($this->relationLoaded('orders_count'), $this->orders_count, 0),
             'business_name' => $this->when($this->relationLoaded('business'), $this->business->name),
+            'price'         => Format::formatCurrency($this->price, 'Rp'),
+            'order_count'   => $this->when($this->relationLoaded('orders_count'), $this->orders_count, 0),
+            'rating'        => $this->when($this->relationLoaded('reviews_avg_rating'), round($this->reviews_avg_rating, 1), 0),
             'image_url'     => $this->when($hasDetails && $this->details->images, $this->details->images[0] ?? null),
             'is_discounted' => $isDiscounted,
             'discount'      => $this->when($isDiscounted, function() {

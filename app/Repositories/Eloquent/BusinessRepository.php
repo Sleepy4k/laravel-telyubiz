@@ -147,4 +147,36 @@ class BusinessRepository implements IBusinessRepository
             ->withAvg('reviews', 'rating')
             ->first();
     }
+
+    /**
+     * Get latest reviews for a shop by slug.
+     */
+    public function getShopLatestReviews(string $slug, int $limit = 5): ?Business
+    {
+        $limit = max(1, min($limit, 10));
+
+        return $this->model
+            ->query()
+            ->select(['id'])
+            ->where('slug', $slug)
+            ->whereHas('orders', static function($q) use ($slug): void {
+                $q->whereHas('business', static function($q2) use ($slug): void {
+                    $q2->where('slug', $slug);
+                });
+            })
+            ->with([
+                'products:id,business_id,name',
+                'reviews' => static function($q) use ($limit): void {
+                    $q->select(['reviews.product_id', 'reviews.user_id', 'reviews.rating', 'reviews.comment', 'reviews.images', 'reviews.is_visible', 'reviews.created_at'])
+                        ->where('reviews.is_visible', true)
+                        ->latest()
+                        ->limit($limit)
+                        ->with([
+                            'user:id,name',
+                            'user.details:id,user_id,profile_picture_url',
+                        ]);
+                },
+            ])
+            ->first();
+    }
 }

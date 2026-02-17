@@ -30,6 +30,14 @@ class EventParticipant extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'event.participant.cache';
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

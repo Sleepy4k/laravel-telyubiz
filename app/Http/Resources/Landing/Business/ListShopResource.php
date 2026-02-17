@@ -22,7 +22,7 @@ class ListShopResource extends JsonResource
             'description'    => Str::limit($this->description, 60),
             'category'       => $this->when($this->category, $this->category->name, null),
             'total_reviews'  => $this->reviews_count ?? 0,
-            'average_rating' => $this->reviews_avg_rating ?? 0.0,
+            'average_rating' => $this->when($this->reviews_avg_rating, round($this->reviews_avg_rating, 1), 0.0),
             'logo_url'       => $this->logo_url,
             'banner_url'     => $this->banner_url,
         ];

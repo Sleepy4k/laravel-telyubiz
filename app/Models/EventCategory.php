@@ -30,6 +30,14 @@ class EventCategory extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'event.category.cache';
+    }
+
+    /**
      * Get the events that belong to the category.
      */
     public function events(): BelongsToMany

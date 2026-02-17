@@ -31,6 +31,14 @@ class EventHasCategory extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'event.has.category.cache';
+    }
+
+    /**
      * Get the event that belongs to the category.
      */
     public function event(): BelongsTo

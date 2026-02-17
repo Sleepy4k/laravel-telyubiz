@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Landing\Business\DetailShopResource;
+use App\Http\Resources\Landing\Business\LatestReviewShopResource;
 use App\Http\Resources\Landing\Business\ListShopResource;
+use App\Http\Resources\Landing\Business\ProductCategoryResource;
+use App\Http\Resources\Landing\Business\ProductShopResource;
 use App\Repositories\Eloquent\BusinessRepository;
 use App\Repositories\Eloquent\ProductRepository;
 use Illuminate\Http\JsonResponse;
@@ -54,9 +57,13 @@ class BusinessController extends Controller
         return Response::success('Business details retrieved successfully', new DetailShopResource($business));
     }
 
+    /**
+     * Display a listing of products for the specified business.
+     */
     public function products(Request $request, string $slug, ProductRepository $productRepository): JsonResponse
     {
-        $products = $productRepository->popularProductsByBusiness($slug, [
+        $filter = $request->only(['category_id']);
+        $products = $productRepository->popularProductsByBusiness($slug, $filter, [
             'id',
             'business_id',
             'category_id',
@@ -69,6 +76,35 @@ class BusinessController extends Controller
             return Response::error('Business not found', 404);
         }
 
-        return Response::success('Products retrieved successfully', $products);
+        return Response::success('Products retrieved successfully', ProductShopResource::collection($products));
+    }
+
+    /**
+     * Display a listing of product categories for the specified business.
+     */
+    public function productCategories(string $slug, ProductRepository $productRepository): JsonResponse
+    {
+        $categories = $productRepository->getProductCategoriesByBusiness($slug);
+
+        if ($categories === null) {
+            return Response::error('Business not found', 404);
+        }
+
+        return Response::success('Product categories retrieved successfully', ProductCategoryResource::collection($categories));
+    }
+
+    /**
+     * Display a listing of reviews for the specified business.
+     */
+    public function shopLatestReviews(Request $request, string $slug, BusinessRepository $businessRepository): JsonResponse
+    {
+        $limit = $request->query('limit', 5);
+        $reviews = $businessRepository->getShopLatestReviews($slug, $limit);
+
+        if ($reviews === null) {
+            return Response::error('Business not found', 404);
+        }
+
+        return Response::success('Shop reviews retrieved successfully', LatestReviewShopResource::collection($reviews->reviews));
     }
 }

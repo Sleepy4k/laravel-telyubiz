@@ -37,6 +37,14 @@ class Order extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'order.cache';
+    }
+
+    /**
      * Get the buyer that owns the order.
      */
     public function buyer(): BelongsTo

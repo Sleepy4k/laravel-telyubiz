@@ -19,5 +19,10 @@ interface IProductRepository
     /**
      * Get popular products by business slug.
      */
-    public function popularProductsByBusiness(string $businessSlug, array $columns = ['*']): ?Collection;
+    public function popularProductsByBusiness(string $businessSlug, array $filter = [], array $columns = ['*']): ?Collection;
+
+    /**
+     * Get all product categories from a specific business.
+     */
+    public function getProductCategoriesByBusiness(string $businessSlug): ?Collection;
 }

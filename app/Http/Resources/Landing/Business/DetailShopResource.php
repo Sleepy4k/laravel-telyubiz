@@ -23,7 +23,7 @@ class DetailShopResource extends JsonResource
             'category'       => $this->when($this->category, $this->category->name, null),
             'total_products' => $this->products_count ?? 0,
             'total_reviews'  => $this->reviews_count ?? 0,
-            'average_rating' => $this->when($this->reviews_avg_rating, round($this->reviews_avg_rating, 2), 0.0),
+            'average_rating' => $this->when($this->reviews_avg_rating, round($this->reviews_avg_rating, 1), 0.0),
             'owner'          => $this->when($this->owner, [
                 'name'        => $this->owner->name,
                 'email'       => $this->owner->email,

@@ -31,6 +31,14 @@ class Withdrawal extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'withdrawal.cache';
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

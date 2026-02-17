@@ -34,6 +34,14 @@ class BusinessOperational extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'business.operational.cache';
+    }
+
+    /**
      * Get the businesses that belong to the operational status.
      */
     public function businesses(): BelongsTo

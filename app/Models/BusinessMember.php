@@ -30,6 +30,14 @@ class BusinessMember extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'business.member.cache';
+    }
+
+    /**
      * Get the business that the member belongs to.
      */
     public function business(): BelongsTo

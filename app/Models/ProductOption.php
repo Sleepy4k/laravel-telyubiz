@@ -32,6 +32,14 @@ class ProductOption extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'product.option.cache';
+    }
+
+    /**
      * Get the product that owns the option.
      */
     public function product(): BelongsTo

@@ -32,6 +32,14 @@ class OrderItem extends Model
     protected $hidden = [];
 
     /**
+     * Set the cache prefix.
+     */
+    public function setCachePrefix(): string
+    {
+        return 'order.item.cache';
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
